@@ -26,7 +26,6 @@ public class GameScreen implements Screen {
 
         batch.begin();
         batch.end();
-
     }
 
     @Override
