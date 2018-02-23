@@ -15,15 +15,19 @@ import com.badlogic.gdx.math.Vector3;
 public class Menu implements Screen {
     private Texture background;
     private Texture playButton;
+    private Texture settingsButton;
     private Dodgeball host;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Rectangle playRectangle;
+    private Rectangle settingsRectangle;
     private Vector3 touchPos;
 
     public Menu(Dodgeball host) {
-        playButton = new Texture("playbutton.png");
         background = new Texture("background.jpg");
+        playButton = new Texture("playbutton.png");
+        settingsButton = new Texture("settings.jpg");
+
         this.host = host;
         batch = host.getBatch();
         camera = new OrthographicCamera();
@@ -32,6 +36,10 @@ public class Menu implements Screen {
         playRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 2f - playButton.getWidth() / 2f,
                 Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 2f, playButton.getWidth(),
                 playButton.getHeight());
+
+        settingsRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 2f - settingsButton.getWidth() / 2f,
+                Dodgeball.WORLD_HEIGHT / 4f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
+                settingsButton.getHeight());
 
         touchPos = new Vector3();
     }
@@ -53,6 +61,10 @@ public class Menu implements Screen {
             if (playRectangle.contains(touchPos.x, touchPos.y)) {
                 host.setScreen(new GameScreen(host));
             }
+
+            if (settingsRectangle.contains(touchPos.x, touchPos.y)) {
+                host.setScreen(new Settings(host));
+            }
         }
 
         batch.begin();
@@ -60,6 +72,12 @@ public class Menu implements Screen {
         batch.draw(playButton, Dodgeball.WORLD_WIDTH / 2f - playButton.getWidth() / 2f,
                 Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 2f,
                 playButton.getWidth(), playButton.getHeight());
+
+        batch.draw(settingsButton, Dodgeball.WORLD_WIDTH / 2f - settingsButton.getWidth() / 2f,
+                Dodgeball.WORLD_HEIGHT / 4f - settingsButton.getHeight() / 2f,
+                settingsButton.getWidth(), settingsButton.getHeight());
+
+
         batch.end();
     }
 
