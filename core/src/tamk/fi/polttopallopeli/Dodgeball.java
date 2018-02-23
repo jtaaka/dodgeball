@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Dodgeball extends Game {
-	SpriteBatch batch;
+	private SpriteBatch batch;
 	
 	@Override
 	public void create () {

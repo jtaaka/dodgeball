@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
-    SpriteBatch batch;
+    private SpriteBatch batch;
+    private Dodgeball host;
 
-    public GameScreen () {
-        batch = new SpriteBatch();
+    public GameScreen (Dodgeball host) {
+        this.host = host;
+        batch = host.getBatch();
     }
 
     @Override

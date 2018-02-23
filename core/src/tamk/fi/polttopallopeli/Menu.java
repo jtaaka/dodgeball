@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Menu implements Screen {
     //Texture img;
-    Dodgeball host;
-    SpriteBatch batch;
+    private Dodgeball host;
+    private SpriteBatch batch;
 
     public Menu(Dodgeball host) {
         //img = new Texture("");
@@ -27,7 +27,7 @@ public class Menu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (Gdx.input.isTouched()) {
-            host.setScreen(new GameScreen());
+            host.setScreen(new GameScreen(host));
         }
 
         batch.begin();
