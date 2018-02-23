@@ -9,7 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * Class that has all the menu buttons.
+ */
 public class Menu implements Screen {
+    private Texture background;
     private Texture playButton;
     private Dodgeball host;
     private SpriteBatch batch;
@@ -19,6 +23,7 @@ public class Menu implements Screen {
 
     public Menu(Dodgeball host) {
         playButton = new Texture("playbutton.png");
+        background = new Texture("background.jpg");
         this.host = host;
         batch = host.getBatch();
         camera = new OrthographicCamera();
@@ -51,6 +56,7 @@ public class Menu implements Screen {
         }
 
         batch.begin();
+        batch.draw(background, 0, 0,  Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         batch.draw(playButton, Dodgeball.WORLD_WIDTH / 2f - playButton.getWidth() / 2f,
                 Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 2f,
                 playButton.getWidth(), playButton.getHeight());
