@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Dodgeball extends Game {
 	private SpriteBatch batch;
-	
+	public static final float WORLD_WIDTH = 1270;
+    public static final float WORLD_HEIGHT = 720;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
