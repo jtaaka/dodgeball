@@ -16,17 +16,20 @@ public class Menu implements Screen {
     private Texture background;
     private Texture playButton;
     private Texture settingsButton;
+    private Texture creditsButton;
     private Dodgeball host;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Rectangle playRectangle;
     private Rectangle settingsRectangle;
+    private Rectangle creditsRectangle;
     private Vector3 touchPos;
 
     public Menu(Dodgeball host) {
         background = new Texture("background.jpg");
         playButton = new Texture("playbutton.png");
         settingsButton = new Texture("settings.jpg");
+        creditsButton = new Texture("credits.jpg");
 
         this.host = host;
         batch = host.getBatch();
@@ -41,8 +44,13 @@ public class Menu implements Screen {
                 Dodgeball.WORLD_HEIGHT / 4f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
                 settingsButton.getHeight());
 
+        creditsRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 2f - creditsButton.getWidth() / 2f,
+                Dodgeball.WORLD_HEIGHT / 8f - creditsButton.getHeight() / 2f, creditsButton.getWidth(),
+                creditsButton.getHeight());
+
         touchPos = new Vector3();
     }
+
     @Override
     public void show() {
 
@@ -65,10 +73,15 @@ public class Menu implements Screen {
             if (settingsRectangle.contains(touchPos.x, touchPos.y)) {
                 host.setScreen(new Settings(host));
             }
+
+            if (creditsRectangle.contains(touchPos.x, touchPos.y)) {
+                host.setScreen(new Credits(host));
+            }
         }
 
         batch.begin();
         batch.draw(background, 0, 0,  Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+
         batch.draw(playButton, Dodgeball.WORLD_WIDTH / 2f - playButton.getWidth() / 2f,
                 Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 2f,
                 playButton.getWidth(), playButton.getHeight());
@@ -77,6 +90,9 @@ public class Menu implements Screen {
                 Dodgeball.WORLD_HEIGHT / 4f - settingsButton.getHeight() / 2f,
                 settingsButton.getWidth(), settingsButton.getHeight());
 
+        batch.draw(creditsButton, Dodgeball.WORLD_WIDTH / 2f - creditsButton.getWidth() / 2f,
+                Dodgeball.WORLD_HEIGHT / 8f - creditsButton.getHeight() / 2f,
+                creditsButton.getWidth(), creditsButton.getHeight());
 
         batch.end();
     }
