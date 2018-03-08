@@ -1,6 +1,7 @@
 package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -34,6 +35,9 @@ public class GameScreen extends Sprite implements Screen {
         batch = host.getBatch();
 
         backgroundGame = new Texture("game.jpg");
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
     }
 
     private TextureRegion[] transformTo1D(TextureRegion[][] tmp) {
@@ -58,14 +62,17 @@ public class GameScreen extends Sprite implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+
+        // For testing purposes
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            host.setScreen(new Menu(host));
+        }
 
         currentFrameTime += delta;
 
         batch.begin();
 
-        batch.draw(backgroundGame,0,0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        batch.draw(backgroundGame,0,0, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
 
         TextureRegion currentFrame = playerAnime.getKeyFrame(currentFrameTime, true);
         batch.draw(currentFrame, getX(), getY(), getWidth(), getHeight());

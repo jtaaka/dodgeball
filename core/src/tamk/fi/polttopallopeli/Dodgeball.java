@@ -3,13 +3,14 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-/**
- * Main class that creates batch and gives world parameters.
- */
 public class Dodgeball extends Game {
 	private SpriteBatch batch;
-	public static final float WORLD_WIDTH = 1280;
-    public static final float WORLD_HEIGHT = 800;
+	public static final float WINDOW_WIDTH = 1280;
+    public static final float WINDOW_HEIGHT = 800;
+
+    public static final float WORLD_WIDTH = 12.8f;
+	public static final float WORLD_HEIGHT = 8.0f;
+
 
 	@Override
 	public void create () {

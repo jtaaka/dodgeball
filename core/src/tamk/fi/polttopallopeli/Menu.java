@@ -1,6 +1,7 @@
 package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,9 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * Class that has all the menu buttons.
- */
 public class Menu implements Screen {
     private Texture background;
     private Texture playButton;
@@ -34,18 +32,18 @@ public class Menu implements Screen {
         this.host = host;
         batch = host.getBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
 
-        playRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 2f - playButton.getWidth() / 2f,
-                Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 2f, playButton.getWidth(),
+        playRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 2f - playButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 2f - playButton.getHeight() / 2f, playButton.getWidth(),
                 playButton.getHeight());
 
-        settingsRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 2f - settingsButton.getWidth() / 2f,
-                Dodgeball.WORLD_HEIGHT / 4f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
+        settingsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 2f - settingsButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 4f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
                 settingsButton.getHeight());
 
-        creditsRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 2f - creditsButton.getWidth() / 2f,
-                Dodgeball.WORLD_HEIGHT / 8f - creditsButton.getHeight() / 2f, creditsButton.getWidth(),
+        creditsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 2f - creditsButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 8f - creditsButton.getHeight() / 2f, creditsButton.getWidth(),
                 creditsButton.getHeight());
 
         touchPos = new Vector3();
@@ -79,19 +77,24 @@ public class Menu implements Screen {
             }
         }
 
-        batch.begin();
-        batch.draw(background, 0, 0,  Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        // This is for testing the survival mode
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            host.setScreen(new SurvivalMode(host));
+        }
 
-        batch.draw(playButton, Dodgeball.WORLD_WIDTH / 2f - playButton.getWidth() / 2f,
-                Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 2f,
+        batch.begin();
+        batch.draw(background, 0, 0,  Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
+
+        batch.draw(playButton, Dodgeball.WINDOW_WIDTH / 2f - playButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 2f - playButton.getHeight() / 2f,
                 playButton.getWidth(), playButton.getHeight());
 
-        batch.draw(settingsButton, Dodgeball.WORLD_WIDTH / 2f - settingsButton.getWidth() / 2f,
-                Dodgeball.WORLD_HEIGHT / 4f - settingsButton.getHeight() / 2f,
+        batch.draw(settingsButton, Dodgeball.WINDOW_WIDTH / 2f - settingsButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 4f - settingsButton.getHeight() / 2f,
                 settingsButton.getWidth(), settingsButton.getHeight());
 
-        batch.draw(creditsButton, Dodgeball.WORLD_WIDTH / 2f - creditsButton.getWidth() / 2f,
-                Dodgeball.WORLD_HEIGHT / 8f - creditsButton.getHeight() / 2f,
+        batch.draw(creditsButton, Dodgeball.WINDOW_WIDTH / 2f - creditsButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 8f - creditsButton.getHeight() / 2f,
                 creditsButton.getWidth(), creditsButton.getHeight());
 
         batch.end();
