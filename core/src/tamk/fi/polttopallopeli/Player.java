@@ -15,41 +15,37 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player {
     private World world;
-    private Sprite sprite;
     private Body body;
     private SpriteBatch batch;
     private Vector2 vector;
+    Texture player;
 
-    public Player(World world) {
+    public Player(World world, SpriteBatch batch) {
         this.world = world;
+        this.batch = batch;
+
+        player = new Texture("playertexture.png");
 
         vector = new Vector2();
 
-        batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("playertexture.png"));
-        sprite.setPosition(Dodgeball.WINDOW_WIDTH / 2 - sprite.getWidth() / 2,
-                Dodgeball.WINDOW_HEIGHT / 2 - sprite.getHeight()/ 2);
-
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set((sprite.getX() + sprite.getWidth()/2) / 100f,
-                (sprite.getY() + sprite.getHeight()/2) / 100f);
+        bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
+                (Dodgeball.WORLD_HEIGHT / 2f));
 
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
 
-        shape.setAsBox(sprite.getWidth() / 2 / 100f,
-                sprite.getHeight() / 2 / 100f);
+        shape.setAsBox(player.getWidth()/2 / 100f, player.getHeight()
+                /2 / 100f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.2f;
+        fixtureDef.density = 0.05f;
         fixtureDef.friction = 1f;
 
         body.createFixture(fixtureDef);
-        body.setUserData(sprite);
-
         shape.dispose();
     }
 
@@ -58,7 +54,9 @@ public class Player {
         float delta = Gdx.graphics.getDeltaTime();
 
         batch.begin();
-        sprite.draw(batch);
+        batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
+                player.getWidth() / 100f, player.getHeight() / 100f);
+
         vector.set(0, 0);
 
         // For testing purposes on computer.
@@ -73,7 +71,6 @@ public class Player {
 
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             vector.y = -10f * delta;
-
         }
 
         // Accelerometer testing for tablet
@@ -89,10 +86,6 @@ public class Player {
         }
 
         body.applyForceToCenter(vector, true);
-
-        sprite.setPosition((body.getPosition().x * 100f) - sprite.getWidth() / 2,
-                (body.getPosition().y * 100f) - sprite.getHeight() / 2);
-
         batch.end();
     }
 }

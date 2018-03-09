@@ -34,7 +34,7 @@ public class SurvivalMode implements Screen {
 
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
-        player = new Player(world);
+        player = new Player(world, batch);
     }
 
     @Override
@@ -46,6 +46,7 @@ public class SurvivalMode implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        camera.update();
 
         batch.setProjectionMatrix(camera.combined);
 
