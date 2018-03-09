@@ -61,7 +61,7 @@ public class Player {
         sprite.draw(batch);
         vector.set(0, 0);
 
-        // For testing purposes on computer
+        // For testing purposes on computer.
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             vector.x = -10f * delta;
 
