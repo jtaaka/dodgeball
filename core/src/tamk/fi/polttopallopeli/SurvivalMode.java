@@ -18,6 +18,7 @@ public class SurvivalMode implements Screen {
     private Player player;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
+    private Balls ball;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -35,6 +36,7 @@ public class SurvivalMode implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
+        ball = new Balls(world, batch);
     }
 
     @Override
@@ -56,6 +58,7 @@ public class SurvivalMode implements Screen {
         batch.end();
 
         player.playerMove();
+        ball.draw(batch,delta);
 
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
