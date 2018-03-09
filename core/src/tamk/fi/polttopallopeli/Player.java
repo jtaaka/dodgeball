@@ -44,6 +44,8 @@ public class Player {
         fixtureDef.shape = shape;
         fixtureDef.density = 0.05f;
         fixtureDef.friction = 1f;
+        fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
+        fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL;
 
         body.createFixture(fixtureDef);
         shape.dispose();
@@ -88,6 +90,8 @@ public class Player {
         } else if (!MathUtils.isZero(accelZ, 0.5f)) {
             vector.y = accelZ * delta;
         }
+
+
 
         body.applyForceToCenter(vector, true);
         batch.end();

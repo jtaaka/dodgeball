@@ -11,8 +11,12 @@ public class Dodgeball extends Game {
     public static final float WORLD_WIDTH = 12.8f;
 	public static final float WORLD_HEIGHT = 8.0f;
 
+	public static final short OBJECT_WALL = 1;
+    public static final short OBJECT_PLAYER = 2;
 
-	@Override
+
+
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new Menu(this));

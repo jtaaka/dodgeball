@@ -8,13 +8,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
     private Dodgeball host;
     private World world;
+    private Body walls;
     private Player player;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
@@ -37,6 +43,7 @@ public class SurvivalMode implements Screen {
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
         ball = new Balls(world, batch);
+        worldWalls();
     }
 
     @Override
@@ -72,6 +79,33 @@ public class SurvivalMode implements Screen {
             world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
             accumulator -= TIME_STEP;
         }
+    }
+
+    private void worldWalls() {
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(0, 0);
+
+        walls = world.createBody(bodyDef);
+
+        ChainShape shape = new ChainShape();
+
+        shape.createChain(new float[] {
+                0, 0,
+                Dodgeball.WORLD_WIDTH, 0,
+                Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT,
+                0, Dodgeball.WORLD_HEIGHT,
+                0, 0
+        });
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.filter.categoryBits = Dodgeball.OBJECT_WALL;
+        fixtureDef.filter.maskBits = Dodgeball.OBJECT_PLAYER;
+        fixtureDef.shape = shape;
+
+        walls.createFixture(fixtureDef);
+        shape.dispose();
     }
 
     @Override
