@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,9 +18,12 @@ public class Player {
     private Sprite sprite;
     private Body body;
     private SpriteBatch batch;
+    private Vector2 vector;
 
     public Player(World world) {
         this.world = world;
+
+        vector = new Vector2();
 
         batch = new SpriteBatch();
         sprite = new Sprite(new Texture("playertexture.png"));
@@ -40,11 +44,13 @@ public class Player {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.3f;
+        fixtureDef.density = 0.2f;
         fixtureDef.friction = 1f;
 
         body.createFixture(fixtureDef);
         body.setUserData(sprite);
+
+        shape.dispose();
     }
 
     public void playerMove() {
@@ -53,20 +59,39 @@ public class Player {
 
         batch.begin();
         sprite.draw(batch);
+        vector.set(0, 0);
 
+        // For testing purposes on computer
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            body.applyForceToCenter(new Vector2(-100f * delta, 0), true);
-
-            sprite.setPosition((body.getPosition().x * 100f) - sprite.getWidth() / 2,
-                    (body.getPosition().y * 100f) - sprite.getHeight() / 2);
-
+            vector.x = -10f * delta;
 
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            body.applyForceToCenter(new Vector2(100f * delta, 0), true);
+            vector.x = 10f * delta;
 
-            sprite.setPosition((body.getPosition().x * 100f) - sprite.getWidth() / 2,
-                    (body.getPosition().y * 100f) - sprite.getHeight() / 2);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            vector.y = 10f * delta;
+
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            vector.y = -10f * delta;
+
         }
+
+        // Accelerometer testing for tablet
+        //float accelX = Gdx.input.getAccelerometerX();
+        float accelY = Gdx.input.getAccelerometerY();
+        float accelZ = Gdx.input.getAccelerometerZ();
+
+        if (!MathUtils.isZero(accelY, 0.5f)) {
+            vector.x = accelY * delta;
+
+        } else if (!MathUtils.isZero(accelZ, 0.5f)) {
+            vector.y = accelZ * delta;
+        }
+
+        body.applyForceToCenter(vector, true);
+
+        sprite.setPosition((body.getPosition().x * 100f) - sprite.getWidth() / 2,
+                (body.getPosition().y * 100f) - sprite.getHeight() / 2);
 
         batch.end();
     }

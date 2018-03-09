@@ -31,6 +31,7 @@ public class Menu implements Screen {
 
         this.host = host;
         batch = host.getBatch();
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
 
@@ -65,7 +66,7 @@ public class Menu implements Screen {
             touchPos = camera.unproject(touchPos);
 
             if (playRectangle.contains(touchPos.x, touchPos.y)) {
-                host.setScreen(new GameScreen(host));
+                host.setScreen(new SurvivalMode(host));
             }
 
             if (settingsRectangle.contains(touchPos.x, touchPos.y)) {

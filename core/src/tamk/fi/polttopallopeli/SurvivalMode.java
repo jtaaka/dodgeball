@@ -50,6 +50,7 @@ public class SurvivalMode implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         batch.end();
 
