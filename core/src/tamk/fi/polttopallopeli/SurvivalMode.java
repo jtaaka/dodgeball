@@ -58,7 +58,7 @@ public class SurvivalMode implements Screen {
         batch.end();
 
         player.playerMove();
-        ball.draw(batch,delta);
+        ball.draw(delta);
 
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);

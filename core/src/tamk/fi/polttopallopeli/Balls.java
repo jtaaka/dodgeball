@@ -31,8 +31,8 @@ public class Balls extends Sprite {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set((getX() + getWidth()/2) / 100f,
-                (getY() + getHeight()/2) / 100f);
+        bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
+                (Dodgeball.WORLD_HEIGHT / 2f));
 
 
 
@@ -40,8 +40,8 @@ public class Balls extends Sprite {
 
         PolygonShape shape = new PolygonShape();
 
-        shape.setAsBox(getWidth() / 2 / 100f,
-                getHeight() / 2 / 100f);
+        shape.setAsBox(ball.getWidth() / 2 / 100f,
+                ball.getHeight() / 2 / 100f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -54,10 +54,10 @@ public class Balls extends Sprite {
         shape.dispose();
     }
 
-    public void draw(Batch batch, float delta) {
-        this.batch = batch;
+    public void draw(float delta) {
         batch.begin();
-        draw(batch);
+        batch.draw(ball, body.getPosition().x - ball.getWidth() / 200f, body.getPosition().y - ball.getHeight() / 200f,
+                ball.getWidth() / 100f, ball.getHeight() / 100f);
         batch.end();
     }
 }
