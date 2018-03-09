@@ -62,14 +62,18 @@ public class Player {
         // For testing purposes on computer.
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             vector.x = -10f * delta;
+        }
 
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             vector.x = 10f * delta;
+        }
 
-        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             vector.y = 10f * delta;
 
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             vector.y = -10f * delta;
         }
 
