@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class SurvivalMode implements Screen {
@@ -60,11 +59,10 @@ public class SurvivalMode implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         batch.end();
 
-        player.playerMove();
+        player.playerMove(delta);
         ball.draw(delta);
 
         debugRenderer.render(world, camera.combined);

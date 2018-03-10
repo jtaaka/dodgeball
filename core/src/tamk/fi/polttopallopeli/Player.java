@@ -3,7 +3,6 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -51,9 +50,7 @@ public class Player {
         shape.dispose();
     }
 
-    public void playerMove() {
-
-        float delta = Gdx.graphics.getDeltaTime();
+    public void playerMove(float delta) {
 
         batch.begin();
         batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
@@ -61,7 +58,7 @@ public class Player {
 
         vector.set(0, 0);
 
-        // For testing purposes on computer.
+        // For testing purposes on computer
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             vector.x = -10f * delta;
         }
@@ -72,7 +69,6 @@ public class Player {
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             vector.y = 10f * delta;
-
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
@@ -90,8 +86,6 @@ public class Player {
         } else if (!MathUtils.isZero(accelZ, 0.5f)) {
             vector.y = accelZ * delta;
         }
-
-
 
         body.applyForceToCenter(vector, true);
         batch.end();

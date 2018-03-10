@@ -5,13 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-
-/**
- * Created by Joni Alanko on 09/03/2018.
- */
 
 public class Balls extends Sprite {
     private World world;
@@ -34,24 +30,20 @@ public class Balls extends Sprite {
         bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
                 (Dodgeball.WORLD_HEIGHT / 2f));
 
-
-
         body = world.createBody(bodyDef);
 
-        PolygonShape shape = new PolygonShape();
-
-        shape.setAsBox(ball.getWidth() / 2 / 100f,
-                ball.getHeight() / 2 / 100f);
+        CircleShape circle = new CircleShape();
+        circle.setRadius(0.35f);
 
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
+        fixtureDef.shape = circle;
         fixtureDef.density = 0.2f;
         fixtureDef.friction = 1f;
 
         body.createFixture(fixtureDef);
         body.setUserData(this);
 
-        shape.dispose();
+        circle.dispose();
     }
 
     public void draw(float delta) {
