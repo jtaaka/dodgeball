@@ -102,6 +102,6 @@ public class GameScreen extends Sprite implements Screen {
 
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 }

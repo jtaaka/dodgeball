@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
@@ -24,6 +25,7 @@ public class SurvivalMode implements Screen {
     private Texture backgroundTexture;
     private OrthographicCamera camera;
     private Balls ball;
+    private GameTimer timer;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -42,6 +44,8 @@ public class SurvivalMode implements Screen {
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
         ball = new Balls(world, batch);
+        timer = new GameTimer(batch);
+
         worldWalls();
     }
 
@@ -64,6 +68,7 @@ public class SurvivalMode implements Screen {
 
         player.playerMove(delta);
         ball.draw(delta);
+        timer.survivalModeTimer();
 
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
@@ -128,6 +133,8 @@ public class SurvivalMode implements Screen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
+        backgroundTexture.dispose();
+        batch.dispose();
     }
 }

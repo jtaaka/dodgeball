@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -48,8 +49,11 @@ public class Balls extends Sprite {
 
     public void draw(float delta) {
         batch.begin();
-        batch.draw(ball, body.getPosition().x - ball.getWidth() / 200f, body.getPosition().y - ball.getHeight() / 200f,
-                ball.getWidth() / 100f, ball.getHeight() / 100f);
+        batch.draw(ball, body.getPosition().x - ball.getWidth() / 200f,
+                body.getPosition().y - ball.getHeight() / 200f, 0.35f, 0.35f,
+                0.7f, 0.7f, 1f,
+                1f, body.getTransform().getRotation() * MathUtils.radiansToDegrees,
+                0, 0, ball.getWidth(), ball.getHeight(), false, false);
         batch.end();
     }
 }

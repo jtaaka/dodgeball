@@ -82,8 +82,9 @@ public class Player {
 
         if (!MathUtils.isZero(accelY, 0.5f)) {
             vector.x = accelY * delta;
+        }
 
-        } else if (!MathUtils.isZero(accelZ, 0.5f)) {
+        if (!MathUtils.isZero(accelZ, 0.5f)) {
             vector.y = accelZ * delta;
         }
 
