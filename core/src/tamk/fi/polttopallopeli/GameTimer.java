@@ -31,8 +31,8 @@ public class GameTimer {
         generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 40;
-        parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 1;
+        parameter.color = Color.BLACK;
         font = generator.generateFont(parameter);
 
         layout.setText(font, "00:00");
