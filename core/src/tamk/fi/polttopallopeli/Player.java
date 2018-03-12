@@ -31,6 +31,7 @@ public class Player {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
                 (Dodgeball.WORLD_HEIGHT / 2f));
+        bodyDef.fixedRotation = true;
 
         body = world.createBody(bodyDef);
 
@@ -44,7 +45,7 @@ public class Player {
         fixtureDef.density = 0.05f;
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
-        fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL;
+        fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
 
         body.createFixture(fixtureDef);
         shape.dispose();

@@ -13,6 +13,8 @@ public class Dodgeball extends Game {
 
 	public static final short OBJECT_WALL = 1;
     public static final short OBJECT_PLAYER = 2;
+    public static final short OBJECT_BALL = 4;
+
 
     @Override
 	public void create () {

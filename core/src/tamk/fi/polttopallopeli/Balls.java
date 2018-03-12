@@ -40,6 +40,9 @@ public class Balls extends Sprite {
         fixtureDef.shape = circle;
         fixtureDef.density = 0.2f;
         fixtureDef.friction = 1f;
+        fixtureDef.filter.categoryBits = Dodgeball.OBJECT_BALL;
+        fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_PLAYER;
+        fixtureDef.restitution = 0.5f;
 
         body.createFixture(fixtureDef);
         body.setUserData(this);
