@@ -21,7 +21,7 @@ public class Balls extends Sprite {
         this.world = world;
         this.batch = batch;
 
-        ball = new Texture("pallo.png");
+        ball = new Texture("peruspallo.png");
 
         setPosition(Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2,
                 Dodgeball.WINDOW_HEIGHT / 2 - getHeight()/ 2);

@@ -28,9 +28,9 @@ public class GameTimer {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Bold.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("digital-7.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40;
+        parameter.size = 70;
         parameter.borderWidth = 1;
         parameter.color = Color.BLACK;
         font = generator.generateFont(parameter);
@@ -52,7 +52,7 @@ public class GameTimer {
         batch.setProjectionMatrix(camera.combined);
         camera.update();
         font.draw(batch,formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - layout.width,
-                    Dodgeball.WINDOW_HEIGHT - layout.height);
+                    Dodgeball.WINDOW_HEIGHT - layout.height / 2);
         batch.end();
     }
 }
