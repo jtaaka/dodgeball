@@ -32,6 +32,7 @@ public class Player {
         bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
                 (Dodgeball.WORLD_HEIGHT / 2f));
         bodyDef.fixedRotation = true;
+        bodyDef.linearDamping = 1f;
 
         body = world.createBody(bodyDef);
 
