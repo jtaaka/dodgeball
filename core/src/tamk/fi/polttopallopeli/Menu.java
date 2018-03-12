@@ -24,10 +24,10 @@ public class Menu implements Screen {
     private Vector3 touchPos;
 
     public Menu(Dodgeball host) {
-        background = new Texture("background.jpg");
-        playButton = new Texture("playbutton.png");
-        settingsButton = new Texture("settings.jpg");
-        creditsButton = new Texture("credits.jpg");
+        background = new Texture("dodgeball.jpg");
+        playButton = new Texture("Pelaa.png");
+        settingsButton = new Texture("Asetukset.png");
+        creditsButton = new Texture("Tilastot.png");
 
         this.host = host;
         batch = host.getBatch();
@@ -35,15 +35,15 @@ public class Menu implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
 
-        playRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 2f - playButton.getWidth() / 2f,
+        playRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 4f - playButton.getWidth() / 2f,
                 Dodgeball.WINDOW_HEIGHT / 2f - playButton.getHeight() / 2f, playButton.getWidth(),
                 playButton.getHeight());
 
-        settingsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 2f - settingsButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 4f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
+        settingsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH * 0.85f - settingsButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 3f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
                 settingsButton.getHeight());
 
-        creditsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 2f - creditsButton.getWidth() / 2f,
+        creditsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH * 0.85f - creditsButton.getWidth() / 2f,
                 Dodgeball.WINDOW_HEIGHT / 8f - creditsButton.getHeight() / 2f, creditsButton.getWidth(),
                 creditsButton.getHeight());
 
@@ -86,15 +86,15 @@ public class Menu implements Screen {
         batch.begin();
         batch.draw(background, 0, 0,  Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
 
-        batch.draw(playButton, Dodgeball.WINDOW_WIDTH / 2f - playButton.getWidth() / 2f,
+        batch.draw(playButton, Dodgeball.WINDOW_WIDTH / 4f - playButton.getWidth() / 2f,
                 Dodgeball.WINDOW_HEIGHT / 2f - playButton.getHeight() / 2f,
                 playButton.getWidth(), playButton.getHeight());
 
-        batch.draw(settingsButton, Dodgeball.WINDOW_WIDTH / 2f - settingsButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 4f - settingsButton.getHeight() / 2f,
+        batch.draw(settingsButton, Dodgeball.WINDOW_WIDTH * 0.85f - settingsButton.getWidth() / 2f,
+                Dodgeball.WINDOW_HEIGHT / 3f - settingsButton.getHeight() / 2f,
                 settingsButton.getWidth(), settingsButton.getHeight());
 
-        batch.draw(creditsButton, Dodgeball.WINDOW_WIDTH / 2f - creditsButton.getWidth() / 2f,
+        batch.draw(creditsButton, Dodgeball.WINDOW_WIDTH * 0.85f - creditsButton.getWidth() / 2f,
                 Dodgeball.WINDOW_HEIGHT / 8f - creditsButton.getHeight() / 2f,
                 creditsButton.getWidth(), creditsButton.getHeight());
 
