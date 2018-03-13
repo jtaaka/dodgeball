@@ -24,7 +24,7 @@ public class Balls extends Sprite {
         ball = new Texture("peruspallo.png");
 
         setPosition(Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2,
-                Dodgeball.WINDOW_HEIGHT / 2 - getHeight()/ 2);
+                Dodgeball.WINDOW_HEIGHT / 2 - getHeight() / 2);
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -46,8 +46,7 @@ public class Balls extends Sprite {
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_BALL;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_PLAYER;
 
-        body.createFixture(fixtureDef);
-        body.setUserData(this);
+        body.createFixture(fixtureDef).setUserData("ball");
 
         circle.dispose();
     }

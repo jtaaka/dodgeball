@@ -48,7 +48,8 @@ public class Player {
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData("player");
+
         shape.dispose();
     }
 
