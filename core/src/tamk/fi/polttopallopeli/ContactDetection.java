@@ -1,5 +1,6 @@
 package tamk.fi.polttopallopeli;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -7,27 +8,22 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class ContactDetection implements ContactListener {
+    Fixture fixtureA;
+    Fixture fixtureB;
 
     @Override
     public void beginContact(Contact contact) {
+        fixtureA = contact.getFixtureA();
+        fixtureB = contact.getFixtureB();
 
-        Fixture fixtureA = contact.getFixtureA();
-        Fixture fixtureB = contact.getFixtureB();
-
-        if (fixtureA.getUserData() != null
-                && fixtureA.getUserData().equals("player")
-                && fixtureB.getUserData() != null
-                && fixtureB.getUserData().equals("ball")) {
-
-            fixtureB.getBody().setLinearVelocity(5f, 0f);
+        if (fixtureA == null || fixtureA.getUserData() == null || fixtureB == null || fixtureB.getUserData() == null) {
+            return;
         }
 
-        if (fixtureB.getUserData() != null
-                && fixtureB.getUserData().equals("player")
-                && fixtureA.getUserData() != null
-                && fixtureA.getUserData().equals("ball")) {
-
-            fixtureA.getBody().setLinearVelocity(5f, 0f);
+        if (fixtureA.getUserData().equals("player")) {
+            Gdx.app.log("", "hit: " + fixtureB.getUserData());
+        } else {
+            Gdx.app.log("", "hit " + fixtureA.getUserData());
         }
     }
 

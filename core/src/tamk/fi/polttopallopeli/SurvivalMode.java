@@ -33,6 +33,7 @@ public class SurvivalMode implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
+
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
