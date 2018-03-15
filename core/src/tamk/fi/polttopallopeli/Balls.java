@@ -23,13 +23,15 @@ public class Balls extends Sprite {
 
         ball = new Texture("peruspallo.png");
 
-        setPosition(Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2,
-                Dodgeball.WINDOW_HEIGHT / 2 - getHeight() / 2);
+        float xCoord = randomLocationX();
+        float yCoord = randomLocationY();
+
+        setPosition(xCoord, yCoord);
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
-                (Dodgeball.WORLD_HEIGHT / 2f));
+        bodyDef.position.set((randomBodyDefLocationX()),
+                (randomBodyDefLocationY()));
 
         body = world.createBody(bodyDef);
 
@@ -42,13 +44,53 @@ public class Balls extends Sprite {
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0.8f;
 
-        // Ball collides with player and walls (for testing)
+        // Ball collides with player, walls and other balls (for testing)
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_BALL;
-        fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_PLAYER;
+        fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_PLAYER | Dodgeball.OBJECT_BALL;
 
         body.createFixture(fixtureDef).setUserData("ball");
 
         circle.dispose();
+    }
+
+    private float randomBodyDefLocationX() {
+        switch (MathUtils.random(1,2)) {
+            case 1:
+                return Dodgeball.WORLD_WIDTH / 8;
+            case 2:
+                return Dodgeball.WORLD_WIDTH * 0.8f;
+        }
+        return Dodgeball.WORLD_WIDTH / 2;
+    }
+
+    private float randomBodyDefLocationY() {
+        switch (MathUtils.random(1,2)) {
+            case 1:
+                return Dodgeball.WORLD_HEIGHT / 8;
+            case 2:
+                return Dodgeball.WORLD_HEIGHT * 0.8f;
+        }
+        return Dodgeball.WORLD_HEIGHT / 2;
+    }
+
+    private float randomLocationY() {
+        switch (MathUtils.random(1,2)) {
+            case 1:
+                return Dodgeball.WINDOW_HEIGHT / 8 - getHeight() / 2;
+            case 2:
+                return Dodgeball.WINDOW_HEIGHT * 0.8f - getHeight() / 2;
+        }
+        return Dodgeball.WINDOW_HEIGHT / 2 - getHeight() / 2;
+    }
+
+    private float randomLocationX() {
+        switch (MathUtils.random(1,2)) {
+            case 1:
+                return Dodgeball.WINDOW_WIDTH / 8 - getWidth() / 2;
+            case 2:
+                return Dodgeball.WINDOW_WIDTH * 0.8f - getWidth() / 2;
+        }
+        return Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2;
     }
 
     public void draw(float delta) {

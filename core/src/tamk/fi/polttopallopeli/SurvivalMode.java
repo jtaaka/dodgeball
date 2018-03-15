@@ -24,7 +24,7 @@ public class SurvivalMode implements Screen {
     private Player player;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
-    private Balls ball;
+    private Balls[] ball;
     private GameTimer timer;
 
     private Box2DDebugRenderer debugRenderer;
@@ -44,7 +44,10 @@ public class SurvivalMode implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
-        ball = new Balls(world, batch);
+        ball = new Balls[2];
+        for (int i = 0; i < ball.length; i++) {
+            ball[i] = new Balls(world, batch);
+        }
         timer = new GameTimer(batch);
 
         world.setContactListener(new ContactDetection());
@@ -76,7 +79,9 @@ public class SurvivalMode implements Screen {
         batch.end();
 
         player.playerMove(delta);
-        ball.draw(delta);
+        for (Balls eachBall : ball) {
+            eachBall.draw(delta);
+        }
         timer.survivalModeTimer();
 
         debugRenderer.render(world, camera.combined);
@@ -144,6 +149,9 @@ public class SurvivalMode implements Screen {
     public void dispose() {
         world.dispose();
         backgroundTexture.dispose();
+        for (Balls eachBall : ball) {
+            eachBall.getTexture().dispose();
+        }
         batch.dispose();
     }
 }
