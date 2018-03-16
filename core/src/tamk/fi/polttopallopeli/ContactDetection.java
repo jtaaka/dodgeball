@@ -20,10 +20,14 @@ public class ContactDetection implements ContactListener {
             return;
         }
 
-        if (fixtureA.getUserData().equals("player")) {
-            Gdx.app.log("", "hit: " + fixtureB.getUserData());
-        } else {
-            Gdx.app.log("", "hit " + fixtureA.getUserData());
+        if (fixtureA.getUserData() instanceof Player || fixtureB.getUserData() instanceof Player) {
+            if (fixtureA.getUserData() instanceof Player) {
+                Player p = (Player) fixtureA.getUserData();
+                p.decreaseHealth();
+            } else {
+                Player p = (Player) fixtureB.getUserData();
+                p.decreaseHealth();
+            }
         }
     }
 

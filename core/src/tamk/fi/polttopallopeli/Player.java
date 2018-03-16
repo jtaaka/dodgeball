@@ -14,16 +14,18 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player {
     private World world;
-    private Body body;
+    protected Body body;
     private SpriteBatch batch;
     private Vector2 vector;
-    Texture player;
+    private int health;
+    private Texture player;
 
     public Player(World world, SpriteBatch batch) {
         this.world = world;
         this.batch = batch;
 
         player = new Texture("playertexture.png");
+        health = 3;
 
         vector = new Vector2();
 
@@ -48,9 +50,17 @@ public class Player {
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
 
-        body.createFixture(fixtureDef).setUserData("player");
+        body.createFixture(fixtureDef).setUserData(this);
 
         shape.dispose();
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void decreaseHealth() {
+        health = Math.max(0, health - 1);
     }
 
     public float getPlayerBodyX() {
@@ -87,7 +97,6 @@ public class Player {
         }
 
         // Accelerometer testing for tablet
-        //float accelX = Gdx.input.getAccelerometerX();
         float accelY = Gdx.input.getAccelerometerY();
         float accelZ = Gdx.input.getAccelerometerZ();
 

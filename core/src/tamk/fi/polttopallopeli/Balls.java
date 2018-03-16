@@ -19,7 +19,6 @@ public class Balls extends Sprite {
     private float yCoordinate;
     private float playerX;
     private float playerY;
-    boolean onField;
 
     public Balls(World world, Batch batch, float playerX, float playerY) {
 
@@ -28,7 +27,7 @@ public class Balls extends Sprite {
 
         ball = new Texture("peruspallo.png");
 
-        onField = false;
+
 
         this.playerX = playerX;
         this.playerY = playerY;
@@ -68,32 +67,31 @@ public class Balls extends Sprite {
         float xImpulse;
 
         if (xCoordinate > playerX) {
-            xImpulse = (playerX - body.getPosition().x + 1.5f) / 10;
+            xImpulse = -0.01f;
         } else {
-            xImpulse = (playerX + body.getPosition().x + 1.5f) / 10;
+            xImpulse = 0.01f;
         }
+
+
 
         float yImpulse;
 
         if (yCoordinate > playerY) {
-            yImpulse = (playerY - body.getPosition().y + 1.5f) / 10;
+            yImpulse = -0.01f;
         } else {
-            yImpulse = (playerY + body.getPosition().y + 1.5f) / 10;
+            yImpulse = 0.01f;
         }
 
-
-        body.applyForceToCenter(xImpulse,yImpulse,true);
+        body.applyLinearImpulse(xImpulse,yImpulse,0,0,true);
     }
-
-    //LaunchBalls metodi tänne tai survivalmodeen. Hallinnoi koska palloja ammutaan ja mihin.
 
     private float randomBodyDefLocationX() {
         switch (MathUtils.random(1,2)) {
             case 1:
-                xCoordinate = -(Dodgeball.WORLD_WIDTH / 8f);
+                xCoordinate = Dodgeball.WORLD_WIDTH / 8f;
                 return xCoordinate;
             case 2:
-                xCoordinate = Dodgeball.WORLD_WIDTH * 1.1f;
+                xCoordinate = Dodgeball.WORLD_WIDTH * 0.8f;
                 return xCoordinate;
         }
         return xCoordinate;
@@ -102,10 +100,10 @@ public class Balls extends Sprite {
     private float randomBodyDefLocationY() {
         switch (MathUtils.random(1,2)) {
             case 1:
-                yCoordinate = -(Dodgeball.WORLD_HEIGHT / 8);
+                yCoordinate = Dodgeball.WORLD_HEIGHT / 8;
                 return yCoordinate;
             case 2:
-                yCoordinate = Dodgeball.WORLD_HEIGHT * 1.1f;
+                yCoordinate = Dodgeball.WORLD_HEIGHT * 0.8f;
                 return yCoordinate;
         }
         return yCoordinate;
@@ -139,11 +137,5 @@ public class Balls extends Sprite {
                 1f, body.getTransform().getRotation() * MathUtils.radiansToDegrees,
                 0, 0, ball.getWidth(), ball.getHeight(), false, false);
         batch.end();
-        setPosition(body.getPosition().x, body.getPosition().y);
-    }
-
-    public void dispose() {
-        ball.dispose();
-        world.destroyBody(body);
     }
 }
