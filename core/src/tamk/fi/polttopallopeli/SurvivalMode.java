@@ -44,7 +44,7 @@ public class SurvivalMode implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
-        ball = new Balls[2];
+        ball = new Balls[3];
         for (int i = 0; i < ball.length; i++) {
             ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
         }
@@ -79,8 +79,24 @@ public class SurvivalMode implements Screen {
         batch.end();
 
         player.playerMove(delta);
+        int i = 0;
         for (Balls eachBall : ball) {
             eachBall.draw(delta);
+            if (eachBall.getX() < Dodgeball.WORLD_WIDTH && eachBall.getX() > 0 && eachBall.getY() < Dodgeball.WORLD_HEIGHT &&
+                    eachBall.getY() > 0) {
+                eachBall.onField = true;
+                Gdx.app.log(getClass().getSimpleName(), "field is set");
+            }
+
+            if (eachBall.onField) {
+                if (eachBall.getX() > Dodgeball.WORLD_WIDTH || eachBall.getY() > Dodgeball.WORLD_HEIGHT ||
+                        eachBall.getX() < 0 || eachBall.getY() < 0) {
+                    eachBall.dispose();
+                    ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
+                    Gdx.app.log(getClass().getSimpleName(), "respawning");
+                }
+            }
+            i++;
         }
         timer.survivalModeTimer();
 
