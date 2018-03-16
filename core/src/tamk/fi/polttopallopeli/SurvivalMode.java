@@ -37,7 +37,7 @@ public class SurvivalMode implements Screen {
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
-        backgroundTexture = new Texture("peruspohja.png");
+        backgroundTexture = new Texture("background1.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
 
