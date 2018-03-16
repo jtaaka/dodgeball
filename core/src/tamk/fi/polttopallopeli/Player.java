@@ -53,6 +53,14 @@ public class Player {
         shape.dispose();
     }
 
+    public float getPlayerBodyX() {
+        return body.getPosition().x;
+    }
+
+    public float getPlayerBodyY() {
+        return body.getPosition().y;
+    }
+
     public void playerMove(float delta) {
 
         batch.begin();

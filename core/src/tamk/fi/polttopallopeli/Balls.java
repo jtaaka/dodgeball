@@ -17,13 +17,18 @@ public class Balls extends Sprite {
     Texture ball;
     private float xCoordinate;
     private float yCoordinate;
+    private float playerX;
+    private float playerY;
 
-    public Balls(World world, Batch batch) {
+    public Balls(World world, Batch batch, float playerX, float playerY) {
 
         this.world = world;
         this.batch = batch;
 
         ball = new Texture("peruspallo.png");
+
+        this.playerX = playerX;
+        this.playerY = playerY;
 
         float xCoord = randomLocationX();
         float yCoord = randomLocationY();
@@ -59,15 +64,17 @@ public class Balls extends Sprite {
 
         float xImpulse;
 
-        if (xCoordinate > Dodgeball.WORLD_WIDTH / 2) {
+        if (xCoordinate > playerX) {
             xImpulse = -0.01f;
         } else {
             xImpulse = 0.01f;
         }
 
+
+
         float yImpulse;
 
-        if (yCoordinate > Dodgeball.WORLD_HEIGHT / 2) {
+        if (yCoordinate > playerY) {
             yImpulse = -0.01f;
         } else {
             yImpulse = 0.01f;

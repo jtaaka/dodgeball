@@ -46,7 +46,7 @@ public class SurvivalMode implements Screen {
         player = new Player(world, batch);
         ball = new Balls[2];
         for (int i = 0; i < ball.length; i++) {
-            ball[i] = new Balls(world, batch);
+            ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
         }
         timer = new GameTimer(batch);
 
@@ -98,6 +98,14 @@ public class SurvivalMode implements Screen {
         }
     }
 
+    public float getPlayerX() {
+        return player.getPlayerBodyX();
+    }
+
+    public float getPlayerY() {
+        return player.getPlayerBodyY();
+    }
+
     private void worldWalls() {
 
         BodyDef bodyDef = new BodyDef();
@@ -118,7 +126,7 @@ public class SurvivalMode implements Screen {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_WALL;
-        fixtureDef.filter.maskBits = Dodgeball.OBJECT_PLAYER | Dodgeball.OBJECT_BALL;
+        fixtureDef.filter.maskBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.shape = shape;
 
         walls.createFixture(fixtureDef);
