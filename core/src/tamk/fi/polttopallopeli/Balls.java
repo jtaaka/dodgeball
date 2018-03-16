@@ -15,6 +15,8 @@ public class Balls extends Sprite {
     private Body body;
     private Batch batch;
     Texture ball;
+    private float xCoordinate;
+    private float yCoordinate;
 
     public Balls(World world, Batch batch) {
 
@@ -27,6 +29,9 @@ public class Balls extends Sprite {
         float yCoord = randomLocationY();
 
         setPosition(xCoord, yCoord);
+
+        yCoordinate = Dodgeball.WORLD_HEIGHT / 2;
+        xCoordinate = Dodgeball.WORLD_WIDTH / 2;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -51,26 +56,48 @@ public class Balls extends Sprite {
         body.createFixture(fixtureDef).setUserData("ball");
 
         circle.dispose();
+
+        float xImpulse;
+
+        if (xCoordinate > Dodgeball.WORLD_WIDTH / 2) {
+            xImpulse = -0.01f;
+        } else {
+            xImpulse = 0.01f;
+        }
+
+        float yImpulse;
+
+        if (yCoordinate > Dodgeball.WORLD_HEIGHT / 2) {
+            yImpulse = -0.01f;
+        } else {
+            yImpulse = 0.01f;
+        }
+
+        body.applyLinearImpulse(xImpulse,yImpulse,0,0,true);
     }
 
     private float randomBodyDefLocationX() {
         switch (MathUtils.random(1,2)) {
             case 1:
-                return Dodgeball.WORLD_WIDTH / 8;
+                xCoordinate = Dodgeball.WORLD_WIDTH / 8f;
+                return xCoordinate;
             case 2:
-                return Dodgeball.WORLD_WIDTH * 0.8f;
+                xCoordinate = Dodgeball.WORLD_WIDTH * 0.8f;
+                return xCoordinate;
         }
-        return Dodgeball.WORLD_WIDTH / 2;
+        return xCoordinate;
     }
 
     private float randomBodyDefLocationY() {
         switch (MathUtils.random(1,2)) {
             case 1:
-                return Dodgeball.WORLD_HEIGHT / 8;
+                yCoordinate = Dodgeball.WORLD_HEIGHT / 8;
+                return yCoordinate;
             case 2:
-                return Dodgeball.WORLD_HEIGHT * 0.8f;
+                yCoordinate = Dodgeball.WORLD_HEIGHT * 0.8f;
+                return yCoordinate;
         }
-        return Dodgeball.WORLD_HEIGHT / 2;
+        return yCoordinate;
     }
 
     private float randomLocationY() {
