@@ -87,19 +87,11 @@ public class SurvivalMode implements Screen {
         int i = 0;
         for (Balls eachBall : ball) {
             eachBall.draw(delta);
-            if (eachBall.getX() < Dodgeball.WORLD_WIDTH && eachBall.getX() > 0 && eachBall.getY() < Dodgeball.WORLD_HEIGHT &&
-                    eachBall.getY() > 0) {
-                eachBall.onField = true;
-                Gdx.app.log(getClass().getSimpleName(), "field is set");
-            }
-
-            if (eachBall.onField) {
-                if (eachBall.getX() > Dodgeball.WORLD_WIDTH || eachBall.getY() > Dodgeball.WORLD_HEIGHT ||
-                        eachBall.getX() < 0 || eachBall.getY() < 0) {
-                    eachBall.dispose();
-                    ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
-                    Gdx.app.log(getClass().getSimpleName(), "respawning");
-                }
+            if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
+                    eachBall.getX() < - 2 || eachBall.getY() < -2) {
+                eachBall.dispose();
+                ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
+                //Gdx.app.log(getClass().getSimpleName(), "respawning");
             }
             i++;
         }

@@ -1,9 +1,11 @@
 package tamk.fi.polttopallopeli;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -19,7 +21,6 @@ public class Balls extends Sprite {
     private float yCoordinate;
     private float playerX;
     private float playerY;
-    boolean onField;
 
     public Balls(World world, Batch batch, float playerX, float playerY) {
 
@@ -27,8 +28,6 @@ public class Balls extends Sprite {
         this.batch = batch;
 
         ball = new Texture("peruspallo.png");
-
-        onField = false;
 
         this.playerX = playerX;
         this.playerY = playerY;
@@ -43,8 +42,8 @@ public class Balls extends Sprite {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set((randomBodyDefLocationX()),
-                (randomBodyDefLocationY()));
+        shootLocation();
+        bodyDef.position.set(xCoordinate, yCoordinate);
 
         body = world.createBody(bodyDef);
 
@@ -68,47 +67,115 @@ public class Balls extends Sprite {
         float xImpulse;
 
         if (xCoordinate > playerX) {
-            xImpulse = (playerX - body.getPosition().x + 1.5f) / 10;
+            xImpulse = (playerX - xCoordinate) / 10;
         } else {
-            xImpulse = (playerX + body.getPosition().x + 1.5f) / 10;
+            xImpulse = (playerX - xCoordinate) / 10;
         }
 
         float yImpulse;
 
         if (yCoordinate > playerY) {
-            yImpulse = (playerY - body.getPosition().y + 1.5f) / 10;
+            yImpulse = (playerY - yCoordinate) / 10;
         } else {
-            yImpulse = (playerY + body.getPosition().y + 1.5f) / 10;
+            yImpulse = (playerY - yCoordinate) / 10;
         }
 
-
-        body.applyForceToCenter(xImpulse,yImpulse,true);
+        body.applyForceToCenter(xImpulse, yImpulse,true);
     }
 
     //LaunchBalls metodi tänne tai survivalmodeen. Hallinnoi koska palloja ammutaan ja mihin.
 
-    private float randomBodyDefLocationX() {
+    private void shootLocation() {
+        switch (MathUtils.random(1,2)) {
+            case 1:
+                randomBodyDefLocationXFocus();
+                randomBodyDefLocationY();
+                break;
+            case 2:
+                randomBodyDefLocationYFocus();
+                randomBodyDefLocationX();
+                break;
+        }
+    }
+
+    private void randomBodyDefLocationXFocus() {
+        switch (MathUtils.random(1,8)) {
+            case 1:
+                xCoordinate = -(Dodgeball.WORLD_WIDTH / 8f);
+                break;
+            case 2:
+                xCoordinate = Dodgeball.WORLD_WIDTH * 1.1f;
+                break;
+            case 3:
+                xCoordinate = Dodgeball.WORLD_WIDTH / 2f;
+                break;
+            case 4:
+                xCoordinate = Dodgeball.WORLD_WIDTH / 4f;
+                break;
+            case 5:
+                xCoordinate = Dodgeball.WORLD_WIDTH / 8f;
+                break;
+            case 6:
+                xCoordinate = Dodgeball.WORLD_WIDTH * 0.2f;
+                break;
+            case 7:
+                xCoordinate = Dodgeball.WORLD_WIDTH * 0.4f;
+                break;
+            case 8:
+                xCoordinate = Dodgeball.WORLD_WIDTH * 0.8f;
+                break;
+        }
+    }
+
+    private void randomBodyDefLocationYFocus() {
+        switch (MathUtils.random(1,8)) {
+            case 1:
+                yCoordinate = -(Dodgeball.WORLD_HEIGHT / 8f);
+                break;
+            case 2:
+                yCoordinate = Dodgeball.WORLD_HEIGHT * 1.1f;
+                break;
+            case 3:
+                yCoordinate = Dodgeball.WORLD_HEIGHT / 2f;
+                break;
+            case 4:
+                yCoordinate = Dodgeball.WORLD_HEIGHT / 4f;
+                break;
+            case 5:
+                yCoordinate = Dodgeball.WORLD_HEIGHT / 8f;
+                break;
+            case 6:
+                yCoordinate = Dodgeball.WORLD_HEIGHT * 0.2f;
+                break;
+            case 7:
+                yCoordinate = Dodgeball.WORLD_HEIGHT * 0.4f;
+                break;
+            case 8:
+                yCoordinate = Dodgeball.WORLD_HEIGHT * 0.8f;
+                break;
+        }
+    }
+
+    private void randomBodyDefLocationX() {
         switch (MathUtils.random(1,2)) {
             case 1:
                 xCoordinate = -(Dodgeball.WORLD_WIDTH / 8f);
-                return xCoordinate;
+                break;
             case 2:
                 xCoordinate = Dodgeball.WORLD_WIDTH * 1.1f;
-                return xCoordinate;
+                break;
         }
-        return xCoordinate;
     }
 
-    private float randomBodyDefLocationY() {
+    private void randomBodyDefLocationY() {
         switch (MathUtils.random(1,2)) {
             case 1:
                 yCoordinate = -(Dodgeball.WORLD_HEIGHT / 8);
-                return yCoordinate;
+                break;
             case 2:
                 yCoordinate = Dodgeball.WORLD_HEIGHT * 1.1f;
-                return yCoordinate;
+                break;
         }
-        return yCoordinate;
     }
 
     private float randomLocationY() {
