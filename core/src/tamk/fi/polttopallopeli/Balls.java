@@ -64,21 +64,8 @@ public class Balls extends Sprite {
 
         circle.dispose();
 
-        float xImpulse;
-
-        if (xCoordinate > playerX) {
-            xImpulse = (playerX - xCoordinate) / 10;
-        } else {
-            xImpulse = (playerX - xCoordinate) / 10;
-        }
-
-        float yImpulse;
-
-        if (yCoordinate > playerY) {
-            yImpulse = (playerY - yCoordinate) / 10;
-        } else {
-            yImpulse = (playerY - yCoordinate) / 10;
-        }
+        float xImpulse = (playerX - xCoordinate) / 10;
+        float yImpulse = (playerY - yCoordinate) / 10;
 
         body.applyForceToCenter(xImpulse, yImpulse,true);
     }

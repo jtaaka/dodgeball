@@ -80,7 +80,7 @@ public class Menu implements Screen {
 
         // This is for testing the survival mode
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            host.setScreen(new SurvivalMode(host));
+            host.setScreen(new GameScreen(host));
         }
 
         batch.begin();
