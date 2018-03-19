@@ -3,7 +3,10 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Player {
+public class Player extends Sprite {
     private World world;
     protected Body body;
     private SpriteBatch batch;
@@ -20,11 +23,26 @@ public class Player {
     private int health;
     private Texture player;
 
+    private Animation<TextureRegion> playerAnime;
+    private float currentFrameTime;
+
     public Player(World world, SpriteBatch batch) {
+        super(new Texture("walk.png"));
+
+        TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 8,
+                getTexture().getHeight() / 8);
+        TextureRegion[] playerFrames = transformTo1D(tmp);
+        playerAnime = new Animation<TextureRegion>(1/10f, playerFrames);
+
+        setSize(getWidth()/8, getHeight()/8);
+
+        currentFrameTime = 0;
+        // Ylempi testauksessa
+
         this.world = world;
         this.batch = batch;
 
-        player = new Texture("playertexture.png");
+        //player = new Texture("playertexture.png");
         health = 3;
 
         vector = new Vector2();
@@ -40,8 +58,8 @@ public class Player {
 
         PolygonShape shape = new PolygonShape();
 
-        shape.setAsBox(player.getWidth()/2 / 100f, player.getHeight()
-                /2 / 100f);
+        //shape.setAsBox(player.getWidth()/2 / 100f, player.getHeight() /2 / 100f);
+        shape.setAsBox(getWidth()/4 / 100f, getHeight()/2.2f / 100f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -53,6 +71,19 @@ public class Player {
         body.createFixture(fixtureDef).setUserData(this);
 
         shape.dispose();
+    }
+
+    private TextureRegion[] transformTo1D(TextureRegion[][] tmp) {
+        TextureRegion [] playerFrames = new TextureRegion[tmp.length * tmp[0].length];
+
+        int index = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                playerFrames[index++] = tmp[i][j];
+            }
+        }
+
+        return playerFrames;
     }
 
     public int getHealth() {
@@ -71,11 +102,71 @@ public class Player {
         return body.getPosition().y;
     }
 
+
+
+    private float getDirectionalFrameTime() {
+        final float DETECTION_THRESHOLD = 0.5f;
+        final float FRAME_TIME = 1 / 10f;
+        final float FRAME_COUNT = 8;
+
+        float directionX = body.getLinearVelocity().x;
+        float directionY = body.getLinearVelocity().y;
+
+        int currentRow = 6;
+
+
+        if (directionX < 0 && directionY > 0) {
+            currentRow = 1;
+        }
+
+        if (directionX > 0 && directionY > 0) {
+            currentRow = 3;
+        }
+
+        if (directionX > 0 && directionY < 0) {
+            currentRow = 5;
+        }
+
+        if (directionX < 0 && directionY < 0) {
+            currentRow = 7;
+        }
+        if (directionX < 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
+            currentRow = 0;
+        }
+        if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY > 0) {
+            currentRow = 2;
+        }
+        if (directionX > 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
+            currentRow = 4;
+        }
+        if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY < 0) {
+            currentRow = 6;
+        }
+
+        return FRAME_TIME * FRAME_COUNT * currentRow;
+    }
+
     public void playerMove(float delta) {
+        float initialFrameTime = getDirectionalFrameTime();
 
         batch.begin();
-        batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
-                player.getWidth() / 100f, player.getHeight() / 100f);
+        //batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
+        //        player.getWidth() / 100f, player.getHeight() / 100f);
+        currentFrameTime += delta;
+
+        if (initialFrameTime + currentFrameTime > initialFrameTime + 1/10f * 8f) {
+            currentFrameTime = 0;
+        }
+
+        //if () {
+            //Gdx.app.log(getClass().getSimpleName(), "linear velocity: " + body.getLinearVelocity());
+        //}
+        //moveAnimationFrame();
+
+
+        TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
+        batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
+                getWidth() / 80f, getHeight() / 80f);
 
         vector.set(0, 0);
 
@@ -86,14 +177,17 @@ public class Player {
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             vector.x = 10f * delta;
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             vector.y = 10f * delta;
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             vector.y = -10f * delta;
+
         }
 
         // Accelerometer testing for tablet
@@ -110,5 +204,11 @@ public class Player {
 
         body.applyForceToCenter(vector, true);
         batch.end();
+    }
+
+    public void dispose() {
+        //player.dispose();
+        getTexture().dispose();
+        world.destroyBody(body);
     }
 }

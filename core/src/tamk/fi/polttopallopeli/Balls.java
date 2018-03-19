@@ -16,7 +16,7 @@ public class Balls extends Sprite {
     private World world;
     private Body body;
     private Batch batch;
-    Texture ball;
+    private Texture ball;
     private float xCoordinate;
     private float yCoordinate;
     private float playerX;

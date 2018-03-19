@@ -32,6 +32,7 @@ public class Dodgeball extends Game {
 	
 	@Override
 	public void dispose () {
+    	setScreen(null);
     	batch.dispose();
 	}
 }

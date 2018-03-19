@@ -118,7 +118,7 @@ public class Menu implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
@@ -127,6 +127,6 @@ public class Menu implements Screen {
         playButton.dispose();
         settingsButton.dispose();
         creditsButton.dispose();
-        batch.dispose();
+
     }
 }

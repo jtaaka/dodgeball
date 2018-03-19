@@ -80,7 +80,6 @@ public class SurvivalMode implements Screen {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
-        updateHealth(batch);
         batch.end();
 
         player.playerMove(delta);
@@ -88,7 +87,7 @@ public class SurvivalMode implements Screen {
         for (Balls eachBall : ball) {
             eachBall.draw(delta);
             if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
-                    eachBall.getX() < - 2 || eachBall.getY() < -2) {
+                    eachBall.getX() < -2 || eachBall.getY() < -2) {
                 eachBall.dispose();
                 ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
                 //Gdx.app.log(getClass().getSimpleName(), "respawning");
@@ -96,17 +95,21 @@ public class SurvivalMode implements Screen {
             i++;
         }
 
+        updateHealth(batch);
         timer.survivalModeTimer();
+
+
 
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
     }
 
     private void updateHealth(SpriteBatch batch) {
-
+        batch.begin();
         for (int i = 0; i < player.getHealth(); i++) {
             batch.draw(health, 0.5f + (0.6f * i), 7.3f, 0.5f, 0.5f);
         }
+        batch.end();
     }
 
     private void doPhysicsStep(float deltaTime) {
@@ -171,16 +174,18 @@ public class SurvivalMode implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-        world.dispose();
         backgroundTexture.dispose();
         for (Balls eachBall : ball) {
-            eachBall.getTexture().dispose();
+            eachBall.dispose();
         }
-        batch.dispose();
+        player.dispose();
+        world.destroyBody(walls);
+        world.dispose();
+        Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
