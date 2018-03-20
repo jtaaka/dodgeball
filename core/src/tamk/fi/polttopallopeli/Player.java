@@ -208,7 +208,9 @@ public class Player extends Sprite {
 
     public void dispose() {
         //player.dispose();
-        getTexture().dispose();
+        super.getTexture().dispose();
+        //getTexture().dispose();
         world.destroyBody(body);
+        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
