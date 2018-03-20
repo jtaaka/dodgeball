@@ -199,5 +199,6 @@ public class Balls extends Sprite {
     public void dispose() {
         ball.dispose();
         world.destroyBody(body);
+        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

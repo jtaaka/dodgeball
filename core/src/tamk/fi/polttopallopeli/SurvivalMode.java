@@ -69,10 +69,7 @@ public class SurvivalMode implements Screen {
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // For testing purposes
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            host.setScreen(new Menu(host));
-        }
+
 
         camera.update();
 
@@ -102,6 +99,10 @@ public class SurvivalMode implements Screen {
 
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
+        // For testing purposes
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            host.setScreen(new Menu(host));
+        }
     }
 
     private void updateHealth(SpriteBatch batch) {
@@ -180,12 +181,13 @@ public class SurvivalMode implements Screen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+        health.dispose();
         for (Balls eachBall : ball) {
             eachBall.dispose();
         }
         player.dispose();
         world.destroyBody(walls);
         world.dispose();
-        Gdx.app.log(getClass().getSimpleName(), "disposing");
+        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
