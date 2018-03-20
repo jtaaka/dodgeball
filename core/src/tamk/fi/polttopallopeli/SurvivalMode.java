@@ -27,6 +27,7 @@ public class SurvivalMode implements Screen {
     private Balls[] ball;
     private GameTimer timer;
     private Texture health;
+    private Texture gameOver;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -34,12 +35,12 @@ public class SurvivalMode implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
-
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
         backgroundTexture = new Texture("background1.png");
         health = new Texture("life.png");
+        gameOver = new Texture("gameover.png");
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
@@ -80,6 +81,7 @@ public class SurvivalMode implements Screen {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+
         batch.end();
 
         player.playerMove(delta);
@@ -96,12 +98,22 @@ public class SurvivalMode implements Screen {
         }
 
         updateHealth(batch);
+
+        batch.begin();
+
+        if (player.getHealth() == 0) {
+            batch.draw(gameOver, Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2   , Dodgeball.WORLD_HEIGHT / 2 - gameOver.getHeight() / 100 / 2,
+                    gameOver.getWidth() / 100, gameOver.getHeight() / 100);
+            timer.setFreeze();
+        }
+        batch.end();
+
         timer.survivalModeTimer();
 
 
-
-        debugRenderer.render(world, camera.combined);
+        //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
+
     }
 
     private void updateHealth(SpriteBatch batch) {

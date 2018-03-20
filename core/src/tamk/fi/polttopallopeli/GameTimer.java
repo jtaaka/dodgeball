@@ -19,11 +19,13 @@ public class GameTimer {
     private long startTime = TimeUtils.nanoTime();
     private long nanosPerMilli = 1000000;
     private long elapsed;
+    private boolean freeze;
 
     public GameTimer(SpriteBatch batch) {
         this.batch = batch;
         font = new BitmapFont();
         layout = new GlyphLayout();
+        freeze = false;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
@@ -38,12 +40,18 @@ public class GameTimer {
         layout.setText(font, "00:00");
     }
 
+    public void setFreeze() {
+        freeze = true;
+    }
+
     public void survivalModeTimer() {
 
-        elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
+        if (!freeze) {
+            elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
+        }
 
-        int minutes = (int)(elapsed / (1000 * 60));
-        int seconds = (int)((elapsed / 1000) % 60);
+        int minutes = (int) (elapsed / (1000 * 60));
+        int seconds = (int) ((elapsed / 1000) % 60);
 
         String formatMin = String.format("%02d", minutes);
         String formatSec = String.format("%02d", seconds);
@@ -51,8 +59,8 @@ public class GameTimer {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         camera.update();
-        font.draw(batch,formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - layout.width,
-                    Dodgeball.WINDOW_HEIGHT - layout.height / 2);
+        font.draw(batch, formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - layout.width,
+                Dodgeball.WINDOW_HEIGHT - layout.height / 2);
         batch.end();
     }
 }
