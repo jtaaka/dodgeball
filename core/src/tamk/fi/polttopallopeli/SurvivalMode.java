@@ -111,7 +111,7 @@ public class SurvivalMode implements Screen {
         timer.survivalModeTimer();
 
 
-        //debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
     }

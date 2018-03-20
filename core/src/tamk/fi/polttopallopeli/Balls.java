@@ -48,7 +48,7 @@ public class Balls extends Sprite {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(0.35f);
+        circle.setRadius(0.2f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
@@ -64,8 +64,8 @@ public class Balls extends Sprite {
 
         circle.dispose();
 
-        float xImpulse = (playerX - xCoordinate) / 10;
-        float yImpulse = (playerY - yCoordinate) / 10;
+        float xImpulse = (playerX - xCoordinate) / 50;
+        float yImpulse = (playerY - yCoordinate) / 50;
 
         body.applyForceToCenter(xImpulse, yImpulse,true);
     }
@@ -187,9 +187,9 @@ public class Balls extends Sprite {
 
     public void draw(float delta) {
         batch.begin();
-        batch.draw(ball, body.getPosition().x - ball.getWidth() / 200f,
-                body.getPosition().y - ball.getHeight() / 200f, 0.35f, 0.35f,
-                0.7f, 0.7f, 1f,
+        batch.draw(ball, body.getPosition().x - ball.getWidth() / 400f,
+                body.getPosition().y - ball.getHeight() / 400f, 0.2f, 0.2f,
+                0.4f, 0.4f, 1f,
                 1f, body.getTransform().getRotation() * MathUtils.radiansToDegrees,
                 0, 0, ball.getWidth(), ball.getHeight(), false, false);
         batch.end();
