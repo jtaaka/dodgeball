@@ -48,7 +48,7 @@ public class Balls extends Sprite {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(0.2f);
+        circle.setRadius(0.25f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
@@ -187,9 +187,9 @@ public class Balls extends Sprite {
 
     public void draw(float delta) {
         batch.begin();
-        batch.draw(ball, body.getPosition().x - ball.getWidth() / 400f,
-                body.getPosition().y - ball.getHeight() / 400f, 0.2f, 0.2f,
-                0.4f, 0.4f, 1f,
+        batch.draw(ball, body.getPosition().x - ball.getWidth() / 275f,
+                body.getPosition().y - ball.getHeight() / 275f, 0.25f, 0.25f,
+                0.5f, 0.5f, 1f,
                 1f, body.getTransform().getRotation() * MathUtils.radiansToDegrees,
                 0, 0, ball.getWidth(), ball.getHeight(), false, false);
         batch.end();

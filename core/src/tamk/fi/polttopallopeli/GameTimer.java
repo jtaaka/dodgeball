@@ -44,6 +44,13 @@ public class GameTimer {
         freeze = true;
     }
 
+    public float getElapsedTime() {
+        elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
+
+        // 1000 = 1 sec
+        return elapsed;
+    }
+
     public void survivalModeTimer() {
 
         if (!freeze) {

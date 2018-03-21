@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -35,7 +34,6 @@ public class SurvivalMode implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
-
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
@@ -49,6 +47,7 @@ public class SurvivalMode implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
+
         ball = new Balls[3];
         for (int i = 0; i < ball.length; i++) {
             ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
@@ -85,6 +84,7 @@ public class SurvivalMode implements Screen {
         batch.end();
 
         player.playerMove(delta);
+
         int i = 0;
         for (Balls eachBall : ball) {
             eachBall.draw(delta);
@@ -106,10 +106,11 @@ public class SurvivalMode implements Screen {
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
             timer.setFreeze();
         }
+
         batch.end();
 
         timer.survivalModeTimer();
-        
+
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
     }

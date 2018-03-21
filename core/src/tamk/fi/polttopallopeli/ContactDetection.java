@@ -1,6 +1,5 @@
 package tamk.fi.polttopallopeli;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -22,11 +21,11 @@ public class ContactDetection implements ContactListener {
 
         if (fixtureA.getUserData() instanceof Player || fixtureB.getUserData() instanceof Player) {
             if (fixtureA.getUserData() instanceof Player) {
-                Player p = (Player) fixtureA.getUserData();
-                p.decreaseHealth();
+                Player player = (Player) fixtureA.getUserData();
+                player.decreaseHealth();
             } else {
-                Player p = (Player) fixtureB.getUserData();
-                p.decreaseHealth();
+                Player player = (Player) fixtureB.getUserData();
+                player.decreaseHealth();
             }
         }
     }
