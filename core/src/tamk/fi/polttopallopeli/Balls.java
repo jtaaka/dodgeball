@@ -9,8 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 public class Balls extends Sprite {
     private World world;
@@ -21,8 +24,9 @@ public class Balls extends Sprite {
     private float yCoordinate;
     private float playerX;
     private float playerY;
+    private int ballLocation;
 
-    public Balls(World world, Batch batch, float playerX, float playerY) {
+    public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator) {
 
         this.world = world;
         this.batch = batch;
@@ -42,7 +46,14 @@ public class Balls extends Sprite {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        shootLocation();
+        boolean loop = true;
+        while (loop) {
+            shootLocation();
+            if (ballLocator[ballLocation] == 0) {
+                loop = false;
+            }
+        }
+        Gdx.app.log(getClass().getSimpleName(), " " + ballLocation);
         bodyDef.position.set(xCoordinate, yCoordinate);
 
         body = world.createBody(bodyDef);
@@ -72,8 +83,14 @@ public class Balls extends Sprite {
 
     //LaunchBalls metodi tänne tai survivalmodeen. Hallinnoi koska palloja ammutaan ja mihin.
 
+    public int getLocationToUpdateBallLocator() {
+        return ballLocation;
+    }
+
     private void shootLocation() {
-        switch (MathUtils.random(1,2)) {
+        int random = MathUtils.random(1,2);
+        ballLocation = 32 - random * 16;
+        switch (random) {
             case 1:
                 randomBodyDefLocationXFocus();
                 randomBodyDefLocationY();
@@ -86,36 +103,34 @@ public class Balls extends Sprite {
     }
 
     private void randomBodyDefLocationXFocus() {
-        switch (MathUtils.random(1,8)) {
+        int random = MathUtils.random(1,6);
+        ballLocation += random;
+        switch (random) {
             case 1:
-                xCoordinate = -(Dodgeball.WORLD_WIDTH / 8f);
-                break;
-            case 2:
-                xCoordinate = Dodgeball.WORLD_WIDTH * 1.1f;
-                break;
-            case 3:
                 xCoordinate = Dodgeball.WORLD_WIDTH / 2f;
                 break;
-            case 4:
+            case 2:
                 xCoordinate = Dodgeball.WORLD_WIDTH / 4f;
                 break;
-            case 5:
+            case 3:
                 xCoordinate = Dodgeball.WORLD_WIDTH / 8f;
                 break;
-            case 6:
+            case 4:
                 xCoordinate = Dodgeball.WORLD_WIDTH * 0.2f;
                 break;
-            case 7:
+            case 5:
                 xCoordinate = Dodgeball.WORLD_WIDTH * 0.4f;
                 break;
-            case 8:
+            case 6:
                 xCoordinate = Dodgeball.WORLD_WIDTH * 0.8f;
                 break;
         }
     }
 
     private void randomBodyDefLocationYFocus() {
-        switch (MathUtils.random(1,8)) {
+        int random = MathUtils.random(1,8);
+        ballLocation += random;
+        switch (random) {
             case 1:
                 yCoordinate = -(Dodgeball.WORLD_HEIGHT / 8f);
                 break;
@@ -144,7 +159,9 @@ public class Balls extends Sprite {
     }
 
     private void randomBodyDefLocationX() {
-        switch (MathUtils.random(1,2)) {
+        int random = MathUtils.random(1,2);
+        ballLocation += random * 8 - 8 - 1;
+        switch (random) {
             case 1:
                 xCoordinate = -(Dodgeball.WORLD_WIDTH / 8f);
                 break;
@@ -155,7 +172,9 @@ public class Balls extends Sprite {
     }
 
     private void randomBodyDefLocationY() {
-        switch (MathUtils.random(1,2)) {
+        int random = MathUtils.random(1,2);
+        ballLocation += random * 8 - 8 - 1;
+        switch (random) {
             case 1:
                 yCoordinate = -(Dodgeball.WORLD_HEIGHT / 8);
                 break;

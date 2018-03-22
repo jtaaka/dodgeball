@@ -70,4 +70,8 @@ public class GameTimer {
                 Dodgeball.WINDOW_HEIGHT - layout.height / 2);
         batch.end();
     }
+
+    public void dispose() {
+        generator.dispose();
+    }
 }

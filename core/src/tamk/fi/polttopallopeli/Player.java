@@ -116,8 +116,6 @@ public class Player extends Sprite {
         return body.getPosition().y;
     }
 
-
-
     private float getDirectionalFrameTime() {
         final float DETECTION_THRESHOLD = 0.5f;
         final float FRAME_TIME = 1 / 10f;
@@ -127,7 +125,6 @@ public class Player extends Sprite {
         float directionY = body.getLinearVelocity().y;
 
         int currentRow = 6;
-
 
         if (directionX < 0 && directionY > 0) {
             currentRow = 1;
@@ -144,15 +141,19 @@ public class Player extends Sprite {
         if (directionX < 0 && directionY < 0) {
             currentRow = 7;
         }
+
         if (directionX < 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 0;
         }
+
         if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY > 0) {
             currentRow = 2;
         }
+
         if (directionX > 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 4;
         }
+
         if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY < 0) {
             currentRow = 6;
         }

@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,6 +17,9 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
@@ -27,6 +33,9 @@ public class SurvivalMode implements Screen {
     private GameTimer timer;
     private Texture health;
     private Texture gameOver;
+    private int[] ballLocator;
+    Array<Vector2> heatMapData;
+    private HeatMap heatMap;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -40,7 +49,9 @@ public class SurvivalMode implements Screen {
         backgroundTexture = new Texture("background1.png");
         health = new Texture("life.png");
         gameOver = new Texture("gameover.png");
-
+        ballLocator = new int[32];
+        heatMapData = new Array<Vector2>();
+        heatMap = new HeatMap();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
@@ -51,7 +62,8 @@ public class SurvivalMode implements Screen {
 
         ball = new Balls[3];
         for (int i = 0; i < ball.length; i++) {
-            ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
+            ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+            ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
         }
 
         timer = new GameTimer(batch);
@@ -66,10 +78,28 @@ public class SurvivalMode implements Screen {
 
     }
 
+    private boolean calculated = false;
+    private float divideAmount;
+    private float lastDelta;
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        /*
+        lastDelta += delta;
+        //Gdx.app.log(getClass().getSimpleName(), ""+ lastDelta);
+
+        if (player.getHealth() > 0 && lastDelta > 0.5) {
+            divideAmount += 1;
+            //heatMapData.add(new Vector2(player.getPlayerBodyX(), player.getPlayerBodyY()));
+            heatMap.modify(player.getPlayerBodyX(), player.getPlayerBodyY());
+            lastDelta = 0;
+        } else if (!calculated) {
+            calculated = true;
+        }
+
+        */
 
         // For testing purposes
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -91,8 +121,10 @@ public class SurvivalMode implements Screen {
             eachBall.draw(delta);
             if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
                     eachBall.getX() < -2 || eachBall.getY() < -2) {
+                ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
                 eachBall.dispose();
-                ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY());
+                ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+                ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
                 //Gdx.app.log(getClass().getSimpleName(), "respawning");
             }
             i++;
@@ -104,7 +136,8 @@ public class SurvivalMode implements Screen {
         batch.begin();
 
         if (player.getHealth() == 0) {
-            batch.draw(gameOver, Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2   , Dodgeball.WORLD_HEIGHT / 2 - gameOver.getHeight() / 100 / 2,
+            batch.draw(gameOver,Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2,
+                    Dodgeball.WORLD_HEIGHT / 2 - gameOver.getHeight() / 100 / 2,
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
             timer.setFreeze();
         }
@@ -193,10 +226,12 @@ public class SurvivalMode implements Screen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+        gameOver.dispose();
         for (Balls eachBall : ball) {
             eachBall.dispose();
         }
         player.dispose();
+        timer.dispose();
         world.destroyBody(walls);
         world.dispose();
         Gdx.app.log(getClass().getSimpleName(), "disposing");
