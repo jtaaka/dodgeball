@@ -41,6 +41,7 @@ public class SurvivalMode implements Screen {
         health = new Texture("life.png");
         gameOver = new Texture("gameover.png");
 
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
 
@@ -97,7 +98,8 @@ public class SurvivalMode implements Screen {
             i++;
         }
 
-        updateHealth(batch);
+        //updateHealth(batch);
+        player.drawHealth(delta);
 
         batch.begin();
 
@@ -115,13 +117,13 @@ public class SurvivalMode implements Screen {
         doPhysicsStep(delta);
     }
 
-    private void updateHealth(SpriteBatch batch) {
+    /*private void updateHealth(SpriteBatch batch) {
         batch.begin();
         for (int i = 0; i < player.getHealth(); i++) {
             batch.draw(health, 0.5f + (0.6f * i), 7.3f, 0.5f, 0.5f);
         }
         batch.end();
-    }
+    }*/
 
     private void doPhysicsStep(float deltaTime) {
 

@@ -20,14 +20,27 @@ public class Player extends Sprite {
     protected Body body;
     private SpriteBatch batch;
     private Vector2 vector;
+
     private int health;
-    private Texture player;
+    private Texture healthTexture;
+    private Animation<TextureRegion> healthAnimation;
+    private float healthFrameTime;
 
     private Animation<TextureRegion> playerAnime;
     private float currentFrameTime;
 
     public Player(World world, SpriteBatch batch) {
         super(new Texture("walk.png"));
+
+        healthTexture = new Texture("healths.png");
+
+        // animaatio healteille
+        TextureRegion[][] temp = TextureRegion.split(healthTexture, healthTexture.getWidth(),
+                healthTexture.getHeight() / 4);
+        TextureRegion[] healthFrames = healthsTo1D(temp);
+        healthAnimation = new Animation<TextureRegion>(1/10f, healthFrames);
+
+
 
         TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 8,
                 getTexture().getHeight() / 8);
@@ -37,6 +50,7 @@ public class Player extends Sprite {
         setSize(getWidth()/8, getHeight()/8);
 
         currentFrameTime = 0;
+        healthFrameTime = 0;
         // Ylempi testauksessa
 
         this.world = world;
@@ -177,17 +191,14 @@ public class Player extends Sprite {
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             vector.x = 10f * delta;
-
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             vector.y = 10f * delta;
-
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             vector.y = -10f * delta;
-
         }
 
         // Accelerometer testing for tablet
@@ -206,11 +217,67 @@ public class Player extends Sprite {
         batch.end();
     }
 
+    private TextureRegion[] healthsTo1D(TextureRegion[][] tmp) {
+        TextureRegion [] healthFrames = new TextureRegion[tmp.length * tmp[0].length];
+
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 1; j++) {
+                healthFrames[index++] = tmp[i][j];
+            }
+        }
+
+        return healthFrames;
+    }
+
+    private float getHealthFrames() {
+        float FRAME_TIME = 1 / 10f;
+
+        int currentRow = 0;
+
+        if (getHealth() == 3) {
+            currentRow = 0;
+        }
+
+        if (getHealth() == 2) {
+            currentRow = 1;
+        }
+
+        if (getHealth() == 1) {
+            currentRow = 2;
+        }
+
+        if (getHealth() == 0) {
+            currentRow = 3;
+        }
+
+        return FRAME_TIME * currentRow;
+    }
+
+    public void drawHealth(float delta) {
+        float initialFrameTime = getHealthFrames();
+
+        batch.begin();
+
+        healthFrameTime += delta;
+
+        if (initialFrameTime + healthFrameTime > initialFrameTime + 1/10f) {
+            healthFrameTime = 0;
+        }
+
+        TextureRegion currentFrame = healthAnimation.getKeyFrame(initialFrameTime + healthFrameTime, false);
+        batch.draw(currentFrame, 0.5f, 7.3f,
+                healthTexture.getWidth() / 100f, healthTexture.getHeight() / 400f);
+
+        batch.end();
+    }
+
     public void dispose() {
         //player.dispose();
         super.getTexture().dispose();
         //getTexture().dispose();
         world.destroyBody(body);
+        healthTexture.dispose();
         //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
