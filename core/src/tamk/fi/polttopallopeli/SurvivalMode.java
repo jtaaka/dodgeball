@@ -29,13 +29,14 @@ public class SurvivalMode implements Screen {
     private Player player;
     private Texture backgroundTexture;
     private OrthographicCamera camera;
-    private Balls[] ball;
+    //private Balls[] ball;
     private GameTimer timer;
     private Texture health;
     private Texture gameOver;
     private int[] ballLocator;
     Array<Vector2> heatMapData;
     private HeatMap heatMap;
+    Array<Balls> ballsArray;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -52,6 +53,7 @@ public class SurvivalMode implements Screen {
         ballLocator = new int[32];
         heatMapData = new Array<Vector2>();
         heatMap = new HeatMap();
+        ballsArray = new Array<Balls>();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
@@ -60,11 +62,13 @@ public class SurvivalMode implements Screen {
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
 
+        /*
         ball = new Balls[3];
         for (int i = 0; i < ball.length; i++) {
             ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
             ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
         }
+        */
 
         timer = new GameTimer(batch);
 
@@ -81,6 +85,8 @@ public class SurvivalMode implements Screen {
     private boolean calculated = false;
     private float divideAmount;
     private float lastDelta;
+    private float ballSpawnTimer = 0;
+    private int ballStartCounter = 0;
 
     @Override
     public void render(float delta) {
@@ -101,10 +107,7 @@ public class SurvivalMode implements Screen {
 
         */
 
-        // For testing purposes
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            host.setScreen(new Menu(host));
-        }
+
 
         camera.update();
 
@@ -116,6 +119,7 @@ public class SurvivalMode implements Screen {
 
         player.playerMove(delta);
 
+        /*
         int i = 0;
         for (Balls eachBall : ball) {
             eachBall.draw(delta);
@@ -125,6 +129,37 @@ public class SurvivalMode implements Screen {
                 eachBall.dispose();
                 ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
                 ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
+                //Gdx.app.log(getClass().getSimpleName(), "respawning");
+            }
+            i++;
+        }
+        */
+
+        ballSpawnTimer += delta;
+        if (ballStartCounter < 3) {
+            if (ballSpawnTimer > 3) {
+                ballsArray.add(new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator));
+                ballLocator[ballsArray.peek().getLocationToUpdateBallLocator()] = 1;
+                ballSpawnTimer = 0;
+                ballStartCounter++;
+            }
+        } else if (ballSpawnTimer > 60 && ballStartCounter < 10) {
+            ballsArray.add(new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator));
+            ballLocator[ballsArray.peek().getLocationToUpdateBallLocator()] = 1;
+            ballSpawnTimer = 0;
+            ballStartCounter++;
+        }
+
+        int i = 0;
+        for (Balls eachBall : ballsArray) {
+            eachBall.draw(delta);
+            if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
+                    eachBall.getX() < -2 || eachBall.getY() < -2) {
+                ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
+                eachBall.dispose();
+                ballsArray.removeIndex(i);
+                ballsArray.add(new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator));
+                ballLocator[ballsArray.peek().getLocationToUpdateBallLocator()] = 1;
                 //Gdx.app.log(getClass().getSimpleName(), "respawning");
             }
             i++;
@@ -148,6 +183,11 @@ public class SurvivalMode implements Screen {
 
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
+
+        // For testing purposes
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            host.setScreen(new Menu(host));
+        }
     }
 
     /*private void updateHealth(SpriteBatch batch) {
@@ -227,7 +267,7 @@ public class SurvivalMode implements Screen {
     public void dispose() {
         backgroundTexture.dispose();
         gameOver.dispose();
-        for (Balls eachBall : ball) {
+        for (Balls eachBall : ballsArray) {
             eachBall.dispose();
         }
         player.dispose();
