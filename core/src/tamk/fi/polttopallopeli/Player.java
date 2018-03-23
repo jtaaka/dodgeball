@@ -33,6 +33,7 @@ public class Player extends Sprite {
         super(new Texture("walk.png"));
 
         healthTexture = new Texture("healths.png");
+        invulnerability = 0;
 
         // animaatio healteille
         TextureRegion[][] temp = TextureRegion.split(healthTexture, healthTexture.getWidth(),
@@ -116,6 +117,8 @@ public class Player extends Sprite {
         return body.getPosition().y;
     }
 
+    int lastRow = 6;
+
     private float getDirectionalFrameTime() {
         final float DETECTION_THRESHOLD = 0.5f;
         final float FRAME_TIME = 1 / 10f;
@@ -124,7 +127,8 @@ public class Player extends Sprite {
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;
 
-        int currentRow = 6;
+
+        int currentRow = lastRow;
 
         if (directionX < 0 && directionY > 0) {
             currentRow = 1;
@@ -158,8 +162,13 @@ public class Player extends Sprite {
             currentRow = 6;
         }
 
+        lastRow = currentRow;
+
         return FRAME_TIME * FRAME_COUNT * currentRow;
     }
+
+    boolean hit;
+    float invulnerability;
 
     public void playerMove(float delta) {
         float initialFrameTime = getDirectionalFrameTime();
@@ -167,7 +176,16 @@ public class Player extends Sprite {
         batch.begin();
         //batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
         //        player.getWidth() / 100f, player.getHeight() / 100f);
-        currentFrameTime += delta;
+
+        if (hit) {
+            invulnerability += delta;
+            if (invulnerability > 1) {
+                hit = false;
+                invulnerability = 0;
+            }
+        } else {
+            currentFrameTime += delta;
+        }
 
         if (initialFrameTime + currentFrameTime > initialFrameTime + 1/10f * 8f) {
             currentFrameTime = 0;
