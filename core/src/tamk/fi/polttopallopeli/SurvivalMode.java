@@ -31,7 +31,6 @@ public class SurvivalMode implements Screen {
     private OrthographicCamera camera;
     //private Balls[] ball;
     private GameTimer timer;
-    private Texture health;
     private Texture gameOver;
     private int[] ballLocator;
     Array<Vector2> heatMapData;
@@ -48,7 +47,6 @@ public class SurvivalMode implements Screen {
         this.host = host;
         batch = host.getBatch();
         backgroundTexture = new Texture("background1.png");
-        health = new Texture("life.png");
         gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMapData = new Array<Vector2>();
@@ -107,8 +105,6 @@ public class SurvivalMode implements Screen {
 
         */
 
-
-
         camera.update();
 
         batch.setProjectionMatrix(camera.combined);
@@ -165,7 +161,6 @@ public class SurvivalMode implements Screen {
             i++;
         }
 
-        //updateHealth(batch);
         player.drawHealth(delta);
 
         batch.begin();
@@ -189,14 +184,6 @@ public class SurvivalMode implements Screen {
             host.setScreen(new Menu(host));
         }
     }
-
-    /*private void updateHealth(SpriteBatch batch) {
-        batch.begin();
-        for (int i = 0; i < player.getHealth(); i++) {
-            batch.draw(health, 0.5f + (0.6f * i), 7.3f, 0.5f, 0.5f);
-        }
-        batch.end();
-    }*/
 
     private void doPhysicsStep(float deltaTime) {
 

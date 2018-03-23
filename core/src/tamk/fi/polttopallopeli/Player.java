@@ -42,7 +42,6 @@ public class Player extends Sprite {
         healthAnimation = new Animation<TextureRegion>(1/10f, healthFrames);
 
 
-
         TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 8,
                 getTexture().getHeight() / 8);
         TextureRegion[] playerFrames = transformTo1D(tmp);
@@ -127,6 +126,10 @@ public class Player extends Sprite {
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;
 
+        boolean up = false;
+        boolean down = false;
+        boolean left = false;
+        boolean right = false;
 
         int currentRow = lastRow;
 
@@ -148,21 +151,45 @@ public class Player extends Sprite {
 
         if (directionX < 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 0;
+            left = true;
         }
 
         if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY > 0) {
             currentRow = 2;
+            up = true;
         }
 
         if (directionX > 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 4;
+            right = true;
         }
 
         if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY < 0) {
             currentRow = 6;
+            down = true;
         }
 
-        lastRow = currentRow;
+        //oikea seinä
+        if (getPlayerBodyX() > 12.4f && getPlayerBodyX() < 12.5f && !up && !down) {
+            currentRow = 4;
+        }
+
+        // vasen seinä
+        if (getPlayerBodyX() > 0.3f && getPlayerBodyX() < 0.4f  && !up && !down) {
+            currentRow = 0;
+        }
+
+        // yläseinä
+        if (getPlayerBodyY() > 7.4f && getPlayerBodyY() < 7.5f && !right && !left) {
+            currentRow = 2;
+        }
+
+        //alaseinä
+        if (getPlayerBodyY() > 0.5f && getPlayerBodyY() < 0.61f  && !right && !left) {
+            currentRow = 6;
+        }
+
+        //lastRow = currentRow;
 
         return FRAME_TIME * FRAME_COUNT * currentRow;
     }
@@ -195,7 +222,6 @@ public class Player extends Sprite {
             //Gdx.app.log(getClass().getSimpleName(), "linear velocity: " + body.getLinearVelocity());
         //}
         //moveAnimationFrame();
-
 
         TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
         batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
