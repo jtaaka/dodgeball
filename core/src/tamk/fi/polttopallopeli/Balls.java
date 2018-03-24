@@ -1,6 +1,7 @@
 package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,19 +20,25 @@ public class Balls extends Sprite {
     private World world;
     private Body body;
     private Batch batch;
-    private Texture ball;
+    //private Texture ball;
     private float xCoordinate;
     private float yCoordinate;
     private float playerX;
     private float playerY;
     private int ballLocation;
+    float xForce;
+    float yForce;
+    boolean acceleratingBall;
 
     public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator) {
-
+        super(new Texture("peruspallo.png"));
+        //setColor(Color.BLACK);
+        setSize(getWidth() / 140f, getHeight() / 140f);
+        setOriginCenter();
         this.world = world;
         this.batch = batch;
 
-        ball = new Texture("peruspallo.png");
+        //ball = new Texture("peruspalloTESTI.png");
 
         this.playerX = playerX;
         this.playerY = playerY;
@@ -46,6 +53,7 @@ public class Balls extends Sprite {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+
         boolean loop = true;
         while (loop) {
             shootLocation();
@@ -54,6 +62,7 @@ public class Balls extends Sprite {
             }
         }
         Gdx.app.log(getClass().getSimpleName(), " " + ballLocation);
+
         bodyDef.position.set(xCoordinate, yCoordinate);
 
         body = world.createBody(bodyDef);
@@ -75,13 +84,39 @@ public class Balls extends Sprite {
 
         circle.dispose();
 
-        float xImpulse = (playerX - xCoordinate) / 50;
-        float yImpulse = (playerY - yCoordinate) / 50;
+        acceleratingBall = false;
+        ballType();
 
-        body.applyForceToCenter(xImpulse, yImpulse,true);
+        body.applyForceToCenter(xForce, yForce,true);
     }
 
     //LaunchBalls metodi tänne tai survivalmodeen. Hallinnoi koska palloja ammutaan ja mihin.
+
+    private void ballType () {
+        boolean basicShot = true;
+        switch (MathUtils.random(1,10)) {
+            case 1:
+                xForce = (playerX - xCoordinate) / 30;
+                yForce = (playerY - yCoordinate) / 30;
+                Gdx.app.log(getClass().getSimpleName(), "Fastball");
+                super.setColor(Color.PURPLE);
+                basicShot = false;
+                break;
+            case 2:
+                setColor(Color.BLACK);
+                xForce = (playerX - xCoordinate) / 50;
+                yForce = (playerY - yCoordinate) / 50;
+                acceleratingBall = true;
+                basicShot = false;
+                Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
+                break;
+        }
+        if (basicShot) {
+            //setColor(Color.RED);
+            xForce = (playerX - xCoordinate) / 50;
+            yForce = (playerY - yCoordinate) / 50;
+        }
+    }
 
     public int getLocationToUpdateBallLocator() {
         return ballLocation;
@@ -203,20 +238,34 @@ public class Balls extends Sprite {
         }
         return Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2;
     }
+    float accelWait;
 
     public void draw(float delta) {
+        accelWait += delta;
+        if (acceleratingBall && accelWait > 1.8f) {
+            body.applyForceToCenter((playerX - xCoordinate) / 30, (playerY - yCoordinate) / 30, true);
+            acceleratingBall = false;
+        }
+
         batch.begin();
-        batch.draw(ball, body.getPosition().x - ball.getWidth() / 275f,
-                body.getPosition().y - ball.getHeight() / 275f, 0.25f, 0.25f,
+        /*
+        batch.draw(getTexture(), body.getPosition().x - getWidth() / 275f,
+                body.getPosition().y - getHeight() / 275f, 0.25f, 0.25f,
                 0.5f, 0.5f, 1f,
                 1f, body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                0, 0, ball.getWidth(), ball.getHeight(), false, false);
+                0, 0, getTexture().getWidth(), getTexture().getHeight(), false, false);
+                */
+        setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        super.draw(batch);
         batch.end();
-        setPosition(body.getPosition().x, body.getPosition().y);
+
+        //setPosition(body.getPosition().x, body.getPosition().y);
+
     }
 
     public void dispose() {
-        ball.dispose();
+        getTexture().dispose();
         world.destroyBody(body);
         //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }

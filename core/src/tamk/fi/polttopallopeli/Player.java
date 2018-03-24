@@ -29,6 +29,8 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerAnime;
     private float currentFrameTime;
 
+    private float tabletAccelerometerSetting;
+
     public Player(World world, SpriteBatch batch) {
         super(new Texture("walk.png"));
 
@@ -47,7 +49,8 @@ public class Player extends Sprite {
         TextureRegion[] playerFrames = transformTo1D(tmp);
         playerAnime = new Animation<TextureRegion>(1/10f, playerFrames);
 
-        setSize(getWidth()/8, getHeight()/8);
+        setSize(getWidth() / 800f, getHeight() / 800f);
+        setOriginCenter();
 
         currentFrameTime = 0;
         healthFrameTime = 0;
@@ -66,23 +69,29 @@ public class Player extends Sprite {
         bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
                 (Dodgeball.WORLD_HEIGHT / 2f));
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 0.5f;
+        bodyDef.linearDamping = 0.8f; //0.5f OG
 
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
 
         //shape.setAsBox(player.getWidth()/2 / 100f, player.getHeight() /2 / 100f);
-        shape.setAsBox(getWidth()/4 / 100f, getHeight()/2.2f / 100f);
+        shape.setAsBox(getWidth() / 8, getHeight() / 8 * 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.05f;
+        fixtureDef.density = 0.10f;
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
 
         body.createFixture(fixtureDef).setUserData(this);
+
+        //Kalibroi lähtöasennon
+        tabletAccelerometerSetting = 0;
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+            tabletAccelerometerSetting = Gdx.input.getAccelerometerZ();
+        }
 
         shape.dispose();
     }
@@ -224,31 +233,34 @@ public class Player extends Sprite {
         //moveAnimationFrame();
 
         TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
-        batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
-                getWidth() / 80f, getHeight() / 80f);
-
+        //batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
+        //       getWidth() / 80f, getHeight() / 80f);
+        batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 2.4f,
+                getWidth(), getHeight());
+        //setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+        //super.draw(batch);
         vector.set(0, 0);
 
         // For testing purposes on computer
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            vector.x = -10f * delta;
+            vector.x = -5f * delta;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            vector.x = 10f * delta;
+            vector.x = 5f * delta;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            vector.y = 10f * delta;
+            vector.y = 5f * delta;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            vector.y = -10f * delta;
+            vector.y = -5f * delta;
         }
 
         // Accelerometer testing for tablet
         float accelY = Gdx.input.getAccelerometerY();
-        float accelZ = Gdx.input.getAccelerometerZ();
+        float accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSetting; //ei vaikuta Desktopilla
 
         if (!MathUtils.isZero(accelY, 0.5f)) {
             vector.x = accelY * delta;
