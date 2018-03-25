@@ -59,7 +59,6 @@ public class Player extends Sprite {
         this.world = world;
         this.batch = batch;
 
-        //player = new Texture("playertexture.png");
         health = 3;
 
         vector = new Vector2();
@@ -75,19 +74,18 @@ public class Player extends Sprite {
 
         PolygonShape shape = new PolygonShape();
 
-        //shape.setAsBox(player.getWidth()/2 / 100f, player.getHeight() /2 / 100f);
         shape.setAsBox(getWidth() / 8, getHeight() / 8 * 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.10f;
+        fixtureDef.density = 0.10f; // 0.05f OG
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
 
         body.createFixture(fixtureDef).setUserData(this);
 
-        //Kalibroi lähtöasennon
+        //Kalibroi lähtöasennon, ei vaikuta desktopilla
         tabletAccelerometerSetting = 0;
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             tabletAccelerometerSetting = Gdx.input.getAccelerometerZ();
@@ -210,8 +208,6 @@ public class Player extends Sprite {
         float initialFrameTime = getDirectionalFrameTime();
 
         batch.begin();
-        //batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
-        //        player.getWidth() / 100f, player.getHeight() / 100f);
 
         if (hit) {
             invulnerability += delta;
@@ -227,18 +223,11 @@ public class Player extends Sprite {
             currentFrameTime = 0;
         }
 
-        //if () {
-            //Gdx.app.log(getClass().getSimpleName(), "linear velocity: " + body.getLinearVelocity());
-        //}
-        //moveAnimationFrame();
-
         TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
         //batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
         //       getWidth() / 80f, getHeight() / 80f);
         batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 2.4f,
                 getWidth(), getHeight());
-        //setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
-        //super.draw(batch);
         vector.set(0, 0);
 
         // For testing purposes on computer
@@ -330,9 +319,7 @@ public class Player extends Sprite {
     }
 
     public void dispose() {
-        //player.dispose();
-        super.getTexture().dispose();
-        //getTexture().dispose();
+        getTexture().dispose();
         world.destroyBody(body);
         healthTexture.dispose();
         //Gdx.app.log(getClass().getSimpleName(), "disposing");

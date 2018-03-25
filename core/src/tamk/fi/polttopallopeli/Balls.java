@@ -29,16 +29,15 @@ public class Balls extends Sprite {
     float xForce;
     float yForce;
     boolean acceleratingBall;
+    boolean bouncingBall;
+    FixtureDef fixtureDef;
 
     public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator) {
         super(new Texture("peruspallo.png"));
-        //setColor(Color.BLACK);
         setSize(getWidth() / 140f, getHeight() / 140f);
         setOriginCenter();
         this.world = world;
         this.batch = batch;
-
-        //ball = new Texture("peruspalloTESTI.png");
 
         this.playerX = playerX;
         this.playerY = playerY;
@@ -61,7 +60,7 @@ public class Balls extends Sprite {
                 loop = false;
             }
         }
-        Gdx.app.log(getClass().getSimpleName(), " " + ballLocation);
+        //Gdx.app.log(getClass().getSimpleName(), " " + ballLocation);
 
         bodyDef.position.set(xCoordinate, yCoordinate);
 
@@ -70,13 +69,16 @@ public class Balls extends Sprite {
         CircleShape circle = new CircleShape();
         circle.setRadius(0.25f);
 
-        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
         fixtureDef.density = 0.01f;
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0.8f;
 
-        // Ball collides with player, walls and other balls (for testing)
+        bouncingBall = false;
+        acceleratingBall = false;
+        ballType();
+        // Ball collides with player and other balls (for testing)
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_BALL;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_PLAYER | Dodgeball.OBJECT_BALL;
 
@@ -84,8 +86,7 @@ public class Balls extends Sprite {
 
         circle.dispose();
 
-        acceleratingBall = false;
-        ballType();
+
 
         body.applyForceToCenter(xForce, yForce,true);
     }
@@ -93,28 +94,34 @@ public class Balls extends Sprite {
     //LaunchBalls metodi tänne tai survivalmodeen. Hallinnoi koska palloja ammutaan ja mihin.
 
     private void ballType () {
-        boolean basicShot = true;
-        switch (MathUtils.random(1,10)) {
+        switch (MathUtils.random(1,20)) {
             case 1:
+            case 2:
+            case 3:
+            case 4:
                 xForce = (playerX - xCoordinate) / 30;
                 yForce = (playerY - yCoordinate) / 30;
                 Gdx.app.log(getClass().getSimpleName(), "Fastball");
                 super.setColor(Color.PURPLE);
-                basicShot = false;
                 break;
-            case 2:
+            case 10:
                 setColor(Color.BLACK);
                 xForce = (playerX - xCoordinate) / 50;
                 yForce = (playerY - yCoordinate) / 50;
                 acceleratingBall = true;
-                basicShot = false;
                 Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
                 break;
-        }
-        if (basicShot) {
-            //setColor(Color.RED);
-            xForce = (playerX - xCoordinate) / 50;
-            yForce = (playerY - yCoordinate) / 50;
+            case 20:
+                bouncingBall = true;
+                setColor(Color.CHARTREUSE);
+                xForce = (playerX - xCoordinate) / 40;
+                yForce = (playerY - yCoordinate) / 40;
+                Gdx.app.log(getClass().getSimpleName(), "bouncing ball");
+                break;
+            default:
+                xForce = (playerX - xCoordinate) / 50;
+                yForce = (playerY - yCoordinate) / 50;
+                break;
         }
     }
 
@@ -239,12 +246,25 @@ public class Balls extends Sprite {
         return Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2;
     }
     float accelWait;
+    int bounces;
+    float bounce;
 
     public void draw(float delta) {
         accelWait += delta;
         if (acceleratingBall && accelWait > 1.8f) {
             body.applyForceToCenter((playerX - xCoordinate) / 30, (playerY - yCoordinate) / 30, true);
             acceleratingBall = false;
+        }
+
+        if (bouncingBall && bounces < 5 && accelWait > 1.8f) {
+            bounce += delta;
+            if ((body.getPosition().x < 0 || body.getPosition().x > Dodgeball.WORLD_WIDTH || body.getPosition().y < 0 || body.getPosition().y > Dodgeball.WORLD_HEIGHT) && bounce > 0.5f) {
+                xForce = (Dodgeball.WORLD_WIDTH / 2 - body.getPosition().x) / 20;
+                yForce = (Dodgeball.WORLD_HEIGHT / 2 - body.getPosition().y) / 20;
+                body.applyForceToCenter(xForce, yForce,true);
+                bounces++;
+                bounce = 0;
+            }
         }
 
         batch.begin();
@@ -259,9 +279,6 @@ public class Balls extends Sprite {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         super.draw(batch);
         batch.end();
-
-        //setPosition(body.getPosition().x, body.getPosition().y);
-
     }
 
     public void dispose() {

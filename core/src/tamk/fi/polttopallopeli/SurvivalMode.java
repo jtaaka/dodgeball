@@ -36,6 +36,10 @@ public class SurvivalMode implements Screen {
     Array<Vector2> heatMapData;
     private HeatMap heatMap;
 
+    private final int MAX_BALL_AMOUNT = 10;
+    private final float BALL_SPAWN_TIMER = 3;
+    private final int BALL_SPAWN_COUNT = 3;
+
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
     private int VELOCITY_ITERATIONS = 6;
@@ -50,7 +54,7 @@ public class SurvivalMode implements Screen {
         ballLocator = new int[32];
         heatMapData = new Array<Vector2>();
         heatMap = new HeatMap();
-        ball = new Balls[10];
+        ball = new Balls[MAX_BALL_AMOUNT];
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
@@ -105,15 +109,17 @@ public class SurvivalMode implements Screen {
 
         player.playerMove(delta);
 
+        // Determines ball spawning at the start
         ballSpawnTimer += delta;
-        if (ballStartCounter < 3) {
-            if (ballSpawnTimer > 3) {
+        if (ballStartCounter < BALL_SPAWN_COUNT) {
+            if (ballSpawnTimer > BALL_SPAWN_TIMER) {
                 ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
                 ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                 ballSpawnTimer = 0;
                 ballStartCounter++;
             }
-        } else if (ballSpawnTimer > 60 && ballStartCounter < 10) {
+        // Adds balls as game advances
+        } else if (ballSpawnTimer > 60 && ballStartCounter < MAX_BALL_AMOUNT) {
             ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
             ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
             ballSpawnTimer = 0;
