@@ -33,19 +33,19 @@ public class Menu implements Screen {
         batch = host.getBatch();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
+        camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
 
-        playRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH / 4f - playButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 2f - playButton.getHeight() / 2f, playButton.getWidth(),
-                playButton.getHeight());
+        playRectangle = new Rectangle(Dodgeball.WORLD_WIDTH / 4f - playButton.getWidth() / 200f,
+                Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 200f, playButton.getWidth() / 100f,
+                playButton.getHeight() / 100f);
 
-        settingsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH * 0.85f - settingsButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 3f - settingsButton.getHeight() / 2f, settingsButton.getWidth(),
-                settingsButton.getHeight());
+        settingsRectangle = new Rectangle(Dodgeball.WORLD_WIDTH * 0.85f - settingsButton.getWidth() / 200f,
+                Dodgeball.WORLD_HEIGHT / 3f - settingsButton.getHeight() / 200f, settingsButton.getWidth() / 100f,
+                settingsButton.getHeight() / 100f);
 
-        creditsRectangle = new Rectangle(Dodgeball.WINDOW_WIDTH * 0.85f - creditsButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 8f - creditsButton.getHeight() / 2f, creditsButton.getWidth(),
-                creditsButton.getHeight());
+        creditsRectangle = new Rectangle(Dodgeball.WORLD_WIDTH * 0.85f - creditsButton.getWidth() / 200f,
+                Dodgeball.WORLD_HEIGHT / 8f - creditsButton.getHeight() / 200f, creditsButton.getWidth() / 100f,
+                creditsButton.getHeight() / 100f);
 
         touchPos = new Vector3();
     }
@@ -60,6 +60,7 @@ public class Menu implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
+        batch.setProjectionMatrix(camera.combined);
 
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -84,19 +85,19 @@ public class Menu implements Screen {
         }
 
         batch.begin();
-        batch.draw(background, 0, 0,  Dodgeball.WINDOW_WIDTH, Dodgeball.WINDOW_HEIGHT);
+        batch.draw(background, 0, 0,  Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
 
-        batch.draw(playButton, Dodgeball.WINDOW_WIDTH / 4f - playButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 2f - playButton.getHeight() / 2f,
-                playButton.getWidth(), playButton.getHeight());
+        batch.draw(playButton, Dodgeball.WORLD_WIDTH / 4f - playButton.getWidth() / 200f,
+                Dodgeball.WORLD_HEIGHT / 2f - playButton.getHeight() / 200f,
+                playButton.getWidth() / 100f, playButton.getHeight() / 100f);
 
-        batch.draw(settingsButton, Dodgeball.WINDOW_WIDTH * 0.85f - settingsButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 3f - settingsButton.getHeight() / 2f,
-                settingsButton.getWidth(), settingsButton.getHeight());
+        batch.draw(settingsButton, Dodgeball.WORLD_WIDTH * 0.85f - settingsButton.getWidth() / 200f,
+                Dodgeball.WORLD_HEIGHT / 3f - settingsButton.getHeight() / 200f,
+                settingsButton.getWidth() / 100f, settingsButton.getHeight() / 100f);
 
-        batch.draw(creditsButton, Dodgeball.WINDOW_WIDTH * 0.85f - creditsButton.getWidth() / 2f,
-                Dodgeball.WINDOW_HEIGHT / 8f - creditsButton.getHeight() / 2f,
-                creditsButton.getWidth(), creditsButton.getHeight());
+        batch.draw(creditsButton, Dodgeball.WORLD_WIDTH * 0.85f - creditsButton.getWidth() / 200f,
+                Dodgeball.WORLD_HEIGHT / 8f - creditsButton.getHeight() / 200f,
+                creditsButton.getWidth() / 100f, creditsButton.getHeight() / 100f);
 
         batch.end();
     }

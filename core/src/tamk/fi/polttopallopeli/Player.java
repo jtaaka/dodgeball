@@ -29,6 +29,8 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerAnime;
     private float currentFrameTime;
 
+    private float tabletAccelerometerSetting;
+
     public Player(World world, SpriteBatch batch) {
         super(new Texture("walk.png"));
 
@@ -47,7 +49,8 @@ public class Player extends Sprite {
         TextureRegion[] playerFrames = transformTo1D(tmp);
         playerAnime = new Animation<TextureRegion>(1/10f, playerFrames);
 
-        setSize(getWidth()/8, getHeight()/8);
+        setSize(getWidth() / 800f, getHeight() / 800f);
+        setOriginCenter();
 
         currentFrameTime = 0;
         healthFrameTime = 0;
@@ -56,7 +59,6 @@ public class Player extends Sprite {
         this.world = world;
         this.batch = batch;
 
-        //player = new Texture("playertexture.png");
         health = 3;
 
         vector = new Vector2();
@@ -66,23 +68,28 @@ public class Player extends Sprite {
         bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
                 (Dodgeball.WORLD_HEIGHT / 2f));
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 0.5f;
+        bodyDef.linearDamping = 0.8f; //0.5f OG
 
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
 
-        //shape.setAsBox(player.getWidth()/2 / 100f, player.getHeight() /2 / 100f);
-        shape.setAsBox(getWidth()/4 / 100f, getHeight()/2.2f / 100f);
+        shape.setAsBox(getWidth() / 8, getHeight() / 8 * 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.05f;
+        fixtureDef.density = 0.10f; // 0.05f OG
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
 
         body.createFixture(fixtureDef).setUserData(this);
+
+        //Kalibroi lähtöasennon, ei vaikuta desktopilla
+        tabletAccelerometerSetting = 0;
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+            tabletAccelerometerSetting = Gdx.input.getAccelerometerZ();
+        }
 
         shape.dispose();
     }
@@ -126,11 +133,6 @@ public class Player extends Sprite {
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;
 
-        boolean up = false;
-        boolean down = false;
-        boolean left = false;
-        boolean right = false;
-
         int currentRow = lastRow;
 
         if (directionX < 0 && directionY > 0) {
@@ -151,47 +153,39 @@ public class Player extends Sprite {
 
         if (directionX < 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 0;
-            left = true;
         }
 
         if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY > 0) {
             currentRow = 2;
-            up = true;
         }
 
         if (directionX > 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 4;
-            right = true;
         }
 
         if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY < 0) {
             currentRow = 6;
-            down = true;
         }
 
-        //oikea seinä
-        if (getPlayerBodyX() > 12.4f && getPlayerBodyX() < 12.5f && !up && !down) {
+        // seinät
+        if (getPlayerBodyX() >= 12.6f) {
             currentRow = 4;
         }
 
-        // vasen seinä
-        if (getPlayerBodyX() > 0.3f && getPlayerBodyX() < 0.4f  && !up && !down) {
+        if (getPlayerBodyX() <= 0.2f) {
             currentRow = 0;
         }
 
-        // yläseinä
-        if (getPlayerBodyY() > 7.39f && getPlayerBodyY() < 7.5f && !right && !left) {
+        if (getPlayerBodyY() >= 7.6f) {
             currentRow = 2;
         }
 
-        //alaseinä
-        if (getPlayerBodyY() > 0.5f && getPlayerBodyY() < 0.61f  && !right && !left) {
+        if (getPlayerBodyY() <= 0.4f) {
             currentRow = 6;
         }
 
-        System.out.println(getPlayerBodyX());
+        //lastRow = currentRow;
 
-        //lastRow = currentRow;X
         return FRAME_TIME * FRAME_COUNT * currentRow;
     }
 
@@ -202,8 +196,6 @@ public class Player extends Sprite {
         float initialFrameTime = getDirectionalFrameTime();
 
         batch.begin();
-        //batch.draw(player, body.getPosition().x - player.getWidth() / 200f, body.getPosition().y - player.getHeight() / 200f,
-        //        player.getWidth() / 100f, player.getHeight() / 100f);
 
         if (hit) {
             invulnerability += delta;
@@ -219,37 +211,33 @@ public class Player extends Sprite {
             currentFrameTime = 0;
         }
 
-        //if () {
-            //Gdx.app.log(getClass().getSimpleName(), "linear velocity: " + body.getLinearVelocity());
-        //}
-        //moveAnimationFrame();
-
         TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
-        batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
-                getWidth() / 80f, getHeight() / 80f);
-
+        //batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
+        //       getWidth() / 80f, getHeight() / 80f);
+        batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 2.4f,
+                getWidth(), getHeight());
         vector.set(0, 0);
 
         // For testing purposes on computer
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            vector.x = -10f * delta;
+            vector.x = -5f * delta;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            vector.x = 10f * delta;
+            vector.x = 5f * delta;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            vector.y = 10f * delta;
+            vector.y = 5f * delta;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            vector.y = -10f * delta;
+            vector.y = -5f * delta;
         }
 
         // Accelerometer testing for tablet
         float accelY = Gdx.input.getAccelerometerY();
-        float accelZ = Gdx.input.getAccelerometerZ();
+        float accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSetting; //ei vaikuta Desktopilla
 
         if (!MathUtils.isZero(accelY, 0.5f)) {
             vector.x = accelY * delta;
@@ -319,9 +307,7 @@ public class Player extends Sprite {
     }
 
     public void dispose() {
-        //player.dispose();
-        super.getTexture().dispose();
-        //getTexture().dispose();
+        getTexture().dispose();
         world.destroyBody(body);
         healthTexture.dispose();
         //Gdx.app.log(getClass().getSimpleName(), "disposing");
