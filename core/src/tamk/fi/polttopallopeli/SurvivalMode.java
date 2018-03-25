@@ -33,7 +33,7 @@ public class SurvivalMode implements Screen {
     private GameTimer timer;
     private Texture gameOver;
     private int[] ballLocator;
-    Array<Vector2> heatMapData;
+    //Array<Vector2> heatMapData;
     private HeatMap heatMap;
 
     private final int MAX_BALL_AMOUNT = 10;
@@ -52,7 +52,7 @@ public class SurvivalMode implements Screen {
         backgroundTexture = new Texture("background1.png");
         gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
-        heatMapData = new Array<Vector2>();
+        //heatMapData = new Array<Vector2>();
         heatMap = new HeatMap();
         ball = new Balls[MAX_BALL_AMOUNT];
 
@@ -85,19 +85,20 @@ public class SurvivalMode implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        /* HEATMAP DATA COLLECTION
+        //HEATMAP DATA COLLECTION
         lastDelta += delta;
         //Gdx.app.log(getClass().getSimpleName(), ""+ lastDelta);
 
-        if (player.getHealth() > 0 && lastDelta > 0.5) {
+        if (player.getHealth() > 0 && lastDelta > 0.25f) {
             divideAmount += 1;
             //heatMapData.add(new Vector2(player.getPlayerBodyX(), player.getPlayerBodyY()));
             heatMap.modify(player.getPlayerBodyX(), player.getPlayerBodyY());
             lastDelta = 0;
         } else if (!calculated) {
             calculated = true;
+
         }
-        */
+
 
         camera.update();
 
@@ -147,10 +148,13 @@ public class SurvivalMode implements Screen {
         batch.begin();
 
         if (player.getHealth() == 0) {
+            /*
             batch.draw(gameOver,Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2,
                     Dodgeball.WORLD_HEIGHT / 2 - gameOver.getHeight() / 100 / 2,
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
+                    */
             timer.setFreeze();
+            heatMap.draw(batch);
         }
 
         batch.end();
@@ -246,6 +250,7 @@ public class SurvivalMode implements Screen {
         }
         player.dispose();
         timer.dispose();
+        heatMap.dispose();
         world.destroyBody(walls);
         world.dispose();
         Gdx.app.log(getClass().getSimpleName(), "disposing");
