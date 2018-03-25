@@ -208,6 +208,7 @@ public class SurvivalMode implements Screen {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_WALL;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_PLAYER;
+        fixtureDef.restitution = 0.6f;
         fixtureDef.shape = shape;
 
         walls.createFixture(fixtureDef);
