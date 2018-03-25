@@ -21,6 +21,9 @@ public class GameTimer {
     private long elapsed;
     private boolean freeze;
 
+    private BitmapFont fpsFont;
+    private float fps;
+
     public GameTimer(SpriteBatch batch) {
         this.batch = batch;
         font = new BitmapFont();
@@ -38,6 +41,13 @@ public class GameTimer {
         font = generator.generateFont(parameter);
 
         layout.setText(font, "00:00");
+
+        // fps testaukseen
+        fpsFont = new BitmapFont();
+        FreeTypeFontGenerator.FreeTypeFontParameter p2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        p2.size = 20;
+        p2.color = Color.BLACK;
+        fpsFont = generator.generateFont(p2);
     }
 
     public void setFreeze() {
@@ -63,11 +73,17 @@ public class GameTimer {
         String formatMin = String.format("%02d", minutes);
         String formatSec = String.format("%02d", seconds);
 
+        fps = Gdx.graphics.getFramesPerSecond();
+
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         camera.update();
         font.draw(batch, formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - (layout.width + 50f),
                 Dodgeball.WINDOW_HEIGHT - layout.height / 2);
+
+        fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
+                Dodgeball.WINDOW_HEIGHT - 100f);
+
         batch.end();
     }
 
