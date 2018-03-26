@@ -36,5 +36,6 @@ public class Dodgeball extends Game {
 	public void dispose () {
     	setScreen(null);
     	batch.dispose();
+    	getScreen().dispose();
 	}
 }

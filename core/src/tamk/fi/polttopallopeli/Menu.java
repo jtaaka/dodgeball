@@ -105,6 +105,7 @@ public class Menu implements Screen {
     @Override
     public void resize(int width, int height) {
 
+
     }
 
     @Override
@@ -128,6 +129,5 @@ public class Menu implements Screen {
         playButton.dispose();
         settingsButton.dispose();
         creditsButton.dispose();
-
     }
 }

@@ -6,11 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,9 +14,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
 
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
@@ -97,9 +90,7 @@ public class SurvivalMode implements Screen {
             lastDelta = 0;
         } else if (!calculated) {
             calculated = true;
-
         }
-
 
         camera.update();
 
@@ -120,7 +111,7 @@ public class SurvivalMode implements Screen {
                 ballSpawnTimer = 0;
                 ballStartCounter++;
             }
-        // Adds balls as game advances
+            // Adds balls as game advances
         } else if (ballSpawnTimer > 60 && ballStartCounter < MAX_BALL_AMOUNT) {
             ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
             ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;

@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-
 public class SplashScreen implements Screen {
     private Dodgeball host;
     private Texture splashTexture;
@@ -27,8 +26,10 @@ public class SplashScreen implements Screen {
     @Override
     public void show() {
         stage.addActor(splashImage);
+        splashImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         splashImage.addAction(Actions.sequence(Actions.alpha(0f),
-                Actions.fadeIn(3.0f),Actions.delay(1f), Actions.run(new Runnable() {
+                Actions.fadeIn(2.0f), Actions.delay(1.5f),
+                Actions.fadeOut(2f), Actions.run(new Runnable() {
                     @Override
                     public void run() {
                         ((Game)Gdx.app.getApplicationListener()).setScreen(new Menu(host));
@@ -62,7 +63,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
