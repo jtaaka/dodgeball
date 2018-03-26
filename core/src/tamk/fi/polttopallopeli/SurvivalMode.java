@@ -27,7 +27,6 @@ public class SurvivalMode implements Screen {
     private GameTimer timer;
     private Texture gameOver;
     private int[] ballLocator;
-    //Array<Vector2> heatMapData;
     private HeatMap heatMap;
 
     private final int MAX_BALL_AMOUNT = 10;
@@ -46,7 +45,6 @@ public class SurvivalMode implements Screen {
         backgroundTexture = new Texture("background1.png");
         gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
-        //heatMapData = new Array<Vector2>();
         heatMap = new HeatMap();
         ball = new Balls[MAX_BALL_AMOUNT];
 
@@ -74,6 +72,8 @@ public class SurvivalMode implements Screen {
     private float lastDelta;
     private float ballSpawnTimer = 0;
     private int ballStartCounter = 0;
+    private float xCenter = 0;
+    private float yCenter = 0;
 
     @Override
     public void render(float delta) {
@@ -85,11 +85,24 @@ public class SurvivalMode implements Screen {
 
         if (player.getHealth() > 0 && lastDelta > 0.25f) {
             divideAmount += 1;
-            //heatMapData.add(new Vector2(player.getPlayerBodyX(), player.getPlayerBodyY()));
             heatMap.modify(player.getPlayerBodyX(), player.getPlayerBodyY());
+
+            if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+                xCenter += player.getAccelY();
+                yCenter += player.getAccelZ();
+            }
+
             lastDelta = 0;
-        } else if (!calculated) {
+        }
+
+        if (!calculated && player.getHealth() == 0) {
             calculated = true;
+            if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+                xCenter = xCenter / divideAmount;
+                yCenter = yCenter / divideAmount;
+                Gdx.app.log(getClass().getSimpleName(), "xCenter: " + xCenter);
+                Gdx.app.log(getClass().getSimpleName(), "yCenter: " + yCenter);
+            }
         }
 
         camera.update();

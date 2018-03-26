@@ -191,6 +191,8 @@ public class Player extends Sprite {
 
     boolean hit;
     float invulnerability;
+    float accelZ;
+    float accelY;
 
     public void playerMove(float delta) {
         float initialFrameTime = getDirectionalFrameTime();
@@ -236,8 +238,8 @@ public class Player extends Sprite {
         }
 
         // Accelerometer testing for tablet
-        float accelY = Gdx.input.getAccelerometerY();
-        float accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSetting; //ei vaikuta Desktopilla
+        accelY = Gdx.input.getAccelerometerY();
+        accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSetting; //ei vaikuta Desktopilla
 
         if (!MathUtils.isZero(accelY, 0.5f)) {
             vector.x = accelY * delta;
@@ -249,6 +251,14 @@ public class Player extends Sprite {
 
         body.applyForceToCenter(vector, true);
         batch.end();
+    }
+
+    public float getAccelZ() {
+        return accelZ;
+    }
+
+    public float getAccelY() {
+        return accelY;
     }
 
     private TextureRegion[] healthsTo1D(TextureRegion[][] tmp) {

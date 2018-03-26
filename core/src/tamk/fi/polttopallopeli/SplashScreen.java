@@ -2,12 +2,14 @@ package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.sun.org.apache.xalan.internal.xsltc.dom.AnyNodeCounter;
 
 public class SplashScreen implements Screen {
     private Dodgeball host;
@@ -41,6 +43,10 @@ public class SplashScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (Gdx.input.isTouched()) {
+            host.setScreen(new Menu(host));
+        }
 
         stage.act();
         stage.draw();

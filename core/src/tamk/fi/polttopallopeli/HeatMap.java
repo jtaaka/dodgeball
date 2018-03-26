@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
  * Created by Joni on 22.3.2018.
  */
 
-class HeatMap extends Sprite{
+class HeatMap extends Sprite {
     private Array<HeatMapObject> heatMap;
 
     public HeatMap() {
@@ -35,10 +35,9 @@ class HeatMap extends Sprite{
         }
 
         heatMap.add(object);
-
     }
 
-    private class HeatMapObject extends Sprite {
+    private class HeatMapObject {
         Vector2 point;
         Color color;
 
