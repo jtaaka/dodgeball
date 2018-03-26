@@ -18,7 +18,9 @@ public class Dodgeball extends Game {
     @Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new Menu(this));
+
+        setScreen(new SplashScreen (this));
+        //setScreen(new Menu(this));
 	}
 
 	public SpriteBatch getBatch() {
