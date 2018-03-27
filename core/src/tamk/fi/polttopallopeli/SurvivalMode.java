@@ -100,6 +100,8 @@ public class SurvivalMode implements Screen {
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
                 xCenter = xCenter / divideAmount;
                 yCenter = yCenter / divideAmount;
+                timer.setY(yCenter);
+                timer.setX(xCenter);
                 Gdx.app.log(getClass().getSimpleName(), "xCenter: " + xCenter);
                 Gdx.app.log(getClass().getSimpleName(), "yCenter: " + yCenter);
             }
@@ -166,7 +168,7 @@ public class SurvivalMode implements Screen {
 
         timer.survivalModeTimer();
 
-        debugRenderer.render(world, camera.combined);
+        // debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
         // For testing purposes

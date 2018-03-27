@@ -20,6 +20,8 @@ public class GameTimer {
     private long nanosPerMilli = 1000000;
     private long elapsed;
     private boolean freeze;
+    private float x;
+    private float y;
 
     private BitmapFont fpsFont;
     private float fps;
@@ -54,6 +56,14 @@ public class GameTimer {
         freeze = true;
     }
 
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
     public float getElapsedTime() {
         elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
 
@@ -83,6 +93,12 @@ public class GameTimer {
 
         fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
                 Dodgeball.WINDOW_HEIGHT - 100f);
+
+        // Pelaajan liikkeen keskipiste x ja y
+        if (x != 0 && y != 0) {
+            fpsFont.draw(batch, "y: " + y, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -200f);
+            fpsFont.draw(batch, "x: " + x, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -250f);
+        }
 
         batch.end();
     }
