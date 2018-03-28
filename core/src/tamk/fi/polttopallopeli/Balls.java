@@ -86,8 +86,7 @@ public class Balls extends Sprite {
 
         circle.dispose();
 
-
-
+        body.applyTorque(0.005f, true);
         body.applyForceToCenter(xForce, yForce,true);
     }
 

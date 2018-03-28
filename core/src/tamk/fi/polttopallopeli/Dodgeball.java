@@ -3,6 +3,8 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import tamk.fi.polttopallopeli.Screens.SplashScreen;
+
 public class Dodgeball extends Game {
 	private SpriteBatch batch;
 	public static final float WINDOW_WIDTH = 1280;
@@ -19,8 +21,7 @@ public class Dodgeball extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 
-        setScreen(new SplashScreen (this));
-        //setScreen(new Menu(this));
+        setScreen(new SplashScreen(this));
 	}
 
 	public SpriteBatch getBatch() {

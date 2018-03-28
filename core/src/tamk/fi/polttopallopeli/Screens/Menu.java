@@ -1,4 +1,4 @@
-package tamk.fi.polttopallopeli;
+package tamk.fi.polttopallopeli.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+
+import tamk.fi.polttopallopeli.Dodgeball;
+import tamk.fi.polttopallopeli.SurvivalMode;
 
 public class Menu implements Screen {
     private Texture background;
@@ -62,6 +65,10 @@ public class Menu implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            host.setScreen(new Levels(host));
+        }
+
         if (Gdx.input.isTouched()) {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             touchPos = camera.unproject(touchPos);
@@ -77,11 +84,6 @@ public class Menu implements Screen {
             if (creditsRectangle.contains(touchPos.x, touchPos.y)) {
                 host.setScreen(new Credits(host));
             }
-        }
-
-        // This is for testing the survival mode
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            host.setScreen(new GameScreen(host));
         }
 
         batch.begin();
@@ -104,7 +106,6 @@ public class Menu implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
 
     }
 

@@ -15,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import tamk.fi.polttopallopeli.Screens.Menu;
+
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
     private Dodgeball host;
@@ -168,7 +170,7 @@ public class SurvivalMode implements Screen {
 
         timer.survivalModeTimer();
 
-        // debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
         // For testing purposes

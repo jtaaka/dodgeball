@@ -1,15 +1,16 @@
-package tamk.fi.polttopallopeli;
+package tamk.fi.polttopallopeli.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.sun.org.apache.xalan.internal.xsltc.dom.AnyNodeCounter;
+
+import tamk.fi.polttopallopeli.Dodgeball;
+import tamk.fi.polttopallopeli.Screens.Menu;
 
 public class SplashScreen implements Screen {
     private Dodgeball host;
