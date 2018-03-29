@@ -88,7 +88,7 @@ public class Player extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.20f; // 0.05f OG
+        fixtureDef.density = 0.15f; // 0.05f OG
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
@@ -116,6 +116,7 @@ public class Player extends Sprite {
         }
 
         shape.dispose();
+        circle.dispose();
     }
 
     private TextureRegion[] transformTo1D(TextureRegion[][] tmp) {
