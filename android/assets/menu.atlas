@@ -1,0 +1,83 @@
+
+menu.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+button
+  rotate: false
+  xy: 1, 126
+  size: 301, 140
+  orig: 301, 140
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 515, 640
+  size: 301, 140
+  orig: 301, 140
+  offset: 0, 0
+  index: -1
+finlandflag
+  rotate: false
+  xy: 910, 910
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+musicoff
+  rotate: false
+  xy: 396, 410
+  size: 92, 50
+  orig: 92, 50
+  offset: 0, 0
+  index: -1
+musicon
+  rotate: false
+  xy: 1, 74
+  size: 64, 50
+  orig: 64, 50
+  offset: 0, 0
+  index: -1
+playbutton
+  rotate: false
+  xy: 1, 268
+  size: 393, 192
+  orig: 393, 192
+  offset: 0, 0
+  index: -1
+playbutton-down
+  rotate: false
+  xy: 515, 782
+  size: 393, 192
+  orig: 393, 192
+  offset: 0, 0
+  index: -1
+showg
+  rotate: false
+  xy: 1, 462
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+soundoff
+  rotate: false
+  xy: 304, 216
+  size: 64, 50
+  orig: 64, 50
+  offset: 0, 0
+  index: -1
+soundon
+  rotate: false
+  xy: 515, 588
+  size: 64, 50
+  orig: 64, 50
+  offset: 0, 0
+  index: -1
+ukflag
+  rotate: false
+  xy: 818, 716
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

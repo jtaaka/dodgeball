@@ -6,11 +6,9 @@ import com.badlogic.gdx.Preferences;
 public class LevelPreferences {
     public static int level[] = new int[10];
     public static Preferences prefs;
-    public static Integer levelClear;
 
     public static void setStatus() {
         prefs = Gdx.app.getPreferences("LevelsPreferences");
-        prefs.putInteger("levelclear", 10);
         prefs.putInteger("level1", 1); // val 1 = auki, val 0 = lukossa
         prefs.putInteger("level2", prefs.getInteger("level2"));
         prefs.putInteger("level3", prefs.getInteger("level3"));
@@ -26,7 +24,6 @@ public class LevelPreferences {
 
     public static void getStatus() {
         prefs = Gdx.app.getPreferences("LevelsPreferences");
-        levelClear = prefs.getInteger("levelclear",0);
         level[0] = prefs.getInteger("level1",0);
         level[1] = prefs.getInteger("level2",0);
         level[2] = prefs.getInteger("level3",0);

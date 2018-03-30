@@ -1,0 +1,69 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	showg: {
+		file: showg.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	red: {
+		r: 0.6039216
+		g: 0.12156863
+		b: 0.12156863
+		a: 1
+	}
+	blue: {
+		r: 0.015686275
+		g: 0.105882354
+		b: 0.4117647
+		a: 1
+	}
+}
+	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+		soundon: {
+			up: soundon
+			down: soundon
+		}
+
+		soundoff: {
+			up: soundoff
+			down: soundoff
+		}
+
+		musicon: {
+			up: musicon
+			down: musicon
+		}
+
+		musicoff: {
+			up: musicoff
+			down: musicoff
+		}
+
+		fin: {
+			up: finlandflag
+			down: finlandflag
+		}
+
+		uk: {
+			up: ukflag
+			down: ukflag
+		}
+	}
+
+
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: showg
+		fontColor: blue
+		up: button
+		down: button-down
+	}
+
+	play: {
+		up: playbutton
+		down: playbutton-down
+		font: showg
+		fontColor: red
+	}
+}
+}

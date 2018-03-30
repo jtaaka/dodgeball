@@ -37,6 +37,7 @@ public class Levels implements Screen {
 
         atlas = new TextureAtlas("levels.atlas");
         atlasArray = new Array<AtlasRegion>(atlas.getRegions());
+        arrow = atlasArray.get(11);
     }
 
     @Override
@@ -60,27 +61,21 @@ public class Levels implements Screen {
             host.setScreen(new Menu(host));
         }
 
-        arrow = atlasArray.get(11);
-
         batch.begin();
         batch.draw(background, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
-        batch.draw(arrow, 1f, 6.5f, 1f, 0.5f);
+        batch.draw(arrow, 1f, 0.5f, 1f, 0.5f);
 
         for (int i = 0; i < 10; i++) {
-
-            if (i + 1 <= LevelPreferences.levelClear) {
-
                 int status = LevelPreferences.level[i];
 
-                if (status == 1) {
-                    levels[i] = atlasArray.get(i);
+            if (status == 1) {
+                levels[i] = atlasArray.get(i);
 
-                } else if (status == 0) {
+            } else if (status == 0) {
                     levels[i] = atlasArray.get(10);
-                }
-
-                batch.draw(levels[i], 1f + i * 1.1f, 4f, 1f, 1f);
             }
+
+            batch.draw(levels[i], 1f + i * 1.1f, 4f, 1f, 1f);
         }
 
         batch.end();
