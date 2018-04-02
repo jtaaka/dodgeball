@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
+import tamk.fi.polttopallopeli.LevelTemplate;
 
 public class Levels implements Screen {
     private SpriteBatch batch;
@@ -60,6 +61,9 @@ public class Levels implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            host.setScreen(new LevelTemplate(host));
+        }
 
         batch.begin();
         batch.draw(background, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
@@ -74,8 +78,9 @@ public class Levels implements Screen {
             } else if (status == 0) {
                     levels[i] = atlasArray.get(10);
             }
-
-            batch.draw(levels[i], 1f + i * 1.1f, 4f, 1f, 1f);
+            if (levels[i] != null) {
+                batch.draw(levels[i], 1f + i * 1.1f, 4f, 1f, 1f);
+            }
         }
 
         batch.end();

@@ -21,6 +21,8 @@ public class Balls extends Sprite {
     private Body body;
     private Batch batch;
     private Texture ball;
+    FixtureDef fixtureDef;
+
     private float xCoordinate;
     private float yCoordinate;
     private float playerX;
@@ -28,9 +30,9 @@ public class Balls extends Sprite {
     private int ballLocation;
     float xForce;
     float yForce;
+
     boolean acceleratingBall;
     boolean bouncingBall;
-    FixtureDef fixtureDef;
 
     public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator) {
         super(new Texture("peruspallo2.png"));
@@ -107,7 +109,6 @@ public class Balls extends Sprite {
                 //ball = new Texture("peruspallo2.png");
                 //setTexture(ball);
                 break;
-                //return "peruspallo2.png";
             case 10:
                 //setColor(Color.BLACK);
                 xForce = (playerX - xCoordinate) / 50;
@@ -117,7 +118,6 @@ public class Balls extends Sprite {
                 setTexture(ball);
                 Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
                 break;
-                //return "kiihtyvapallo.png";
             case 20:
                 bouncingBall = true;
                 setColor(Color.CHARTREUSE);
@@ -125,12 +125,10 @@ public class Balls extends Sprite {
                 yForce = (playerY - yCoordinate) / 40;
                 Gdx.app.log(getClass().getSimpleName(), "bouncing ball");
                 break;
-                //return "peruspallo2.png";
             default:
                 xForce = (playerX - xCoordinate) / 50;
                 yForce = (playerY - yCoordinate) / 50;
                 setColor(Color.RED);
-                //return "peruspallo2.png";
                 break;
         }
     }

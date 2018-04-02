@@ -65,16 +65,48 @@ public class GameTimer {
     }
 
     public float getElapsedTime() {
-        elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
 
         // 1000 = 1 sec
-        return elapsed;
+        return (TimeUtils.nanoTime() - startTime) / nanosPerMilli / 1000;
     }
 
     public void survivalModeTimer() {
 
         if (!freeze) {
             elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
+        }
+
+        int minutes = (int) (elapsed / (1000 * 60));
+        int seconds = (int) ((elapsed / 1000) % 60);
+
+        String formatMin = String.format("%02d", minutes);
+        String formatSec = String.format("%02d", seconds);
+
+        fps = Gdx.graphics.getFramesPerSecond();
+
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        camera.update();
+        font.draw(batch, formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - (layout.width + 50f),
+                Dodgeball.WINDOW_HEIGHT - layout.height / 2);
+
+        fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
+                Dodgeball.WINDOW_HEIGHT - 100f);
+
+        // Pelaajan liikkeen keskipiste x ja y
+        if (x != 0 && y != 0) {
+            fpsFont.draw(batch, "y: " + y, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -200f);
+            fpsFont.draw(batch, "x: " + x, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -250f);
+        }
+
+        batch.end();
+    }
+
+    public void levelModeTimer(long timeLimit) {
+        timeLimit = (timeLimit + 1) * 1000;
+
+        if (!freeze) {
+            elapsed = (timeLimit * nanosPerMilli + startTime - TimeUtils.nanoTime()) / nanosPerMilli;
         }
 
         int minutes = (int) (elapsed / (1000 * 60));
