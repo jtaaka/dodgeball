@@ -61,6 +61,7 @@ public class Levels implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             host.setScreen(new LevelTemplate(host));
         }

@@ -179,7 +179,6 @@ public class LevelTemplate implements Screen {
         batch.end();
 
         timer.levelModeTimer(timeLimit);
-
         if (timer.getElapsedTime() > timeLimit) {
             timer.setFreeze();
         }
