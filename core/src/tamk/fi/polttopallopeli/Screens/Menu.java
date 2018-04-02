@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import java.util.Locale;
 
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.SurvivalMode;
@@ -38,42 +40,62 @@ public class Menu implements Screen {
     private Button fin;
     private Button uk;
 
+    private Locale lang;
+    private String play;
+    private String survival;
+    private String levels;
+    private String highscore;
+    private String settings;
+    private String exit;
+
+
     final int colWidth = Gdx.graphics.getWidth() / 12;
     final int rowHeight = Gdx.graphics.getHeight() / 12;
     final float WIDTH = Gdx.graphics.getWidth();
     final float HEIGHT = Gdx.graphics.getHeight();
 
+
     public Menu(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
 
+        lang = Locale.getDefault();
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), lang);
+
+        play = myBundle.get("play");
+        survival = myBundle.get("survival");
+        levels = myBundle.get("levels");
+        highscore = myBundle.get("highscore");
+        settings = myBundle.get("settings");
+        exit = myBundle.get("exit");
+
         bgTexture = new Texture(Gdx.files.internal("dodgeball.jpg"));
         bgImage = new Image(bgTexture);
-        bgImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bgImage.setSize(WIDTH, HEIGHT);
 
         stage = new Stage(new ScreenViewport(), batch);
 
         menuSkin = new Skin(Gdx.files.internal("menu.json"));
 
-        playButton = new TextButton("Pelaa", menuSkin,"play");
+        playButton = new TextButton(play, menuSkin,"play");
         playButton.setSize(colWidth * 2, rowHeight * 2);
         playButton.setPosition(colWidth * 1f,HEIGHT / 2 - playButton.getHeight() / 2);
 
-        survivalButton = new TextButton("Selviytyminen", menuSkin, "default");
+        survivalButton = new TextButton(survival, menuSkin, "default");
         survivalButton.setSize(colWidth * 2.5f, rowHeight);
 
-        levelsButton = new TextButton("Tasopeli", menuSkin, "default");
+        levelsButton = new TextButton(levels, menuSkin, "default");
         levelsButton.setSize(colWidth * 2.5f, rowHeight);
 
-        settingsButton = new TextButton("Asetukset", menuSkin, "default");
+        settingsButton = new TextButton(settings, menuSkin, "default");
         settingsButton.setSize(colWidth * 2.5f, rowHeight);
         settingsButton.setPosition(WIDTH - settingsButton.getWidth() - colWidth,HEIGHT / 2f);
 
-        scoreButton = new TextButton("Pisteet", menuSkin, "default");
+        scoreButton = new TextButton(highscore, menuSkin, "default");
         scoreButton.setSize(colWidth * 2.5f, rowHeight);
         scoreButton.setPosition(WIDTH - settingsButton.getWidth() - colWidth, rowHeight * 4f);
 
-        exitButton = new TextButton("Lopeta", menuSkin, "default");
+        exitButton = new TextButton(exit, menuSkin, "default");
         exitButton.setSize(colWidth * 2.5f, rowHeight);
         exitButton.setPosition(WIDTH - settingsButton.getWidth() - colWidth, rowHeight * 2f);
 
@@ -240,36 +262,6 @@ public class Menu implements Screen {
             }
         });
 
-        fin.addListener(new InputListener() {
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                fin.remove();
-                uk.setPosition(colWidth * 4f, rowHeight / 2f);
-
-                stage.addActor(uk);
-            }
-
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
-        uk.addListener(new InputListener() {
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                uk.remove();
-                fin.setPosition(colWidth * 4f, rowHeight / 2f);
-
-                stage.addActor(fin);
-            }
-
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
         stage.addActor(bgImage);
         stage.addActor(playButton);
         stage.addActor(settingsButton);
@@ -277,7 +269,14 @@ public class Menu implements Screen {
         stage.addActor(exitButton);
         stage.addActor(soundOn);
         stage.addActor(musicOn);
-        stage.addActor(fin);
+
+        if (Locale.getDefault().getLanguage().equals("fi")) {
+            fin.setPosition(colWidth * 4f, rowHeight / 2f);
+            stage.addActor(fin);
+        } else {
+            uk.setPosition(colWidth * 4f, rowHeight / 2f);
+            stage.addActor(uk);
+        }
 
         Gdx.input.setInputProcessor(stage);
     }

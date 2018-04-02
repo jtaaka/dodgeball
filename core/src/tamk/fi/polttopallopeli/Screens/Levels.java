@@ -70,13 +70,13 @@ public class Levels implements Screen {
         batch.draw(arrow, 1f, 0.5f, 1f, 0.5f);
 
         for (int i = 0; i < 10; i++) {
-                int status = LevelPreferences.level[i];
+            int status = LevelPreferences.level[i];
 
             if (status == 1) {
                 levels[i] = atlasArray.get(i);
 
             } else if (status == 0) {
-                    levels[i] = atlasArray.get(10);
+                levels[i] = atlasArray.get(10);
             }
             if (levels[i] != null) {
                 batch.draw(levels[i], 1f + i * 1.1f, 4f, 1f, 1f);
