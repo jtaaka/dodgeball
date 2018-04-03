@@ -1,0 +1,32 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	showg: {
+		file: showg.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	blue: {
+		r: 0.015686275
+		g: 0.105882354
+		b: 0.4117647
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	pointer: {
+		up: pointer
+		down: pointer-down
+	}
+	lock: {
+		up: lock
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: showg
+		fontColor: blue
+		up: levelbutton
+		down: levelbutton-down
+	}
+}
+}

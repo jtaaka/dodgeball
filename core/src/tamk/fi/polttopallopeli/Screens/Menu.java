@@ -48,12 +48,10 @@ public class Menu implements Screen {
     private String settings;
     private String exit;
 
-
     final int colWidth = Gdx.graphics.getWidth() / 12;
     final int rowHeight = Gdx.graphics.getHeight() / 12;
     final float WIDTH = Gdx.graphics.getWidth();
     final float HEIGHT = Gdx.graphics.getHeight();
-
 
     public Menu(Dodgeball host) {
         this.host = host;

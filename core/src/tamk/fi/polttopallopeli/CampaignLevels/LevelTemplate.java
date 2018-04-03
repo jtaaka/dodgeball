@@ -222,6 +222,9 @@ public class LevelTemplate implements Screen {
                 victory = true;
                 player.victory = true;
             }
+
+            LevelPreferences.prefs.putInteger("level2", 1);
+            LevelPreferences.prefs.flush();
         }
 
         //debugRenderer.render(world, camera.combined);

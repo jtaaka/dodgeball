@@ -1,90 +1,48 @@
 
 levels.png
-size: 1024,256
+size: 1024,1024
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
-level0001
+levelbutton
   rotate: false
-  xy: 256, 104
+  xy: 1, 103
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-level0002
+levelbutton-down
   rotate: false
-  xy: 358, 104
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0003
-  rotate: false
-  xy: 460, 104
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0004
-  rotate: false
-  xy: 562, 104
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0005
-  rotate: false
-  xy: 664, 104
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0006
-  rotate: false
-  xy: 766, 104
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0007
-  rotate: false
-  xy: 868, 104
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0008
-  rotate: false
-  xy: 104, 2
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0009
-  rotate: false
-  xy: 206, 2
-  size: 100, 100
-  orig: 100, 100
-  offset: 0, 0
-  index: -1
-level0010
-  rotate: false
-  xy: 2, 32
+  xy: 515, 617
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 lock
   rotate: false
-  xy: 154, 104
+  xy: 1, 1
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 pointer
   rotate: false
-  xy: 2, 134
+  xy: 1, 205
   size: 150, 70
   orig: 150, 70
+  offset: 0, 0
+  index: -1
+pointer-down
+  rotate: false
+  xy: 515, 719
+  size: 150, 70
+  orig: 150, 70
+  offset: 0, 0
+  index: -1
+showg
+  rotate: false
+  xy: 1, 277
+  size: 512, 512
+  orig: 512, 512
   offset: 0, 0
   index: -1
