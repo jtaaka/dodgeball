@@ -157,10 +157,6 @@ public class SurvivalMode implements Screen {
         batch.begin();
 
         if (player.getHealth() == 0) {
-            // Leveli screenin testailua
-            //LevelPreferences.prefs.putInteger("level2", 1);
-            //LevelPreferences.prefs.flush();
-
             /*
             batch.draw(gameOver,Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2,
                     Dodgeball.WORLD_HEIGHT / 2 - gameOver.getHeight() / 100 / 2,

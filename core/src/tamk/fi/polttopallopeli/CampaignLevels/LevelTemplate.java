@@ -20,6 +20,7 @@ import tamk.fi.polttopallopeli.ContactDetection;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.GameTimer;
 import tamk.fi.polttopallopeli.HeatMap;
+import tamk.fi.polttopallopeli.LevelPreferences;
 import tamk.fi.polttopallopeli.Player;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
