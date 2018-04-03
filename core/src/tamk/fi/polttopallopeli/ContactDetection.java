@@ -22,13 +22,13 @@ public class ContactDetection implements ContactListener {
         if (fixtureA.getUserData() instanceof Player || fixtureB.getUserData() instanceof Player) {
             if (fixtureA.getUserData() instanceof Player) {
                 Player player = (Player) fixtureA.getUserData();
-                if (!player.hit) {
+                if (!player.hit && !player.victory) {
                     player.decreaseHealth();
                     player.hit = true;
                 }
             } else {
                 Player player = (Player) fixtureB.getUserData();
-                if (!player.hit) {
+                if (!player.hit && !player.victory) {
                     player.decreaseHealth();
                     player.hit = true;
                 }

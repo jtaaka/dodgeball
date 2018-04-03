@@ -35,6 +35,8 @@ public class Player extends Sprite {
     private float tabletAccelerometerSettingZ;
     private float tabletAccelerometerSettingY;
 
+    public boolean victory;
+
     public Player(World world, SpriteBatch batch) {
         //super(new Texture("walk.png"));
         super(new Texture("hahmo.png"));
@@ -66,6 +68,7 @@ public class Player extends Sprite {
         this.batch = batch;
 
         health = 3;
+        victory = false;
 
         vector = new Vector2();
 

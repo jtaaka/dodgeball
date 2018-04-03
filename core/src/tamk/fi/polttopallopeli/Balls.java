@@ -234,6 +234,10 @@ public class Balls extends Sprite {
         }
     }
 
+    public void outOfSightOutOfMind() {
+        setPosition(-4f, -4f);
+    }
+
     private float randomLocationY() {
         switch (MathUtils.random(1,2)) {
             case 1:

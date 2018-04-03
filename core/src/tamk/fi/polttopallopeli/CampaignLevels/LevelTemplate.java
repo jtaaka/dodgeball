@@ -1,4 +1,4 @@
-package tamk.fi.polttopallopeli;
+package tamk.fi.polttopallopeli.CampaignLevels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,6 +15,12 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import tamk.fi.polttopallopeli.Balls;
+import tamk.fi.polttopallopeli.ContactDetection;
+import tamk.fi.polttopallopeli.Dodgeball;
+import tamk.fi.polttopallopeli.GameTimer;
+import tamk.fi.polttopallopeli.HeatMap;
+import tamk.fi.polttopallopeli.Player;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
 public class LevelTemplate implements Screen {
@@ -31,9 +37,12 @@ public class LevelTemplate implements Screen {
     private int[] ballLocator;
     private HeatMap heatMap;
 
-    private final int MAX_BALL_AMOUNT = 10;
-    private final float BALL_SPAWN_TIMER = 3;
-    private final int BALL_SPAWN_COUNT = 3;
+    private final int MAX_BALL_AMOUNT = 10; // Maksimi määrä palloja kentällä yhtäaikaa.
+    private final float BALL_SPAWN_TIMER = 3; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI.
+    private final int BALL_SPAWN_COUNT = 3; // Montako palloa lisätään alussa.
+    private final int ADD_NEW_BALL_TIME = 60; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI.
+    private boolean victory;
+    private boolean defeat;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -63,7 +72,11 @@ public class LevelTemplate implements Screen {
 
         world.setContactListener(new ContactDetection());
 
+        //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti.
         timeLimit = 60;
+
+        victory = false;
+        defeat = false;
 
         worldWalls();
     }
@@ -76,19 +89,14 @@ public class LevelTemplate implements Screen {
     private boolean calculated = false;
     private float divideAmount;
     private float lastDelta;
-    private float ballSpawnTimer = 0;
-    private int ballStartCounter = 0;
     private float xCenter = 0;
     private float yCenter = 0;
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //HEATMAP DATA COLLECTION
+    private void heatMapDataHandler(float delta) {
         lastDelta += delta;
         //Gdx.app.log(getClass().getSimpleName(), ""+ lastDelta);
 
+        //HEATMAP DATA COLLECTION
         if (player.getHealth() > 0 && lastDelta > 0.25f) {
             divideAmount += 1;
             heatMap.modify(player.getPlayerBodyX(), player.getPlayerBodyY());
@@ -101,6 +109,7 @@ public class LevelTemplate implements Screen {
             lastDelta = 0;
         }
 
+        //CENTERPOINT OF MOVEMENT CALCULATION
         if (!calculated && player.getHealth() == 0) {
             calculated = true;
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
@@ -112,6 +121,62 @@ public class LevelTemplate implements Screen {
                 Gdx.app.log(getClass().getSimpleName(), "yCenter: " + yCenter);
             }
         }
+    }
+
+    private float ballSpawnTimer = 0;
+    private int ballStartCounter = 0;
+
+    private void ballHandler(float delta) {
+
+        if (!victory) {
+            // Determines ball spawning at the start
+            ballSpawnTimer += delta;
+            if (ballStartCounter < BALL_SPAWN_COUNT) {
+                if (ballSpawnTimer > BALL_SPAWN_TIMER) {
+                    ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+                    ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
+                    ballSpawnTimer = 0;
+                    ballStartCounter++;
+                }
+                // Adds balls as game advances
+            } else if (ballSpawnTimer > ADD_NEW_BALL_TIME && ballStartCounter < MAX_BALL_AMOUNT) {
+                ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+                ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
+                ballSpawnTimer = 0;
+                ballStartCounter++;
+            }
+
+            // Draws balls and checks if out of bounds, deletes and respawns a new one.
+            int i = 0;
+            for (Balls eachBall : ball) {
+                if (eachBall != null) {
+                    eachBall.draw(delta);
+                    if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
+                            eachBall.getX() < -2 || eachBall.getY() < -2) {
+                        ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
+                        eachBall.dispose();
+                        ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+                        ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
+                        //Gdx.app.log(getClass().getSimpleName(), "respawning");
+                    }
+                }
+                i++;
+            }
+        } else {
+            for (Balls eachBall : ball) {
+                if (eachBall != null) {
+                    eachBall.outOfSightOutOfMind();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        heatMapDataHandler(delta);
 
         camera.update();
 
@@ -123,38 +188,7 @@ public class LevelTemplate implements Screen {
 
         player.playerMove(delta);
 
-        // Determines ball spawning at the start
-        ballSpawnTimer += delta;
-        if (ballStartCounter < BALL_SPAWN_COUNT) {
-            if (ballSpawnTimer > BALL_SPAWN_TIMER) {
-                ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
-                ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
-                ballSpawnTimer = 0;
-                ballStartCounter++;
-            }
-            // Adds balls as game advances
-        } else if (ballSpawnTimer > 60 && ballStartCounter < MAX_BALL_AMOUNT) {
-            ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
-            ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
-            ballSpawnTimer = 0;
-            ballStartCounter++;
-        }
-
-        int i = 0;
-        for (Balls eachBall : ball) {
-            if (eachBall != null) {
-                eachBall.draw(delta);
-                if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
-                        eachBall.getX() < -2 || eachBall.getY() < -2) {
-                    ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
-                    eachBall.dispose();
-                    ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
-                    ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
-                    //Gdx.app.log(getClass().getSimpleName(), "respawning");
-                }
-            }
-            i++;
-        }
+        ballHandler(delta);
 
         player.drawHealth(delta);
 
@@ -174,6 +208,9 @@ public class LevelTemplate implements Screen {
                     */
             timer.setFreeze();
             heatMap.draw(batch);
+            if (!victory) {
+                defeat = true;
+            }
         }
 
         batch.end();
@@ -181,6 +218,10 @@ public class LevelTemplate implements Screen {
         timer.levelModeTimer(timeLimit);
         if (timer.getElapsedTime() > timeLimit) {
             timer.setFreeze();
+            if (!defeat) {
+                victory = true;
+                player.victory = true;
+            }
         }
 
         //debugRenderer.render(world, camera.combined);

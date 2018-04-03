@@ -31,6 +31,9 @@ public class Credits implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
         }
+        if (Gdx.input.isTouched()) {
+            host.setScreen(new Menu(host));
+        }
 
         batch.begin();
         batch.end();

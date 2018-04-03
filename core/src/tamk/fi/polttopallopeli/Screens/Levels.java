@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
-import tamk.fi.polttopallopeli.LevelTemplate;
+import tamk.fi.polttopallopeli.CampaignLevels.LevelTemplate;
 
 public class Levels implements Screen {
     private SpriteBatch batch;
