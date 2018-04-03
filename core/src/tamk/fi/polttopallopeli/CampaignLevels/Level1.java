@@ -24,7 +24,7 @@ import tamk.fi.polttopallopeli.LevelPreferences;
 import tamk.fi.polttopallopeli.Player;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
-public class LevelTemplate implements Screen {
+public class Level1 implements Screen {
     private SpriteBatch batch;
     private Dodgeball host;
     private World world;
@@ -38,13 +38,13 @@ public class LevelTemplate implements Screen {
     private int[] ballLocator;
     private HeatMap heatMap;
 
-    private final int MAX_BALL_AMOUNT = ??; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
-    private final float BALL_SPAWN_TIMER = ??; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
-    private final int BALL_SPAWN_COUNT = ??; // Montako palloa lisätään alussa. esim: 3
-    private final int ADD_NEW_BALL_TIME = ??; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
-    private final boolean ACCELERATING_BALL = ??; // onko levelissä kiihtyvää palloa. true / false
-    private final boolean BOUNCING_BALL = ??; // onko levelissä kimpoavaa palloa. true / false
-    private final boolean FASTBALL = ??; // onko levelissä nopeampaa palloa. true / false
+    private final int MAX_BALL_AMOUNT = 3; // Maksimi määrä palloja kentällä yhtäaikaa.
+    private final float BALL_SPAWN_TIMER = 4; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI.
+    private final int BALL_SPAWN_COUNT = 3; // Montako palloa lisätään alussa.
+    private final int ADD_NEW_BALL_TIME = 60; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI.
+    private final boolean ACCELERATING_BALL = false;
+    private final boolean BOUNCING_BALL = false;
+    private final boolean FASTBALL = false;
     private boolean victory;
     private boolean defeat;
 
@@ -56,7 +56,7 @@ public class LevelTemplate implements Screen {
 
     private long timeLimit;
 
-    public LevelTemplate(Dodgeball host) {
+    public Level1(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
         backgroundTexture = new Texture("background1.png");
@@ -76,8 +76,8 @@ public class LevelTemplate implements Screen {
 
         world.setContactListener(new ContactDetection());
 
-        //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-        timeLimit = ??;
+        //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti.
+        timeLimit = 60;
 
         victory = false;
         defeat = false;
@@ -226,7 +226,7 @@ public class LevelTemplate implements Screen {
                 heatMap.draw(batch);
                 victory = true;
                 player.victory = true;
-                LevelPreferences.prefs.putInteger(??, 1); // minkä mapin läpipeluu avaa esim. "level2"
+                LevelPreferences.prefs.putInteger("level2", 1); // minkä mapin läpipeluu avaa.
                 LevelPreferences.prefs.flush();
             }
         }
@@ -235,7 +235,7 @@ public class LevelTemplate implements Screen {
         doPhysicsStep(delta);
 
         // For testing purposes
-        if (Gdx.input.isTouched() && player.getHealth() == 0 || victory && Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched() && player.getHealth() == 0) {
             host.setScreen(new Menu(host));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import tamk.fi.polttopallopeli.CampaignLevels.Level1;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
 import tamk.fi.polttopallopeli.CampaignLevels.LevelTemplate;
@@ -142,7 +143,7 @@ public class Levels implements Screen {
         level1.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                host.setScreen(new LevelTemplate(host));
+                host.setScreen(new Level1(host));
             }
 
             @Override

@@ -33,8 +33,9 @@ public class Balls extends Sprite {
 
     boolean acceleratingBall;
     boolean bouncingBall;
+    boolean fastball;
 
-    public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator) {
+    public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator,boolean ACCELERATING_BALL,boolean BOUNCING_BALL,boolean FASTBALL) {
         super(new Texture("peruspallo2.png"));
         setSize(getWidth() / 140f, getHeight() / 140f);
         setOriginCenter();
@@ -43,6 +44,10 @@ public class Balls extends Sprite {
 
         this.playerX = playerX;
         this.playerY = playerY;
+
+        acceleratingBall = ACCELERATING_BALL;
+        bouncingBall = BOUNCING_BALL;
+        fastball = FASTBALL;
 
         float xCoord = randomLocationX();
         float yCoord = randomLocationY();
@@ -102,29 +107,35 @@ public class Balls extends Sprite {
             case 2:
             case 3:
             case 4:
-                xForce = (playerX - xCoordinate) / 30;
-                yForce = (playerY - yCoordinate) / 30;
-                Gdx.app.log(getClass().getSimpleName(), "Fastball");
-                super.setColor(Color.PURPLE);
-                //ball = new Texture("peruspallo2.png");
-                //setTexture(ball);
-                break;
+                if (fastball) {
+                    xForce = (playerX - xCoordinate) / 30;
+                    yForce = (playerY - yCoordinate) / 30;
+                    Gdx.app.log(getClass().getSimpleName(), "Fastball");
+                    super.setColor(Color.PURPLE);
+                    //ball = new Texture("peruspallo2.png");
+                    //setTexture(ball);
+                    break;
+                }
             case 10:
-                //setColor(Color.BLACK);
-                xForce = (playerX - xCoordinate) / 50;
-                yForce = (playerY - yCoordinate) / 50;
-                acceleratingBall = true;
-                ball = new Texture("kiihtyvapallo.png");
-                setTexture(ball);
-                Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
-                break;
+                if (acceleratingBall) {
+                    //setColor(Color.BLACK);
+                    xForce = (playerX - xCoordinate) / 50;
+                    yForce = (playerY - yCoordinate) / 50;
+                    acceleratingBall = true;
+                    ball = new Texture("kiihtyvapallo.png");
+                    setTexture(ball);
+                    Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
+                    break;
+                }
             case 20:
-                bouncingBall = true;
-                setColor(Color.CHARTREUSE);
-                xForce = (playerX - xCoordinate) / 40;
-                yForce = (playerY - yCoordinate) / 40;
-                Gdx.app.log(getClass().getSimpleName(), "bouncing ball");
-                break;
+                if (bouncingBall) {
+                    bouncingBall = true;
+                    setColor(Color.CHARTREUSE);
+                    xForce = (playerX - xCoordinate) / 40;
+                    yForce = (playerY - yCoordinate) / 40;
+                    Gdx.app.log(getClass().getSimpleName(), "bouncing ball");
+                    break;
+                }
             default:
                 xForce = (playerX - xCoordinate) / 50;
                 yForce = (playerY - yCoordinate) / 50;

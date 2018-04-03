@@ -34,6 +34,9 @@ public class SurvivalMode implements Screen {
     private final int MAX_BALL_AMOUNT = 10;
     private final float BALL_SPAWN_TIMER = 3;
     private final int BALL_SPAWN_COUNT = 3;
+    private final boolean ACCELERATING_BALL = true;
+    private final boolean BOUNCING_BALL = true;
+    private final boolean FASTBALL = true;
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -123,14 +126,14 @@ public class SurvivalMode implements Screen {
         ballSpawnTimer += delta;
         if (ballStartCounter < BALL_SPAWN_COUNT) {
             if (ballSpawnTimer > BALL_SPAWN_TIMER) {
-                ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+                ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator, ACCELERATING_BALL, BOUNCING_BALL, FASTBALL);
                 ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                 ballSpawnTimer = 0;
                 ballStartCounter++;
             }
             // Adds balls as game advances
         } else if (ballSpawnTimer > 60 && ballStartCounter < MAX_BALL_AMOUNT) {
-            ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+            ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator, ACCELERATING_BALL, BOUNCING_BALL, FASTBALL);
             ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
             ballSpawnTimer = 0;
             ballStartCounter++;
@@ -144,7 +147,7 @@ public class SurvivalMode implements Screen {
                         eachBall.getX() < -2 || eachBall.getY() < -2) {
                     ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
                     eachBall.dispose();
-                    ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator);
+                    ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator, ACCELERATING_BALL, BOUNCING_BALL, FASTBALL);
                     ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
                     //Gdx.app.log(getClass().getSimpleName(), "respawning");
                 }
