@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import tamk.fi.polttopallopeli.CampaignLevels.Level1;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
-import tamk.fi.polttopallopeli.CampaignLevels.LevelTemplate;
 
 public class Levels implements Screen {
     private SpriteBatch batch;

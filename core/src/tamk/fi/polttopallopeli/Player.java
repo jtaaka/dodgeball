@@ -35,11 +35,25 @@ public class Player extends Sprite {
     private float tabletAccelerometerSettingZ;
     private float tabletAccelerometerSettingY;
 
+    private float calibrationZPositive;
+    private float calibrationZNegative;
+    private float calibrationXPositive;
+    private float calibrationXNegative;
+
     public boolean victory;
 
     public Player(World world, SpriteBatch batch) {
         //super(new Texture("walk.png"));
         super(new Texture("hahmo.png"));
+
+        //SettingsPreferences.getSettings();
+        //SettingsPreferences.setSettings();
+
+        calibrationZPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationZPositive");
+        calibrationZNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationZNegative");
+        calibrationXPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationXPositive");
+        calibrationXNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationXNegative");
+        Gdx.app.log(getClass().getSimpleName(), "calibrationZPositive: " + calibrationZPositive);
 
         healthTexture = new Texture("healths.png");
         invulnerability = 0;
@@ -280,12 +294,20 @@ public class Player extends Sprite {
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
         accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
 
-        if (!MathUtils.isZero(accelY, 0.5f)) {
-            vector.x = accelY * delta * 2f;
+        if (!MathUtils.isZero(accelY, 0.5f) && accelY > 0) {
+            vector.x = accelY * delta * calibrationXPositive;
         }
 
-        if (!MathUtils.isZero(accelZ, 0.5f)) {
-            vector.y = accelZ * delta * 2f;
+        if (!MathUtils.isZero(accelY, 0.5f) && accelY < 0) {
+            vector.x = accelY * delta * calibrationXNegative;
+        }
+
+        if (!MathUtils.isZero(accelZ, 0.5f) && accelZ > 0) {
+            vector.y = accelZ * delta * calibrationZPositive;
+        }
+
+        if (!MathUtils.isZero(accelZ, 0.5f) && accelZ < 0) {
+            vector.y = accelZ * delta * calibrationZNegative;
         }
 
         body.applyForceToCenter(vector, true);
