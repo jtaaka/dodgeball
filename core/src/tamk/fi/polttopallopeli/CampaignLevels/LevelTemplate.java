@@ -1,5 +1,5 @@
 package tamk.fi.polttopallopeli.CampaignLevels;
-
+/*
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -38,13 +38,13 @@ public class LevelTemplate implements Screen {
     private int[] ballLocator;
     private HeatMap heatMap;
 
-    //private final int MAX_BALL_AMOUNT = ??; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
-    //private final float BALL_SPAWN_TIMER = ??; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
-    //private final int BALL_SPAWN_COUNT = ??; // Montako palloa lisätään alussa. esim: 3
-    //private final int ADD_NEW_BALL_TIME = ??; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
-    //private final boolean ACCELERATING_BALL = ??; // onko levelissä kiihtyvää palloa. true / false
-    //private final boolean BOUNCING_BALL = ??; // onko levelissä kimpoavaa palloa. true / false
-    //private final boolean FASTBALL = ??; // onko levelissä nopeampaa palloa. true / false
+    private final int MAX_BALL_AMOUNT = ??; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+    private final float BALL_SPAWN_TIMER = ??; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
+    private final int BALL_SPAWN_COUNT = ??; // Montako palloa lisätään alussa. esim: 3
+    private final int ADD_NEW_BALL_TIME = ??; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
+    private final boolean ACCELERATING_BALL = ??; // onko levelissä kiihtyvää palloa. true / false
+    private final boolean BOUNCING_BALL = ??; // onko levelissä kimpoavaa palloa. true / false
+    private final boolean FASTBALL = ??; // onko levelissä nopeampaa palloa. true / false
     private boolean victory;
     private boolean defeat;
 
@@ -77,7 +77,7 @@ public class LevelTemplate implements Screen {
         world.setContactListener(new ContactDetection());
 
         //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-        //timeLimit = ??;
+        timeLimit = ??;
 
         victory = false;
         defeat = false;
@@ -131,7 +131,7 @@ public class LevelTemplate implements Screen {
     private int ballStartCounter = 0;
 
     private void ballHandler(float delta) {
-/*
+
         if (!victory) {
             // Determines ball spawning at the start
             ballSpawnTimer += delta;
@@ -173,7 +173,7 @@ public class LevelTemplate implements Screen {
                 }
             }
         }
-        */
+
     }
 
     @Override
@@ -201,16 +201,6 @@ public class LevelTemplate implements Screen {
 
         if (player.getHealth() == 0) {
 
-            // Leveli screenin testailua
-            /*LevelPreferences.prefs.putInteger("level2", 1);
-            LevelPreferences.prefs.flush();
-
-            System.out.println(LevelPreferences.prefs.getInteger("level2"));
-            /*
-            batch.draw(gameOver,Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2,
-                    Dodgeball.WORLD_HEIGHT / 2 - gameOver.getHeight() / 100 / 2,
-                    gameOver.getWidth() / 100, gameOver.getHeight() / 100);
-                    */
             timer.setFreeze();
             heatMap.draw(batch);
             if (!victory) {
@@ -227,7 +217,7 @@ public class LevelTemplate implements Screen {
                 heatMap.draw(batch);
                 victory = true;
                 player.victory = true;
-                //LevelPreferences.prefs.putInteger(??, 1); // minkä mapin läpipeluu avaa esim. "level2"
+                LevelPreferences.prefs.putInteger(??, 1); // minkä mapin läpipeluu avaa esim. "level2"
                 LevelPreferences.prefs.flush();
             }
         }
@@ -327,3 +317,4 @@ public class LevelTemplate implements Screen {
         Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
+*/
