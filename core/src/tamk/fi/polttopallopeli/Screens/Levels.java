@@ -49,7 +49,6 @@ public class Levels implements Screen {
     final float WIDTH = Gdx.graphics.getWidth();
     final float HEIGHT = Gdx.graphics.getHeight();
 
-
     public Levels (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
@@ -57,6 +56,7 @@ public class Levels implements Screen {
         stage = new Stage(new ScreenViewport(), batch);
 
         levelSkin = new Skin(Gdx.files.internal("levels.json"));
+        levelSkin.getFont("showg").getData().setScale(1.5f);
 
         pointer = new Button(levelSkin,"pointer");
         pointer.setSize(colWidth, rowHeight);
@@ -262,7 +262,7 @@ public class Levels implements Screen {
         stage.addActor(level1);
         stage.addActor(pointer);
 
-        if (LevelPreferences.prefs.getInteger("level2") == 0) {
+        if (LevelPreferences.level[1] == 0) {
             lock2.setPosition(colWidth * 1.7f, (HEIGHT / 2f) - lock2.getHeight() / 2f);
             stage.addActor(lock2);
         } else {

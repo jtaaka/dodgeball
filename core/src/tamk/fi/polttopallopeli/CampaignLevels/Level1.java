@@ -77,7 +77,7 @@ public class Level1 implements Screen {
         world.setContactListener(new ContactDetection());
 
         //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti.
-        timeLimit = 60;
+        timeLimit = 20;
 
         victory = false;
         defeat = false;
@@ -203,7 +203,6 @@ public class Level1 implements Screen {
             // Leveli screenin testailua
             /*LevelPreferences.prefs.putInteger("level2", 1);
             LevelPreferences.prefs.flush();
-
             System.out.println(LevelPreferences.prefs.getInteger("level2"));
             /*
             batch.draw(gameOver,Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2,
@@ -219,15 +218,20 @@ public class Level1 implements Screen {
 
         batch.end();
 
+
         timer.levelModeTimer(timeLimit);
         if (timer.getElapsedTime() > timeLimit) {
             timer.setFreeze();
+
             if (!defeat) {
+                batch.begin();
                 heatMap.draw(batch);
+                batch.end();
                 victory = true;
                 player.victory = true;
                 LevelPreferences.prefs.putInteger("level2", 1); // minkä mapin läpipeluu avaa.
                 LevelPreferences.prefs.flush();
+
             }
         }
 

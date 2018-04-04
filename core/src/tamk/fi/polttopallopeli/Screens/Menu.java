@@ -74,6 +74,7 @@ public class Menu implements Screen {
         stage = new Stage(new ScreenViewport(), batch);
 
         menuSkin = new Skin(Gdx.files.internal("menu.json"));
+        menuSkin.getFont("showg").getData().setScale(1.2f);
 
         playButton = new TextButton(play, menuSkin,"play");
         playButton.setSize(colWidth * 2, rowHeight * 2);

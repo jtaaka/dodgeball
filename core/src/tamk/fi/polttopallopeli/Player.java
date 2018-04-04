@@ -49,11 +49,18 @@ public class Player extends Sprite {
         //SettingsPreferences.getSettings();
         //SettingsPreferences.setSettings();
 
-        calibrationZPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationZPositive");
-        calibrationZNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationZNegative");
-        calibrationXPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationXPositive");
-        calibrationXNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationXNegative");
-        Gdx.app.log(getClass().getSimpleName(), "calibrationZPositive: " + calibrationZPositive);
+        if (SettingsPreferences.prefs == null) {
+            calibrationZPositive = 10f;
+            calibrationZNegative = 10f;
+            calibrationXPositive = 10f;
+            calibrationXNegative = 10f;
+        } else {
+            calibrationZPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationZPositive");
+            calibrationZNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationZNegative");
+            calibrationXPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationXPositive");
+            calibrationXNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationXNegative");
+            Gdx.app.log(getClass().getSimpleName(), "calibrationZPositive: " + calibrationZPositive);
+        }
 
         healthTexture = new Texture("healths.png");
         invulnerability = 0;
