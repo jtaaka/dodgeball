@@ -163,24 +163,22 @@ public class LevelTemplate implements Screen {
         ballHandler(delta);
         player.drawHealth(delta);
         batch.begin();
-        if (player.getHealth() == 0) {
+        if (player.getHealth() == 0 && !victory) {
             timer.setFreeze();
+            defeat = true;
+        }
+
+        if (victory || defeat) {
             heatMap.draw(batch);
-            if (!victory) {
-                defeat = true;
-            }
         }
         batch.end();
         timer.levelModeTimer(timeLimit);
-        if (timer.getElapsedTime() > timeLimit) {
+        if (timer.getElapsedTime() > timeLimit && !defeat) {
             timer.setFreeze();
-            if (!defeat) {
-                heatMap.draw(batch);
-                victory = true;
-                player.victory = true;
-                LevelPreferences.prefs.putInteger(??, 1); // minkä mapin läpipeluu avaa esim. "level2"
-                LevelPreferences.prefs.flush();
-            }
+            victory = true;
+            player.victory = true;
+            LevelPreferences.prefs.putInteger(??, 1); // minkä mapin läpipeluu avaa esim. "level2"
+            LevelPreferences.prefs.flush();
         }
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);

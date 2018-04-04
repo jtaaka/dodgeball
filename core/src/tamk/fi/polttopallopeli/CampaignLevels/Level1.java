@@ -198,7 +198,7 @@ public class Level1 implements Screen {
 
         batch.begin();
 
-        if (player.getHealth() == 0) {
+        if (player.getHealth() == 0 && !victory) {
 
             // Leveli screenin testailua
             /*LevelPreferences.prefs.putInteger("level2", 1);
@@ -210,29 +210,22 @@ public class Level1 implements Screen {
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
                     */
             timer.setFreeze();
+            defeat = true;
+        }
+
+        if (victory || defeat) {
             heatMap.draw(batch);
-            if (!victory) {
-                defeat = true;
-            }
         }
 
         batch.end();
 
-
         timer.levelModeTimer(timeLimit);
-        if (timer.getElapsedTime() > timeLimit) {
+        if (timer.getElapsedTime() > timeLimit && !defeat) {
             timer.setFreeze();
-
-            if (!defeat) {
-                batch.begin();
-                heatMap.draw(batch);
-                batch.end();
-                victory = true;
-                player.victory = true;
-                LevelPreferences.prefs.putInteger("level2", 1); // minkä mapin läpipeluu avaa.
-                LevelPreferences.prefs.flush();
-
-            }
+            victory = true;
+            player.victory = true;
+            LevelPreferences.prefs.putInteger("level2", 1); // minkä mapin läpipeluu avaa.
+            LevelPreferences.prefs.flush();
         }
 
         //debugRenderer.render(world, camera.combined);
