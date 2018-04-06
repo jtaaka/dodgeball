@@ -1,5 +1,5 @@
 package tamk.fi.polttopallopeli.CampaignLevels;
-/*
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -35,13 +35,15 @@ public class LevelTemplate implements Screen {
     private Texture gameOver;
     private int[] ballLocator;
     private HeatMap heatMap;
-    private final int MAX_BALL_AMOUNT = ??; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
-    private final float BALL_SPAWN_TIMER = ??; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
-    private final int BALL_SPAWN_COUNT = ??; // Montako palloa lisätään alussa. esim: 3
-    private final int ADD_NEW_BALL_TIME = ??; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
-    private final boolean ACCELERATING_BALL = ??; // onko levelissä kiihtyvää palloa. true / false
-    private final boolean BOUNCING_BALL = ??; // onko levelissä kimpoavaa palloa. true / false
-    private final boolean FASTBALL = ??; // onko levelissä nopeampaa palloa. true / false
+    int MAX_BALL_AMOUNT; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+    float BALL_SPAWN_TIMER;  // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
+    int BALL_SPAWN_COUNT; // Montako palloa lisätään alussa. esim: 3
+    int ADD_NEW_BALL_TIME; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
+    boolean ACCELERATING_BALL; // onko levelissä kiihtyvää palloa. true / false
+    boolean BOUNCING_BALL; // onko levelissä kimpoavaa palloa. true / false
+    boolean FASTBALL; // onko levelissä nopeampaa palloa. true / false
+    long timeLimit; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
+    String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
     private boolean victory;
     private boolean defeat;
     private Box2DDebugRenderer debugRenderer;
@@ -49,15 +51,15 @@ public class LevelTemplate implements Screen {
     private int VELOCITY_ITERATIONS = 6;
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
-    private long timeLimit;
-    public LevelTemplate(Dodgeball host) {
+    public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT) {
         this.host = host;
+        this.MAX_BALL_AMOUNT = MAX_BALL_AMOUNT;
         batch = host.getBatch();
         backgroundTexture = new Texture("background1.png");
         gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
-        //ball = new Balls[MAX_BALL_AMOUNT];
+        ball = new Balls[MAX_BALL_AMOUNT];
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         debugRenderer = new Box2DDebugRenderer();
@@ -65,8 +67,6 @@ public class LevelTemplate implements Screen {
         player = new Player(world, batch);
         timer = new GameTimer(batch);
         world.setContactListener(new ContactDetection());
-        //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-        timeLimit = ??;
         victory = false;
         defeat = false;
         worldWalls();
@@ -177,7 +177,7 @@ public class LevelTemplate implements Screen {
             timer.setFreeze();
             victory = true;
             player.victory = true;
-            LevelPreferences.prefs.putInteger(??, 1); // minkä mapin läpipeluu avaa esim. "level2"
+            LevelPreferences.prefs.putInteger(nextLevel, 1); // minkä mapin läpipeluu avaa esim. "level2"
             LevelPreferences.prefs.flush();
         }
         //debugRenderer.render(world, camera.combined);
@@ -255,4 +255,3 @@ public class LevelTemplate implements Screen {
         Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
-*/
