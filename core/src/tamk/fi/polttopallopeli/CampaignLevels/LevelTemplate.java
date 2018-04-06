@@ -51,11 +51,13 @@ public class LevelTemplate implements Screen {
     private int VELOCITY_ITERATIONS = 6;
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
-    public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT) {
+    public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background) {
         this.host = host;
         this.MAX_BALL_AMOUNT = MAX_BALL_AMOUNT;
         batch = host.getBatch();
-        backgroundTexture = new Texture("background1.png");
+
+        backgroundTexture = background;
+
         gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
@@ -167,11 +169,12 @@ public class LevelTemplate implements Screen {
             timer.setFreeze();
             defeat = true;
         }
-
         if (victory || defeat) {
             heatMap.draw(batch);
         }
+
         batch.end();
+
         timer.levelModeTimer(timeLimit);
         if (timer.getElapsedTime() > timeLimit && !defeat) {
             timer.setFreeze();

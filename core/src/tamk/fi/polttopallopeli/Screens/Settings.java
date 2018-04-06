@@ -166,7 +166,7 @@ public class Settings implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override

@@ -81,10 +81,10 @@ public class Menu implements Screen {
         playButton.setPosition(colWidth * 1f,HEIGHT / 2 - playButton.getHeight() / 2);
 
         survivalButton = new TextButton(survival, menuSkin, "default");
-        survivalButton.setSize(colWidth * 2.5f, rowHeight);
+        survivalButton.setSize(colWidth * 3f, rowHeight);
 
         levelsButton = new TextButton(levels, menuSkin, "default");
-        levelsButton.setSize(colWidth * 2.5f, rowHeight);
+        levelsButton.setSize(colWidth * 3f, rowHeight);
 
         settingsButton = new TextButton(settings, menuSkin, "default");
         settingsButton.setSize(colWidth * 2.5f, rowHeight);
@@ -192,6 +192,7 @@ public class Menu implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
+
             }
 
             @Override

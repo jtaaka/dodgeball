@@ -1,22 +1,21 @@
 package tamk.fi.polttopallopeli.CampaignLevels;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 
 import tamk.fi.polttopallopeli.Dodgeball;
-
-/**
- * Created by Joni Alanko on 06/04/2018.
- */
 
 public class Level1test implements Screen {
     private LevelTemplate levelTemplate;
     private Dodgeball host;
     int MAX_BALL_AMOUNT = 10; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+    private Texture background;
 
     public Level1test(Dodgeball host) {
-        levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT);
+        background = new Texture("background1.png");
+        levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background);
         this.host = host;
-
 
         levelTemplate.BALL_SPAWN_TIMER = 1; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
         levelTemplate.BALL_SPAWN_COUNT = 3; // Montako palloa lisätään alussa. esim: 3
@@ -26,11 +25,7 @@ public class Level1test implements Screen {
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
         levelTemplate.timeLimit = 25; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
-
-
-
     }
-
 
     @Override
     public void show() {
