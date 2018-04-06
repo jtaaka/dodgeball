@@ -50,10 +50,10 @@ public class Player extends Sprite {
         //SettingsPreferences.setSettings();
 
         if (SettingsPreferences.prefs == null) {
-            calibrationZPositive = 10f;
-            calibrationZNegative = 10f;
-            calibrationXPositive = 10f;
-            calibrationXNegative = 10f;
+            calibrationZPositive = 2f;
+            calibrationZNegative = 2f;
+            calibrationXPositive = 2f;
+            calibrationXNegative = 2f;
         } else {
             calibrationZPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationZPositive");
             calibrationZNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationZNegative");

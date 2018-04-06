@@ -147,9 +147,6 @@ public class Settings implements Screen {
 
         stage.act();
         stage.draw();
-
-        batch.begin();
-        batch.end();
     }
 
     @Override
@@ -174,6 +171,9 @@ public class Settings implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        sliderBackgroundTex.dispose();
+        sliderKnobTex.dispose();
+        sliderBackgroundTexVert.dispose();
     }
 }
