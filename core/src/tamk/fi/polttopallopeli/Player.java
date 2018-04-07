@@ -301,20 +301,24 @@ public class Player extends Sprite {
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
         accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
 
-        if (!MathUtils.isZero(accelY, 0.5f) && accelY > 0) {
-            vector.x = accelY * delta * calibrationXPositive;
-        }
+        if (!MathUtils.isZero(accelY, 0.5f) || !MathUtils.isZero(accelZ, 0.5f)) {
 
-        if (!MathUtils.isZero(accelY, 0.5f) && accelY < 0) {
-            vector.x = accelY * delta * calibrationXNegative;
-        }
+            if (accelY > 0) {
+                vector.x = accelY * delta * calibrationXPositive;
+            }
 
-        if (!MathUtils.isZero(accelZ, 0.5f) && accelZ > 0) {
-            vector.y = accelZ * delta * calibrationZPositive;
-        }
+            if (accelY < 0) {
+                vector.x = accelY * delta * calibrationXNegative;
+            }
 
-        if (!MathUtils.isZero(accelZ, 0.5f) && accelZ < 0) {
-            vector.y = accelZ * delta * calibrationZNegative;
+            if (accelZ > 0) {
+                vector.y = accelZ * delta * calibrationZPositive;
+            }
+
+            if (accelZ < 0) {
+                vector.y = accelZ * delta * calibrationZNegative;
+            }
+
         }
 
         body.applyForceToCenter(vector, true);

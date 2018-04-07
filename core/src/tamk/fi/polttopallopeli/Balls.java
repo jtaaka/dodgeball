@@ -34,6 +34,8 @@ public class Balls extends Sprite {
     boolean acceleratingBall;
     boolean bouncingBall;
     boolean fastball;
+    private boolean acceleratingBallAction = false;
+    private boolean bouncingBallAction = false;
 
     public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator,boolean ACCELERATING_BALL,boolean BOUNCING_BALL,boolean FASTBALL) {
         super(new Texture("peruspallo2.png"));
@@ -100,8 +102,6 @@ public class Balls extends Sprite {
     //LaunchBalls metodi tänne tai survivalmodeen. Hallinnoi koska palloja ammutaan ja mihin.
 
     private void ballType () {
-        bouncingBall = false;
-        acceleratingBall = false;
         switch (MathUtils.random(1,20)) {
             case 1:
             case 2:
@@ -121,15 +121,15 @@ public class Balls extends Sprite {
                     //setColor(Color.BLACK);
                     xForce = (playerX - xCoordinate) / 50;
                     yForce = (playerY - yCoordinate) / 50;
-                    acceleratingBall = true;
-                    ball = new Texture("kiihtyvapallo.png");
+                    acceleratingBallAction = true;
+                    ball = new Texture("kiihtyvapallo2.png");
                     setTexture(ball);
                     Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
                     break;
                 }
             case 20:
                 if (bouncingBall) {
-                    bouncingBall = true;
+                    bouncingBallAction = true;
                     setColor(Color.CHARTREUSE);
                     xForce = (playerX - xCoordinate) / 40;
                     yForce = (playerY - yCoordinate) / 40;
@@ -274,12 +274,12 @@ public class Balls extends Sprite {
 
     public void draw(float delta) {
         accelWait += delta;
-        if (acceleratingBall && accelWait > 1.8f) {
+        if (acceleratingBallAction && accelWait > 1.8f) {
             body.applyForceToCenter((playerX - xCoordinate) / 30, (playerY - yCoordinate) / 30, true);
-            acceleratingBall = false;
+            acceleratingBallAction = false;
         }
 
-        if (bouncingBall && bounces < 5 && accelWait > 1.8f) {
+        if (bouncingBallAction && bounces < 5 && accelWait > 1.8f) {
             bounce += delta;
             if ((body.getPosition().x < 0 || body.getPosition().x > Dodgeball.WORLD_WIDTH || body.getPosition().y < 0 || body.getPosition().y > Dodgeball.WORLD_HEIGHT) && bounce > 0.5f) {
                 xForce = (Dodgeball.WORLD_WIDTH / 2 - body.getPosition().x) / 20;
