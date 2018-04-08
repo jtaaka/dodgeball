@@ -72,7 +72,7 @@ public class Level1 implements Screen {
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
 
-        timer = new GameTimer(batch);
+        //timer = new GameTimer(batch, String nextLevel);
 
         world.setContactListener(new ContactDetection());
 

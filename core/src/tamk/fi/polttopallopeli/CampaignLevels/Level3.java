@@ -11,10 +11,11 @@ public class Level3 implements Screen {
     private Dodgeball host;
     int MAX_BALL_AMOUNT = 10; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
     private Texture background;
+    boolean whiteTimer = true;
 
     public Level3(Dodgeball host) {
-        background = new Texture("background1.png");
-        levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background);
+        background = new Texture("magmabg.png");
+        levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background, whiteTimer);
         this.host = host;
 
         levelTemplate.BALL_SPAWN_TIMER = 1; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
@@ -24,7 +25,7 @@ public class Level3 implements Screen {
         levelTemplate.BOUNCING_BALL = true; // onko levelissä kimpoavaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
         levelTemplate.timeLimit = 25; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-        levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
+        levelTemplate.nextLevel = "level4"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
     }
 
     @Override

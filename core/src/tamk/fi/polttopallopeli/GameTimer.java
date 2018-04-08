@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import tamk.fi.polttopallopeli.CampaignLevels.LevelTemplate;
+
 public class GameTimer {
     private BitmapFont font;
     private GlyphLayout layout;
@@ -26,7 +28,7 @@ public class GameTimer {
     private BitmapFont fpsFont;
     private float fps;
 
-    public GameTimer(SpriteBatch batch) {
+    public GameTimer(SpriteBatch batch, boolean whiteTimer) {
         this.batch = batch;
         font = new BitmapFont();
         layout = new GlyphLayout();
@@ -39,7 +41,12 @@ public class GameTimer {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 70;
         parameter.borderWidth = 1;
-        parameter.color = Color.BLACK;
+
+        if (whiteTimer) {
+            parameter.color = Color.WHITE;
+        } else {
+            parameter.color = Color.BLACK;
+        }
         font = generator.generateFont(parameter);
 
         layout.setText(font, "00:00");

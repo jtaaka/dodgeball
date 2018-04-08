@@ -43,7 +43,7 @@ public class LevelTemplate implements Screen {
     boolean BOUNCING_BALL; // onko levelissä kimpoavaa palloa. true / false
     boolean FASTBALL; // onko levelissä nopeampaa palloa. true / false
     long timeLimit; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-    String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
+    public String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
     private boolean victory;
     private boolean defeat;
     private Box2DDebugRenderer debugRenderer;
@@ -51,7 +51,8 @@ public class LevelTemplate implements Screen {
     private int VELOCITY_ITERATIONS = 6;
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
-    public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background) {
+
+    public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background, boolean whiteTimer) {
         this.host = host;
         this.MAX_BALL_AMOUNT = MAX_BALL_AMOUNT;
         batch = host.getBatch();
@@ -67,7 +68,7 @@ public class LevelTemplate implements Screen {
         debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
-        timer = new GameTimer(batch);
+        timer = new GameTimer(batch, whiteTimer);
         world.setContactListener(new ContactDetection());
         victory = false;
         defeat = false;

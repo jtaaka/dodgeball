@@ -246,6 +246,10 @@ public class Player extends Sprite {
     public void playerMove(float delta) {
         //float initialFrameTime = getDirectionalFrameTime();
 
+        if (victory || getHealth() == 0) {
+            delta = 0;
+        }
+
         batch.begin();
 
         if (hit) {

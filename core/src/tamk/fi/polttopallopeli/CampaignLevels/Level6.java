@@ -11,10 +11,11 @@ public class Level6 implements Screen {
     private Dodgeball host;
     int MAX_BALL_AMOUNT = 10; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
     private Texture background;
+    boolean whiteTimer = false;
 
     public Level6(Dodgeball host) {
         background = new Texture("background1.png");
-        levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background);
+        levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background, whiteTimer);
         this.host = host;
 
         levelTemplate.BALL_SPAWN_TIMER = 1; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
