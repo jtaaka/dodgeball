@@ -13,8 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.CampaignLevels.Level1;
-import tamk.fi.polttopallopeli.CampaignLevels.Level10;
-import tamk.fi.polttopallopeli.CampaignLevels.Level1test;
 import tamk.fi.polttopallopeli.CampaignLevels.Level2;
 import tamk.fi.polttopallopeli.CampaignLevels.Level3;
 import tamk.fi.polttopallopeli.CampaignLevels.Level4;
@@ -23,6 +21,7 @@ import tamk.fi.polttopallopeli.CampaignLevels.Level6;
 import tamk.fi.polttopallopeli.CampaignLevels.Level7;
 import tamk.fi.polttopallopeli.CampaignLevels.Level8;
 import tamk.fi.polttopallopeli.CampaignLevels.Level9;
+import tamk.fi.polttopallopeli.CampaignLevels.Level10;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
 
@@ -152,7 +151,7 @@ public class Levels implements Screen {
         level1.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                host.setScreen(new Level1test(host));
+                host.setScreen(new Level1(host));
             }
 
             @Override

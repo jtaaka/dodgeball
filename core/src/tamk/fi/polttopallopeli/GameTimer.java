@@ -25,8 +25,8 @@ public class GameTimer {
     private float x;
     private float y;
 
-    private BitmapFont fpsFont;
-    private float fps;
+    //private BitmapFont fpsFont;
+    //private float fps;
 
     public GameTimer(SpriteBatch batch, boolean whiteTimer) {
         this.batch = batch;
@@ -47,16 +47,17 @@ public class GameTimer {
         } else {
             parameter.color = Color.BLACK;
         }
+
         font = generator.generateFont(parameter);
 
         layout.setText(font, "00:00");
 
         // fps testaukseen
-        fpsFont = new BitmapFont();
+        /*fpsFont = new BitmapFont();
         FreeTypeFontGenerator.FreeTypeFontParameter p2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
         p2.size = 20;
         p2.color = Color.BLACK;
-        fpsFont = generator.generateFont(p2);
+        fpsFont = generator.generateFont(p2);*/
     }
 
     public void setFreeze() {
@@ -89,7 +90,7 @@ public class GameTimer {
         String formatMin = String.format("%02d", minutes);
         String formatSec = String.format("%02d", seconds);
 
-        fps = Gdx.graphics.getFramesPerSecond();
+        //fps = Gdx.graphics.getFramesPerSecond();
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
@@ -97,14 +98,14 @@ public class GameTimer {
         font.draw(batch, formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - (layout.width + 50f),
                 Dodgeball.WINDOW_HEIGHT - layout.height / 2);
 
-        fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
+        /*fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
                 Dodgeball.WINDOW_HEIGHT - 100f);
 
         // Pelaajan liikkeen keskipiste x ja y
         if (x != 0 && y != 0) {
             fpsFont.draw(batch, "y: " + y, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -200f);
             fpsFont.draw(batch, "x: " + x, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -250f);
-        }
+        }*/
 
         batch.end();
     }
@@ -123,7 +124,7 @@ public class GameTimer {
         String formatMin = String.format("%02d", minutes);
         String formatSec = String.format("%02d", seconds);
 
-        fps = Gdx.graphics.getFramesPerSecond();
+        //fps = Gdx.graphics.getFramesPerSecond();
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
@@ -131,14 +132,14 @@ public class GameTimer {
         font.draw(batch, formatMin + ":" + formatSec, Dodgeball.WINDOW_WIDTH - (layout.width + 50f),
                 Dodgeball.WINDOW_HEIGHT - layout.height / 2);
 
-        fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
+        /*fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
                 Dodgeball.WINDOW_HEIGHT - 100f);
 
         // Pelaajan liikkeen keskipiste x ja y
         if (x != 0 && y != 0) {
             fpsFont.draw(batch, "y: " + y, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -200f);
             fpsFont.draw(batch, "x: " + x, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -250f);
-        }
+        }*/
 
         batch.end();
     }
