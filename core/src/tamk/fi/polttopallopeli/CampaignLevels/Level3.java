@@ -22,7 +22,7 @@ public class Level3 implements Screen {
         levelTemplate.BALL_SPAWN_COUNT = 2; // Montako palloa lisätään alussa. esim: 3
         levelTemplate.ADD_NEW_BALL_TIME = 10; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
         levelTemplate.ACCELERATING_BALL = true; // onko levelissä kiihtyvää palloa. true / false
-        levelTemplate.BOUNCING_BALL = true; // onko levelissä kimpoavaa palloa. true / false
+        levelTemplate.BOUNCING_BALL = false; // onko levelissä kimpoavaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
         levelTemplate.timeLimit = 60; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level4"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
