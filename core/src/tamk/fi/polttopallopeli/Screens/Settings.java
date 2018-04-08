@@ -46,19 +46,19 @@ public class Settings implements Screen {
         ssvert.background = new TextureRegionDrawable(new TextureRegion(sliderBackgroundTexVert));
         ssvert.knob = new TextureRegionDrawable(new TextureRegion(sliderKnobTex));
 
-        sliderZPositive = new Slider(1f, 10f, 1f, true, ssvert);
+        sliderZPositive = new Slider(1f, 5f, 0.5f, true, ssvert);
         sliderZPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationZPositive"));
 
-        sliderZNegative = new Slider(1f, 10f, 1f, true, ssvert);
+        sliderZNegative = new Slider(1f, 5f, 0.5f, true, ssvert);
         sliderZNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationZNegative"));
 
         Slider.SliderStyle ss = new Slider.SliderStyle();
         ss.background = new TextureRegionDrawable(new TextureRegion(sliderBackgroundTex));
         ss.knob = new TextureRegionDrawable(new TextureRegion(sliderKnobTex));
-        sliderXPositive = new Slider(1f, 10f, 1f, false, ss);
+        sliderXPositive = new Slider(1f, 5f, 0.5f, false, ss);
         sliderXPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationXPositive"));
 
-        sliderXNegative = new Slider(1f, 10f, 1f, false, ss);
+        sliderXNegative = new Slider(1f, 5f, 0.5f, false, ss);
         sliderXNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationXNegative"));
 
         sliderZPositive.setPosition(stage.getWidth() / 2f - sliderZPositive.getWidth() / 2f, stage.getHeight() * 0.66f - sliderZPositive.getHeight() / 2f);

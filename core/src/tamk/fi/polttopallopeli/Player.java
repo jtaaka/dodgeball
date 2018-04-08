@@ -55,10 +55,10 @@ public class Player extends Sprite {
             calibrationXPositive = 2f;
             calibrationXNegative = 2f;
         } else {
-            calibrationZPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationZPositive");
-            calibrationZNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationZNegative");
-            calibrationXPositive = 11f - SettingsPreferences.prefs.getFloat("calibrationXPositive");
-            calibrationXNegative = 11f - SettingsPreferences.prefs.getFloat("calibrationXNegative");
+            calibrationZPositive = 6f - SettingsPreferences.prefs.getFloat("calibrationZPositive");
+            calibrationZNegative = 6f - SettingsPreferences.prefs.getFloat("calibrationZNegative");
+            calibrationXPositive = 6f - SettingsPreferences.prefs.getFloat("calibrationXPositive");
+            calibrationXNegative = 6f - SettingsPreferences.prefs.getFloat("calibrationXNegative");
             Gdx.app.log(getClass().getSimpleName(), "calibrationZPositive: " + calibrationZPositive);
         }
 
@@ -242,6 +242,7 @@ public class Player extends Sprite {
     float invulnerability;
     float accelZ;
     float accelY;
+    boolean faceRight = true;
 
     public void playerMove(float delta) {
         //float initialFrameTime = getDirectionalFrameTime();
@@ -280,7 +281,7 @@ public class Player extends Sprite {
                 */
 
         setPosition(body.getPosition().x - getWidth() / 2.3f,body.getPosition().y - getHeight() / 4);
-        draw(batch);
+
 
         vector.set(0, 0);
 
@@ -305,14 +306,33 @@ public class Player extends Sprite {
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
         accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
 
+        float directionX = body.getLinearVelocity().x;
+
+        if (directionX < 0) {
+            if (!faceRight) {
+                flip(true, false);
+                faceRight = true;
+            }
+        } else {
+            if (faceRight) {
+                flip(true, false);
+                faceRight = false;
+            }
+            setPosition(body.getPosition().x - getWidth() / 1.9f,body.getPosition().y - getHeight() / 4);
+        }
+
+        draw(batch);
+
         if (!MathUtils.isZero(accelY, 0.5f) || !MathUtils.isZero(accelZ, 0.5f)) {
 
             if (accelY > 0) {
                 vector.x = accelY * delta * calibrationXPositive;
+
             }
 
             if (accelY < 0) {
                 vector.x = accelY * delta * calibrationXNegative;
+
             }
 
             if (accelZ > 0) {
@@ -328,6 +348,8 @@ public class Player extends Sprite {
         body.applyForceToCenter(vector, true);
         batch.end();
     }
+
+
 
     public float getAccelZ() {
         return accelZ;

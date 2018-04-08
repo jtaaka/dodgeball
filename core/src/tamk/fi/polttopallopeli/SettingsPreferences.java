@@ -18,10 +18,10 @@ public class SettingsPreferences {
     public static void getSettings() {
         prefs = Gdx.app.getPreferences("SettingsPreferences");
 
-        prefs.getFloat("calibrationZPositive", 5f);
-        prefs.getFloat("calibrationZNegative", 5f);
-        prefs.getFloat("calibrationXPositive", 5f);
-        prefs.getFloat("calibrationXNegative", 5f);
+        prefs.getFloat("calibrationZPositive", 2f);
+        prefs.getFloat("calibrationZNegative", 2f);
+        prefs.getFloat("calibrationXPositive", 2f);
+        prefs.getFloat("calibrationXNegative", 2f);
 
     }
 }
