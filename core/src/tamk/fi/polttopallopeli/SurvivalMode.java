@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import tamk.fi.polttopallopeli.Screens.HighScore;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
 public class SurvivalMode implements Screen {
@@ -167,6 +168,7 @@ public class SurvivalMode implements Screen {
                     */
             timer.setFreeze();
             heatMap.draw(batch);
+            setHighScore();
         }
 
         batch.end();
@@ -192,6 +194,17 @@ public class SurvivalMode implements Screen {
         while (accumulator >= TIME_STEP) {
             world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
             accumulator -= TIME_STEP;
+        }
+    }
+
+    public void setHighScore() {
+        float time = timer.getHighScoreTime();
+
+        for (int i = 0; i < 10; i++) {
+            if (time > HighScore.scores[i]) {
+                HighScore.prefs.putFloat("score", time);
+                HighScore.prefs.flush();
+            }
         }
     }
 

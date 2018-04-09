@@ -179,7 +179,7 @@ public class Menu implements Screen {
         scoreButton.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                //host.setScreen(new Scores(host));
+                host.setScreen(new HighScore(host));
             }
 
             @Override

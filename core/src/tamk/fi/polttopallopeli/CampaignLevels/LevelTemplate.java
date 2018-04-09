@@ -255,7 +255,6 @@ public class LevelTemplate implements Screen {
             LevelPreferences.prefs.putInteger(nextLevel, 1); // minkä mapin läpipeluu avaa esim. "level2"
             LevelPreferences.prefs.flush();
         }
-
     }
 
     @Override
