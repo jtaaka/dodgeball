@@ -80,6 +80,7 @@ public class SurvivalMode implements Screen {
     private int ballStartCounter = 0;
     private float xCenter = 0;
     private float yCenter = 0;
+    boolean setScore = true;
 
     @Override
     public void render(float delta) {
@@ -168,7 +169,12 @@ public class SurvivalMode implements Screen {
                     */
             timer.setFreeze();
             heatMap.draw(batch);
-            setHighScore();
+
+            if (setScore) {
+                setHighScore();
+                setScore = false;
+            }
+
         }
 
         batch.end();
@@ -198,12 +204,25 @@ public class SurvivalMode implements Screen {
     }
 
     public void setHighScore() {
-        float time = timer.getHighScoreTime();
+        long time = timer.getHighScoreTime();
+        String score = "score";
 
-        for (int i = 0; i < 10; i++) {
-            if (time > HighScore.scores[i]) {
-                HighScore.prefs.putFloat("score", time);
+        HighScore.getScore();
+        HighScore.setScore();
+
+        for (int i = 0; i < HighScore.scores.length; i++) {
+            if (time >= HighScore.scores[i]) {
+
+                for (int j = 9; j > i; j--) {
+                    long putPut = HighScore.prefs.getLong(score + (j - 1));
+                    HighScore.prefs.putLong(score + j, putPut);
+                    HighScore.prefs.flush();
+                }
+
+                score = score + i;
+                HighScore.prefs.putLong(score, time);
                 HighScore.prefs.flush();
+                break;
             }
         }
     }

@@ -72,7 +72,7 @@ public class GameTimer {
         this.x = x;
     }
 
-    public float getHighScoreTime() {
+    public long getHighScoreTime() {
         if (!freeze) {
             elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
         }
@@ -80,7 +80,7 @@ public class GameTimer {
         return elapsed;
     }
 
-    public float getElapsedTime() {
+    public long getElapsedTime() {
         return (TimeUtils.nanoTime() - startTime) / nanosPerMilli / 1000;
     }
 
