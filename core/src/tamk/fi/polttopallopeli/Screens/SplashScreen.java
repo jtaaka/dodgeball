@@ -22,7 +22,7 @@ public class SplashScreen implements Screen {
         this.host = host;
 
         stage = new Stage();
-        splashTexture = new Texture(Gdx.files.internal("splashscreen.png"));
+        splashTexture = new Texture("splashscreen.png");
         splashImage = new Image(splashTexture);
     }
 

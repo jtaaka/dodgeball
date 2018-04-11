@@ -14,7 +14,7 @@ public class Level5 implements Screen {
     boolean whiteTimer = true;
 
     public Level5(Dodgeball host) {
-        background = new Texture("spacebg.png");
+        background = new Texture("snowbg.png");
         levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background, whiteTimer);
         this.host = host;
 

@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -30,6 +31,7 @@ public class Levels implements Screen {
     private Dodgeball host;
     private Stage stage;
     private Skin levelSkin;
+    private Texture background;
 
     private Button level1;
     private Button level2;
@@ -61,6 +63,7 @@ public class Levels implements Screen {
     public Levels (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+        background = new Texture("levelsbg.png");
 
         stage = new Stage(new ScreenViewport(), batch);
 
@@ -351,6 +354,10 @@ public class Levels implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.begin();
+        batch.draw(background, 0, 0, WIDTH, HEIGHT);
+        batch.end();
+
         stage.act();
         stage.draw();
     }
@@ -379,5 +386,6 @@ public class Levels implements Screen {
     public void dispose() {
         stage.dispose();
         levelSkin.dispose();
+        background.dispose();
     }
 }

@@ -22,7 +22,7 @@ import tamk.fi.polttopallopeli.SurvivalMode;
 public class Menu implements Screen {
     private Dodgeball host;
     private SpriteBatch batch;
-    private Texture bgTexture;
+    private Texture background;
     private Image bgImage;
     private Stage stage;
     private Skin menuSkin;
@@ -67,8 +67,8 @@ public class Menu implements Screen {
         settings = myBundle.get("settings");
         exit = myBundle.get("exit");
 
-        bgTexture = new Texture(Gdx.files.internal("dodgeball.jpg"));
-        bgImage = new Image(bgTexture);
+        background = new Texture(Gdx.files.internal("menubg.png"));
+        bgImage = new Image(background);
         bgImage.setSize(WIDTH, HEIGHT);
 
         stage = new Stage(new ScreenViewport(), batch);

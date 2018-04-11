@@ -21,6 +21,7 @@ import tamk.fi.polttopallopeli.SettingsPreferences;
 public class Settings implements Screen {
     private SpriteBatch batch;
     private Dodgeball host;
+    private Texture background;
 
     Slider sliderZPositive;
     Slider sliderZNegative;
@@ -29,11 +30,16 @@ public class Settings implements Screen {
     private Texture sliderBackgroundTex, sliderKnobTex, sliderBackgroundTexVert;
     private Stage stage;
 
-
+    final int colWidth = Gdx.graphics.getWidth() / 12;
+    final int rowHeight = Gdx.graphics.getHeight() / 12;
+    final float WIDTH = Gdx.graphics.getWidth();
+    final float HEIGHT = Gdx.graphics.getHeight();
 
     public Settings (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+        background = new Texture("levelsbg.png");
+
         SettingsPreferences.getSettings();
 
         stage = new Stage(new ScreenViewport(), batch);
@@ -136,6 +142,10 @@ public class Settings implements Screen {
         Gdx.gl.glClearColor(0, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.begin();
+        batch.draw(background, 0, 0, WIDTH, HEIGHT);
+        batch.end();
+
         // For testing purposes
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
@@ -175,5 +185,6 @@ public class Settings implements Screen {
         sliderBackgroundTex.dispose();
         sliderKnobTex.dispose();
         sliderBackgroundTexVert.dispose();
+        background.dispose();
     }
 }

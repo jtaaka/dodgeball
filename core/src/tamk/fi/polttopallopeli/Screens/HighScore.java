@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +18,7 @@ import tamk.fi.polttopallopeli.Dodgeball;
 public class HighScore implements Screen  {
     private Dodgeball host;
     private SpriteBatch batch;
+    private Texture background;
 
     public static long scores[] = new long[10];
     public static Preferences prefs;
@@ -29,6 +31,8 @@ public class HighScore implements Screen  {
 
     private float WIDTH = Gdx.graphics.getWidth();
     private float HEIGHT = Gdx.graphics.getHeight();
+    final int colWidth = Gdx.graphics.getWidth() / 12;
+    final int rowHeight = Gdx.graphics.getHeight() / 12;
 
     private long time;
     private String formatMin;
@@ -38,6 +42,7 @@ public class HighScore implements Screen  {
     public HighScore (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+        background = new Texture("highscorebg.png");
 
         font = new BitmapFont();
         layout = new GlyphLayout();
@@ -48,7 +53,7 @@ public class HighScore implements Screen  {
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("droid-mono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40;
+        parameter.size = 34;
         parameter.borderWidth = 1;
         parameter.color = Color.WHITE;
 
@@ -76,8 +81,10 @@ public class HighScore implements Screen  {
 
         batch.begin();
 
+        batch.draw(background, 0, 0, WIDTH, HEIGHT);
+
         font.draw(batch, "HIGH SCORES", WIDTH / 2f - (layout2.width / 2f),
-                HEIGHT - layout2.height * 2f);
+                rowHeight * 12f - layout2.height);
 
         for (int i = 0; i < scores.length; i++) {
 
@@ -92,7 +99,7 @@ public class HighScore implements Screen  {
 
             font.draw(batch, "Name: " + formatMin + ":" + formatSec + ":" + formatHundredths,
                     WIDTH / 2f - (layout.width / 2f),
-                    HEIGHT - layout.height * 6f - (i * layout.height * 2f));
+                    rowHeight * 10f - (i * (rowHeight / 1.2f)));
         }
 
         batch.end();
@@ -159,5 +166,6 @@ public class HighScore implements Screen  {
     @Override
     public void dispose() {
         generator.dispose();
+        background.dispose();
     }
 }

@@ -28,7 +28,7 @@ public class SurvivalMode implements Screen {
     private OrthographicCamera camera;
     private Balls[] ball;
     private GameTimer timer;
-    private Texture gameOver;
+    //private Texture gameOver;
     private int[] ballLocator;
     private HeatMap heatMap;
 
@@ -49,7 +49,7 @@ public class SurvivalMode implements Screen {
         this.host = host;
         batch = host.getBatch();
         backgroundTexture = new Texture("background1.png");
-        gameOver = new Texture("gameover.png");
+        //gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
         ball = new Balls[MAX_BALL_AMOUNT];
@@ -286,7 +286,7 @@ public class SurvivalMode implements Screen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
-        gameOver.dispose();
+        //gameOver.dispose();
         for (Balls eachBall : ball) {
             if (eachBall != null) {
                 eachBall.dispose();
