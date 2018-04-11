@@ -1,10 +1,10 @@
 package tamk.fi.polttopallopeli.CampaignLevels;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 import tamk.fi.polttopallopeli.Dodgeball;
+import tamk.fi.polttopallopeli.LevelPreferences;
 
 public class Level1 implements Screen {
     private LevelTemplate levelTemplate;
@@ -26,6 +26,15 @@ public class Level1 implements Screen {
         levelTemplate.FASTBALL = false; // onko levelissä nopeampaa palloa. true / false
         levelTemplate.timeLimit = 40; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
+        // testaukseen
+        LevelPreferences.prefs.putInteger("level3", 1);
+        LevelPreferences.prefs.putInteger("level4", 1);
+        LevelPreferences.prefs.putInteger("level5", 1);
+        LevelPreferences.prefs.putInteger("level6", 1);
+        LevelPreferences.prefs.putInteger("level7", 1);
+        LevelPreferences.prefs.putInteger("level8", 1);
+        LevelPreferences.prefs.putInteger("level9", 1);
+        LevelPreferences.prefs.putInteger("level10", 1);
     }
 
     @Override

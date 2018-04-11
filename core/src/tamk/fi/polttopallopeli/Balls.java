@@ -38,7 +38,7 @@ public class Balls extends Sprite {
     private boolean bouncingBallAction = false;
 
     public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator,boolean ACCELERATING_BALL,boolean BOUNCING_BALL,boolean FASTBALL) {
-        super(new Texture("peruspallo2.png"));
+        super(new Texture("ball.png"));
         setSize(getWidth() / 140f, getHeight() / 140f);
         setOriginCenter();
         this.world = world;
