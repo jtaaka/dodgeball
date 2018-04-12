@@ -7,10 +7,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -23,11 +30,16 @@ public class Settings implements Screen {
     private Dodgeball host;
     private Texture background;
 
-    Slider sliderZPositive;
-    Slider sliderZNegative;
-    Slider sliderXPositive;
-    Slider sliderXNegative;
-    private Texture sliderBackgroundTex, sliderKnobTex, sliderBackgroundTexVert;
+    private Skin skin;
+    private TextField profile;
+
+    private Slider sliderZPositive;
+    private Slider sliderZNegative;
+    private Slider sliderXPositive;
+    private Slider sliderXNegative;
+    private Container sliderLeft;
+    private Container sliderDown;
+    //private Texture sliderBackgroundTex, sliderKnobTex, sliderBackgroundTexVert;*/
     private Stage stage;
 
     final int colWidth = Gdx.graphics.getWidth() / 12;
@@ -43,46 +55,47 @@ public class Settings implements Screen {
         SettingsPreferences.getSettings();
 
         stage = new Stage(new ScreenViewport(), batch);
-        Gdx.input.setInputProcessor(stage);
 
-        sliderBackgroundTex = new Texture(Gdx.files.internal("sliderBackground.png"));
-        sliderBackgroundTexVert = new Texture(Gdx.files.internal("sliderBackgroundVert.png"));
-        sliderKnobTex = new Texture(Gdx.files.internal("sliderButton.png"));
-        Slider.SliderStyle ssvert = new Slider.SliderStyle();
-        ssvert.background = new TextureRegionDrawable(new TextureRegion(sliderBackgroundTexVert));
-        ssvert.knob = new TextureRegionDrawable(new TextureRegion(sliderKnobTex));
+        skin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
+        profile = new TextField("name", skin, "default");
+        profile.setSize(colWidth * 2f, rowHeight);
+        profile.setPosition(colWidth * 10f, rowHeight);
 
-        sliderZPositive = new Slider(1f, 5f, 0.5f, true, ssvert);
+        sliderZPositive = new Slider(1f, 5f, 0.5f, true, skin, "up-vertical");
         sliderZPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationZPositive"));
+        sliderZPositive.setPosition(colWidth * 2f, colWidth * 4f);
 
-        sliderZNegative = new Slider(1f, 5f, 0.5f, true, ssvert);
+        sliderZNegative = new Slider(1f, 5f, 0.5f, true, skin, "up-vertical");
         sliderZNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationZNegative"));
 
-        Slider.SliderStyle ss = new Slider.SliderStyle();
-        ss.background = new TextureRegionDrawable(new TextureRegion(sliderBackgroundTex));
-        ss.knob = new TextureRegionDrawable(new TextureRegion(sliderKnobTex));
-        sliderXPositive = new Slider(1f, 5f, 0.5f, false, ss);
+        sliderXPositive = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationXPositive"));
+        sliderXPositive.setPosition(colWidth * 2.75f, colWidth * 3.3f);
 
-        sliderXNegative = new Slider(1f, 5f, 0.5f, false, ss);
+        sliderXNegative = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationXNegative"));
 
-        sliderZPositive.setPosition(stage.getWidth() / 2f - sliderZPositive.getWidth() / 2f, stage.getHeight() * 0.66f - sliderZPositive.getHeight() / 2f);
-        sliderZNegative.setPosition(stage.getWidth() / 2f - sliderZNegative.getWidth() / 2f, stage.getHeight() / 3f - sliderZNegative.getHeight() / 2f);
-        sliderXPositive.setPosition(stage.getWidth() * 0.66f - sliderXPositive.getWidth() / 2f, stage.getHeight() / 2f - sliderXPositive.getHeight() / 2f);
-        sliderXNegative.setPosition(stage.getWidth() / 3f - sliderXNegative.getWidth() / 2f, stage.getHeight() / 2f - sliderXNegative.getHeight() / 2f);
+        sliderLeft = new Container(sliderXNegative);
+        sliderLeft.setTransform(true);
+        sliderLeft.setRotation(-180f);
+        sliderLeft.setPosition(colWidth * 1.2f, colWidth * 3.6f);
+
+        sliderDown = new Container(sliderZNegative);
+        sliderDown.setTransform(true);
+        sliderDown.setRotation(-180f);
+        sliderDown.setPosition(colWidth * 2.3f, colWidth * 2.5f);
 
         Gdx.input.setCatchBackKey(true);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
 
-        // Slider listener
         sliderZPositive.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log(getClass().getSimpleName(), "slider changed to: " + sliderZPositive.getValue());
+                Gdx.app.log(getClass().getSimpleName(), "sliderZup changed to: " + sliderZPositive.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationZPositive", sliderZPositive.getValue());
                 SettingsPreferences.prefs.flush();
             }
@@ -92,10 +105,10 @@ public class Settings implements Screen {
             }
         });
 
-        sliderZNegative.addListener(new InputListener() {
+        sliderDown.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log(getClass().getSimpleName(), "slider changed to: " + sliderZNegative.getValue());
+                Gdx.app.log(getClass().getSimpleName(), "sliderZdown changed to: " + sliderZNegative.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationZNegative", sliderZNegative.getValue());
                 SettingsPreferences.prefs.flush();
             }
@@ -105,10 +118,11 @@ public class Settings implements Screen {
             }
         });
 
+
         sliderXPositive.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log(getClass().getSimpleName(), "slider changed to: " + sliderXPositive.getValue());
+                Gdx.app.log(getClass().getSimpleName(), "sliderXright changed to: " + sliderXPositive.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationXPositive", sliderXPositive.getValue());
                 SettingsPreferences.prefs.flush();
             }
@@ -118,10 +132,10 @@ public class Settings implements Screen {
             }
         });
 
-        sliderXNegative.addListener(new InputListener() {
+        sliderLeft.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log(getClass().getSimpleName(), "slider changed to: " + sliderXNegative.getValue());
+                Gdx.app.log(getClass().getSimpleName(), "sliderXleft changed to: " + sliderXNegative.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationXNegative", sliderXNegative.getValue());
                 SettingsPreferences.prefs.flush();
             }
@@ -131,10 +145,11 @@ public class Settings implements Screen {
             }
         });
 
+        stage.addActor(profile);
         stage.addActor(sliderZPositive);
-        stage.addActor(sliderZNegative);
         stage.addActor(sliderXPositive);
-        stage.addActor(sliderXNegative);
+        stage.addActor(sliderLeft);
+        stage.addActor(sliderDown);
     }
 
     @Override
@@ -182,9 +197,7 @@ public class Settings implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        sliderBackgroundTex.dispose();
-        sliderKnobTex.dispose();
-        sliderBackgroundTexVert.dispose();
         background.dispose();
+        skin.dispose();
     }
 }
