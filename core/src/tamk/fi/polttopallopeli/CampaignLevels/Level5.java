@@ -1,6 +1,5 @@
 package tamk.fi.polttopallopeli.CampaignLevels;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -22,7 +21,7 @@ public class Level5 implements Screen {
         levelTemplate.BALL_SPAWN_COUNT = 5; // Montako palloa lisätään alussa. esim: 3
         levelTemplate.ADD_NEW_BALL_TIME = 7; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
         levelTemplate.ACCELERATING_BALL = false; // onko levelissä kiihtyvää palloa. true / false
-        levelTemplate.BOUNCING_BALL = false; // onko levelissä kimpoavaa palloa. true / false
+        levelTemplate.TARGETING_BALL = false; // onko levelissä ennakoivaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
         levelTemplate.timeLimit = 80; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"

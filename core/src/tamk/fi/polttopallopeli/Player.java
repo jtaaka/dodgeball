@@ -352,6 +352,10 @@ public class Player extends Sprite {
         batch.end();
     }
 
+    public Body getBody() {
+        return body;
+    }
+
 
 
     public float getAccelZ() {

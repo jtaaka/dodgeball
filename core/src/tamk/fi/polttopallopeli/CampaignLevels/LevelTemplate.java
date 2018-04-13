@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -42,7 +41,7 @@ public class LevelTemplate implements Screen {
     int BALL_SPAWN_COUNT; // Montako palloa lisätään alussa. esim: 3
     int ADD_NEW_BALL_TIME; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
     boolean ACCELERATING_BALL; // onko levelissä kiihtyvää palloa. true / false
-    boolean BOUNCING_BALL; // onko levelissä kimpoavaa palloa. true / false
+    boolean TARGETING_BALL; // onko levelissä ennakoivaa palloa. true / false
     boolean FASTBALL; // onko levelissä nopeampaa palloa. true / false
     long timeLimit; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
     public String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
@@ -124,14 +123,14 @@ public class LevelTemplate implements Screen {
             ballSpawnTimer += delta;
             if (ballStartCounter < BALL_SPAWN_COUNT) {
                 if (ballSpawnTimer > BALL_SPAWN_TIMER) {
-                    ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator, ACCELERATING_BALL, BOUNCING_BALL, FASTBALL);
+                    ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
                     ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                     ballSpawnTimer = 0;
                     ballStartCounter++;
                 }
                 // Adds balls as game advances
             } else if (ballSpawnTimer > ADD_NEW_BALL_TIME && ballStartCounter < MAX_BALL_AMOUNT) {
-                ball[ballStartCounter] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator, ACCELERATING_BALL, BOUNCING_BALL, FASTBALL);
+                ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
                 ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                 ballSpawnTimer = 0;
                 ballStartCounter++;
@@ -145,7 +144,7 @@ public class LevelTemplate implements Screen {
                             eachBall.getX() < -2 || eachBall.getY() < -2) {
                         ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
                         eachBall.dispose();
-                        ball[i] = new Balls(world, batch, getPlayerX(), getPlayerY(), ballLocator, ACCELERATING_BALL, BOUNCING_BALL, FASTBALL);
+                        ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
                         ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
                         //Gdx.app.log(getClass().getSimpleName(), "respawning");
                     }
@@ -200,14 +199,6 @@ public class LevelTemplate implements Screen {
             world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
             accumulator -= TIME_STEP;
         }
-    }
-
-    public float getPlayerX() {
-        return player.getPlayerBodyX();
-    }
-
-    public float getPlayerY() {
-        return player.getPlayerBodyY();
     }
 
     private void worldWalls() {

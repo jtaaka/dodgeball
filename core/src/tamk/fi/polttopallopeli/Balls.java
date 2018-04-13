@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 public class Balls extends Sprite {
     private World world;
     private Body body;
+    private Body playerBody;
     private Batch batch;
     private Texture ball;
     FixtureDef fixtureDef;
@@ -32,23 +33,24 @@ public class Balls extends Sprite {
     float yForce;
 
     boolean acceleratingBall;
-    boolean bouncingBall;
+    boolean targetingBall;
     boolean fastball;
     private boolean acceleratingBallAction = false;
     private boolean bouncingBallAction = false;
 
-    public Balls(World world, Batch batch, float playerX, float playerY, int[] ballLocator,boolean ACCELERATING_BALL,boolean BOUNCING_BALL,boolean FASTBALL) {
+    public Balls(World world, Batch batch, Body playerBody, int[] ballLocator,boolean ACCELERATING_BALL,boolean TARGETING_BALL,boolean FASTBALL) {
         super(new Texture("ball.png"));
         setSize(getWidth() / 140f, getHeight() / 140f);
         setOriginCenter();
         this.world = world;
         this.batch = batch;
 
-        this.playerX = playerX;
-        this.playerY = playerY;
+        this.playerBody = playerBody;
+        playerX = playerBody.getPosition().x;
+        playerY = playerBody.getPosition().y;
 
         acceleratingBall = ACCELERATING_BALL;
-        bouncingBall = BOUNCING_BALL;
+        targetingBall = TARGETING_BALL;
         fastball = FASTBALL;
 
         float xCoord = randomLocationX();
@@ -111,7 +113,7 @@ public class Balls extends Sprite {
                     xForce = (playerX - xCoordinate) / 30;
                     yForce = (playerY - yCoordinate) / 30;
                     Gdx.app.log(getClass().getSimpleName(), "Fastball");
-                    super.setColor(Color.PURPLE);
+                    super.setColor(Color.RED);
                     //ball = new Texture("peruspallo2.png");
                     //setTexture(ball);
                     break;
@@ -124,22 +126,22 @@ public class Balls extends Sprite {
                     acceleratingBallAction = true;
                     ball = new Texture("kiihtyvapallo2.png");
                     setTexture(ball);
-                    Gdx.app.log(getClass().getSimpleName(), "accelerating ball");
+                    Gdx.app.log(getClass().getSimpleName(), "Accelerating ball");
                     break;
                 }
             case 20:
-                if (bouncingBall) {
-                    bouncingBallAction = true;
+                if (targetingBall) {
+                    //bouncingBallAction = true;
                     setColor(Color.CHARTREUSE);
-                    xForce = (playerX - xCoordinate) / 40;
-                    yForce = (playerY - yCoordinate) / 40;
-                    Gdx.app.log(getClass().getSimpleName(), "bouncing ball");
+                    xForce = (playerX + playerBody.getLinearVelocity().x * 2f - xCoordinate) / 30;
+                    yForce = (playerY + playerBody.getLinearVelocity().y * 2f - yCoordinate) / 30;
+                    Gdx.app.log(getClass().getSimpleName(), "Targeting ball");
                     break;
                 }
             default:
                 xForce = (playerX - xCoordinate) / 50;
                 yForce = (playerY - yCoordinate) / 50;
-                setColor(Color.RED);
+                //setColor(Color.RED);
                 break;
         }
     }
@@ -279,6 +281,7 @@ public class Balls extends Sprite {
             acceleratingBallAction = false;
         }
 
+        /*
         if (bouncingBallAction && bounces < 5 && accelWait > 1.8f) {
             bounce += delta;
             if ((body.getPosition().x < 0 || body.getPosition().x > Dodgeball.WORLD_WIDTH || body.getPosition().y < 0 || body.getPosition().y > Dodgeball.WORLD_HEIGHT) && bounce > 0.5f) {
@@ -289,6 +292,7 @@ public class Balls extends Sprite {
                 bounce = 0;
             }
         }
+        */
 
         batch.begin();
         /*
