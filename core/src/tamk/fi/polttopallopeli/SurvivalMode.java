@@ -31,6 +31,7 @@ public class SurvivalMode implements Screen {
     //private Texture gameOver;
     private int[] ballLocator;
     private HeatMap heatMap;
+    private CenterOfPlayer center;
 
     private final int MAX_BALL_AMOUNT = 10;
     private final float BALL_SPAWN_TIMER = 3;
@@ -52,6 +53,7 @@ public class SurvivalMode implements Screen {
         //gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
+        center = new CenterOfPlayer();
         ball = new Balls[MAX_BALL_AMOUNT];
 
         camera = new OrthographicCamera();
@@ -97,6 +99,7 @@ public class SurvivalMode implements Screen {
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
                 xCenter += player.getAccelY();
                 yCenter += player.getAccelZ();
+                center.modify(player.getAccelY(), player.getAccelZ());
             }
 
             lastDelta = 0;
@@ -168,7 +171,8 @@ public class SurvivalMode implements Screen {
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
                     */
             timer.setFreeze();
-            heatMap.draw(batch);
+            //heatMap.draw(batch);
+            center.draw(batch, camera);
 
             if (setScore) {
                 setHighScore();

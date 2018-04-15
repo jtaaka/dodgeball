@@ -86,8 +86,6 @@ public class Balls extends Sprite {
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0.8f;
 
-        //bouncingBall = false;
-        //acceleratingBall = false;
         ballType();
         // Ball collides with player and other balls (for testing)
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_BALL;
