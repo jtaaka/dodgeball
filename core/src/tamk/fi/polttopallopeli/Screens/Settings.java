@@ -6,32 +6,39 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Dodgeball;
-import tamk.fi.polttopallopeli.Screens.Menu;
 import tamk.fi.polttopallopeli.SettingsPreferences;
 
 public class Settings implements Screen {
     private SpriteBatch batch;
     private Dodgeball host;
     private Texture background;
-
     private Skin skin;
+
     private TextField profile;
+    private Label profileName;
+
+    private Label up;
+    private Label down;
+    private Label right;
+    private Label left;
+    private Label settings;
+
+    private TextButton upCalibration;
+    private TextButton downCalibration;
+    private TextButton rightCalibration;
+    private TextButton leftCalibration;
 
     private Slider sliderZPositive;
     private Slider sliderZNegative;
@@ -57,20 +64,20 @@ public class Settings implements Screen {
         stage = new Stage(new ScreenViewport(), batch);
 
         skin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
-        profile = new TextField("name", skin, "default");
-        profile.setSize(colWidth * 2f, rowHeight);
-        profile.setPosition(colWidth * 10f, rowHeight);
+
+        settings = new Label("Calibration Settings", skin, "default");
+        settings.setPosition(WIDTH / 2 - settings.getWidth() / 2, HEIGHT - settings.getHeight());
 
         sliderZPositive = new Slider(1f, 5f, 0.5f, true, skin, "up-vertical");
         sliderZPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationZPositive"));
-        sliderZPositive.setPosition(colWidth * 2f, colWidth * 4f);
+        sliderZPositive.setPosition(colWidth * 3.3f, rowHeight * 6f);
 
         sliderZNegative = new Slider(1f, 5f, 0.5f, true, skin, "up-vertical");
         sliderZNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationZNegative"));
 
         sliderXPositive = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationXPositive"));
-        sliderXPositive.setPosition(colWidth * 2.75f, colWidth * 3.3f);
+        sliderXPositive.setPosition(colWidth * 4f, rowHeight * 5f);
 
         sliderXNegative = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationXNegative"));
@@ -78,12 +85,45 @@ public class Settings implements Screen {
         sliderLeft = new Container(sliderXNegative);
         sliderLeft.setTransform(true);
         sliderLeft.setRotation(-180f);
-        sliderLeft.setPosition(colWidth * 1.2f, colWidth * 3.6f);
+        sliderLeft.setPosition(colWidth * 2.55f, rowHeight * 5.47f);
 
         sliderDown = new Container(sliderZNegative);
         sliderDown.setTransform(true);
         sliderDown.setRotation(-180f);
-        sliderDown.setPosition(colWidth * 2.3f, colWidth * 2.5f);
+        sliderDown.setPosition(colWidth * 3.55f, colWidth * 2f);
+
+        profile = new TextField("", skin, "default");
+        profile.setMaxLength(10);
+        profile.setMessageText("Type name here");
+        profile.setSize(colWidth * 3f, rowHeight);
+        profile.setPosition(colWidth * 8f, rowHeight);
+
+        upCalibration = new TextButton("" + sliderZPositive.getValue(), skin, "default");
+        upCalibration.setPosition(colWidth * 10f, rowHeight * 8f);
+
+        rightCalibration = new TextButton("" + sliderXPositive.getValue(), skin, "default");
+        rightCalibration.setPosition(colWidth * 10f, rowHeight * 6.5f);
+
+        downCalibration = new TextButton("" + sliderZNegative.getValue(), skin, "default");
+        downCalibration.setPosition(colWidth * 10f, rowHeight * 5f);
+
+        leftCalibration = new TextButton("" + sliderXNegative.getValue(), skin, "default");
+        leftCalibration.setPosition(colWidth * 10f, rowHeight * 3.5f);
+
+        up = new Label("Up Calibration", skin, "default");
+        up.setPosition(colWidth * 6.5f, rowHeight * 8f);
+
+        right = new Label("Right Calibration", skin, "default");
+        right.setPosition(colWidth * 6.5f, rowHeight * 6.5f);
+
+        down = new Label("Down Calibration", skin, "default");
+        down.setPosition(colWidth * 6.5f, rowHeight * 5f);
+
+        left = new Label("Left Calibration", skin, "default");
+        left.setPosition(colWidth * 6.5f, rowHeight * 3.5f);
+
+        profileName = new Label("Profile", skin, "default");
+        profileName.setPosition(colWidth * 6.5f, rowHeight * 0.9f);
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(stage);
@@ -98,6 +138,7 @@ public class Settings implements Screen {
                 Gdx.app.log(getClass().getSimpleName(), "sliderZup changed to: " + sliderZPositive.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationZPositive", sliderZPositive.getValue());
                 SettingsPreferences.prefs.flush();
+                upCalibration.setText("" + sliderZPositive.getValue());
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -111,6 +152,7 @@ public class Settings implements Screen {
                 Gdx.app.log(getClass().getSimpleName(), "sliderZdown changed to: " + sliderZNegative.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationZNegative", sliderZNegative.getValue());
                 SettingsPreferences.prefs.flush();
+                downCalibration.setText("" + sliderZNegative.getValue());
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -125,6 +167,7 @@ public class Settings implements Screen {
                 Gdx.app.log(getClass().getSimpleName(), "sliderXright changed to: " + sliderXPositive.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationXPositive", sliderXPositive.getValue());
                 SettingsPreferences.prefs.flush();
+                rightCalibration.setText("" + sliderXPositive.getValue());
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -138,6 +181,7 @@ public class Settings implements Screen {
                 Gdx.app.log(getClass().getSimpleName(), "sliderXleft changed to: " + sliderXNegative.getValue());
                 SettingsPreferences.prefs.putFloat("calibrationXNegative", sliderXNegative.getValue());
                 SettingsPreferences.prefs.flush();
+                leftCalibration.setText("" + sliderXNegative.getValue());
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -145,11 +189,21 @@ public class Settings implements Screen {
             }
         });
 
+        stage.addActor(settings);
         stage.addActor(profile);
+        stage.addActor(profileName);
         stage.addActor(sliderZPositive);
         stage.addActor(sliderXPositive);
         stage.addActor(sliderLeft);
         stage.addActor(sliderDown);
+        stage.addActor(upCalibration);
+        stage.addActor(rightCalibration);
+        stage.addActor(downCalibration);
+        stage.addActor(leftCalibration);
+        stage.addActor(up);
+        stage.addActor(right);
+        stage.addActor(down);
+        stage.addActor(left);
     }
 
     @Override
