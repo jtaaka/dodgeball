@@ -59,11 +59,13 @@ public class HeatMap extends Sprite {
     }
 
     public void draw(Batch batch) {
+        batch.begin();
         for (HeatMapObject heat : heatMap) {
             setColor(heat.color);
             setPosition(heat.point.x - getWidth() / 2f, heat.point.y - getHeight() / 2f);
             super.draw(batch);
         }
+        batch.end();
     }
 
     public void dispose() {

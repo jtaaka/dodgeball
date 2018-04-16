@@ -32,6 +32,7 @@ public class SurvivalMode implements Screen {
     private int[] ballLocator;
     private HeatMap heatMap;
     private CenterOfPlayer center;
+    private Vector2 centerPoint;
 
     private final int MAX_BALL_AMOUNT = 10;
     private final float BALL_SPAWN_TIMER = 3;
@@ -54,6 +55,7 @@ public class SurvivalMode implements Screen {
         ballLocator = new int[32];
         heatMap = new HeatMap();
         center = new CenterOfPlayer();
+        centerPoint = new Vector2();
         ball = new Balls[MAX_BALL_AMOUNT];
 
         camera = new OrthographicCamera();
@@ -80,8 +82,6 @@ public class SurvivalMode implements Screen {
     private float lastDelta;
     private float ballSpawnTimer = 0;
     private int ballStartCounter = 0;
-    private float xCenter = 0;
-    private float yCenter = 0;
     boolean setScore = true;
 
     @Override
@@ -97,9 +97,11 @@ public class SurvivalMode implements Screen {
             heatMap.modify(player.getPlayerBodyX(), player.getPlayerBodyY());
 
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-                xCenter += player.getAccelY();
-                yCenter += player.getAccelZ();
-                center.modify(player.getAccelY(), player.getAccelZ());
+                centerPoint.x += player.getAccelY();
+                centerPoint.y += player.getAccelZ();
+                if (!player.hit) {
+                    center.modify(player.getAccelY(), player.getAccelZ());
+                }
             }
 
             lastDelta = 0;
@@ -108,12 +110,13 @@ public class SurvivalMode implements Screen {
         if (!calculated && player.getHealth() == 0) {
             calculated = true;
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-                xCenter = xCenter / divideAmount;
-                yCenter = yCenter / divideAmount;
-                timer.setY(yCenter);
-                timer.setX(xCenter);
-                Gdx.app.log(getClass().getSimpleName(), "xCenter: " + xCenter);
-                Gdx.app.log(getClass().getSimpleName(), "yCenter: " + yCenter);
+                centerPoint.x = centerPoint.x / divideAmount;
+                centerPoint.y = centerPoint.y / divideAmount;
+                timer.setY(centerPoint.x);
+                timer.setX(centerPoint.y);
+                Gdx.app.log(getClass().getSimpleName(), "xCenter: " + centerPoint.x);
+                Gdx.app.log(getClass().getSimpleName(), "yCenter: " + centerPoint.y);
+                center.calculatedCenter(centerPoint);
             }
         }
 
@@ -162,7 +165,7 @@ public class SurvivalMode implements Screen {
 
         player.drawHealth(delta);
 
-        batch.begin();
+        //batch.begin();
 
         if (player.getHealth() == 0) {
             /*
@@ -171,7 +174,7 @@ public class SurvivalMode implements Screen {
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
                     */
             timer.setFreeze();
-            //heatMap.draw(batch);
+            heatMap.draw(batch);
             center.draw(batch, camera);
 
             if (setScore) {
@@ -181,7 +184,7 @@ public class SurvivalMode implements Screen {
 
         }
 
-        batch.end();
+        //batch.end();
 
         timer.survivalModeTimer();
 

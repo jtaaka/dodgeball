@@ -224,7 +224,7 @@ public class LevelTemplate implements Screen {
     }
 
     private void isGameOver() {
-        batch.begin();
+        //batch.begin();
 
         if (player.getHealth() == 0 && !victory) {
             timer.setFreeze();
@@ -235,7 +235,7 @@ public class LevelTemplate implements Screen {
             heatMap.draw(batch);
         }
 
-        batch.end();
+        //batch.end();
 
         timer.levelModeTimer(timeLimit);
 
