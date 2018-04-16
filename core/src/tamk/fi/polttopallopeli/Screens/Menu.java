@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.Locale;
@@ -26,6 +27,8 @@ public class Menu implements Screen {
     private Image bgImage;
     private Stage stage;
     private Skin menuSkin;
+    private Skin profileSkin;
+    public static TextField profile;
 
     private Button playButton;
     private Button survivalButton;
@@ -72,6 +75,14 @@ public class Menu implements Screen {
         bgImage.setSize(WIDTH, HEIGHT);
 
         stage = new Stage(new ScreenViewport(), batch);
+
+        profileSkin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
+
+        profile = new TextField("", profileSkin, "default");
+        profile.setMaxLength(10);
+        profile.setMessageText("Type name here");
+        profile.setSize(colWidth * 2.9f, rowHeight);
+        profile.setPosition(colWidth * 8.5f, rowHeight / 2f);
 
         menuSkin = new Skin(Gdx.files.internal("menu.json"));
         menuSkin.getFont("showg").getData().setScale(1.2f);
@@ -263,6 +274,7 @@ public class Menu implements Screen {
         });
 
         stage.addActor(bgImage);
+        stage.addActor(profile);
         stage.addActor(playButton);
         stage.addActor(settingsButton);
         stage.addActor(scoreButton);

@@ -1,7 +1,6 @@
 package tamk.fi.polttopallopeli.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Dodgeball;
+import tamk.fi.polttopallopeli.ProfilePreferences;
 import tamk.fi.polttopallopeli.SettingsPreferences;
 
 public class Settings implements Screen {
@@ -25,9 +25,6 @@ public class Settings implements Screen {
     private Dodgeball host;
     private Texture background;
     private Skin skin;
-
-    private TextField profile;
-    private Label profileName;
 
     private Label up;
     private Label down;
@@ -47,7 +44,6 @@ public class Settings implements Screen {
     private Slider sliderXNegative;
     private Container sliderLeft;
     private Container sliderDown;
-    //private Texture sliderBackgroundTex, sliderKnobTex, sliderBackgroundTexVert;*/
     private Stage stage;
 
     final int colWidth = Gdx.graphics.getWidth() / 12;
@@ -95,12 +91,6 @@ public class Settings implements Screen {
         sliderDown.right();
         sliderDown.setPosition(colWidth * 3.3f, rowHeight * 4f);
 
-        profile = new TextField("", skin, "default");
-        profile.setMaxLength(10);
-        profile.setMessageText("Type name here");
-        profile.setSize(colWidth * 2.9f, rowHeight);
-        profile.setPosition(colWidth * 8f, rowHeight);
-
         upCalibration = new TextButton("" + sliderZPositive.getValue(), skin, "default");
         upCalibration.setPosition(colWidth * 10f, rowHeight * 8f);
 
@@ -113,23 +103,20 @@ public class Settings implements Screen {
         leftCalibration = new TextButton("" + sliderXNegative.getValue(), skin, "default");
         leftCalibration.setPosition(colWidth * 10f, rowHeight * 3.5f);
 
-        up = new Label("Up Calibration", skin, "default");
+        up = new Label("Up Sensitivity", skin, "default");
         up.setPosition(colWidth * 6.5f, rowHeight * 8f);
 
-        right = new Label("Right Calibration", skin, "default");
+        right = new Label("Right Sensitivity", skin, "default");
         right.setPosition(colWidth * 6.5f, rowHeight * 6.5f);
 
-        down = new Label("Down Calibration", skin, "default");
+        down = new Label("Down Sensitivity", skin, "default");
         down.setPosition(colWidth * 6.5f, rowHeight * 5f);
 
-        left = new Label("Left Calibration", skin, "default");
+        left = new Label("Left Sensitivity", skin, "default");
         left.setPosition(colWidth * 6.5f, rowHeight * 3.5f);
 
         backButton = new TextButton("< Back", skin, "default");
         backButton.setPosition(colWidth / 2, rowHeight / 2);
-
-        profileName = new Label("Profile", skin, "default");
-        profileName.setPosition(colWidth * 6.5f, rowHeight * 0.9f);
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(stage);
@@ -208,8 +195,6 @@ public class Settings implements Screen {
 
         stage.addActor(backButton);
         stage.addActor(settings);
-        stage.addActor(profile);
-        stage.addActor(profileName);
         stage.addActor(sliderZPositive);
         stage.addActor(sliderXPositive);
         stage.addActor(sliderLeft);

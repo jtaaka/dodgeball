@@ -59,10 +59,6 @@ public class Player extends Sprite {
             calibrationZNegative = 6f - SettingsPreferences.prefs.getFloat("calibrationZNegative");
             calibrationXPositive = 6f - SettingsPreferences.prefs.getFloat("calibrationXPositive");
             calibrationXNegative = 6f - SettingsPreferences.prefs.getFloat("calibrationXNegative");
-            Gdx.app.log(getClass().getSimpleName(), "calibrationZPositive: " + calibrationZPositive);
-            Gdx.app.log(getClass().getSimpleName(), "calibrationZNegative: " + calibrationZNegative);
-            Gdx.app.log(getClass().getSimpleName(), "calibrationXpositive: " + calibrationXPositive);
-            Gdx.app.log(getClass().getSimpleName(), "calibrationXnegative: " + calibrationXNegative);
         }
 
         healthTexture = new Texture("healths.png");

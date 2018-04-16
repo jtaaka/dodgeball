@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Dodgeball;
+import tamk.fi.polttopallopeli.ProfilePreferences;
 
 public class HighScore implements Screen  {
     private Dodgeball host;
@@ -34,7 +35,6 @@ public class HighScore implements Screen  {
 
     private BitmapFont font;
     private GlyphLayout layout;
-    private GlyphLayout layout2;
     private FreeTypeFontGenerator generator;
     private OrthographicCamera camera;
 
@@ -44,6 +44,7 @@ public class HighScore implements Screen  {
     final int rowHeight = Gdx.graphics.getHeight() / 12;
 
     private long time;
+    private String profile;
     private String formatMin;
     private String formatSec;
     private String formatHundredths;
@@ -63,7 +64,6 @@ public class HighScore implements Screen  {
 
         font = new BitmapFont();
         layout = new GlyphLayout();
-        layout2 = new GlyphLayout();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WIDTH, HEIGHT);
@@ -76,8 +76,7 @@ public class HighScore implements Screen  {
 
         font = generator.generateFont(parameter);
 
-        layout.setText(font, "NAME: 00:00:00");
-        layout2.setText(font, "HIGH SCORES");
+        layout.setText(font, "HIGH SCORES");
     }
 
     @Override
@@ -105,18 +104,23 @@ public class HighScore implements Screen  {
         getScore();
         setScore();
 
+        ProfilePreferences.getprofile();
+        ProfilePreferences.setProfile();
+
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         camera.update();
 
         batch.draw(background, 0, 0, WIDTH, HEIGHT);
 
-        font.draw(batch, "HIGH SCORES", WIDTH / 2f - (layout2.width / 2f),
-                rowHeight * 12f - layout2.height);
+        font.draw(batch, "HIGH SCORES", WIDTH / 2f - (layout.width / 2f),
+                rowHeight * 12f - layout.height);
 
         for (int i = 0; i < scores.length; i++) {
 
             time = scores[i];
+            profile = ProfilePreferences.name[i];
+
             int minutes = (int) (time / (1000 * 60));
             int seconds = (int) ((time / 1000) % 60);
             int hundredths = (int)((time / 10) % 100);
@@ -125,8 +129,11 @@ public class HighScore implements Screen  {
             formatSec = String.format("%02d", seconds);
             formatHundredths = String.format("%02d", hundredths);
 
-            font.draw(batch, "Name: " + formatMin + ":" + formatSec + ":" + formatHundredths,
-                    WIDTH / 2f - (layout.width / 2f),
+            font.draw(batch, profile, colWidth * 4f,
+                    rowHeight * 10f - (i * (rowHeight / 1.2f)));
+
+            font.draw(batch,formatMin + ":" + formatSec + ":" + formatHundredths,
+                    colWidth * 7f,
                     rowHeight * 10f - (i * (rowHeight / 1.2f)));
         }
 

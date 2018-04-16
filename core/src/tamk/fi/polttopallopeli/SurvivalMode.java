@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import tamk.fi.polttopallopeli.Screens.HighScore;
 import tamk.fi.polttopallopeli.Screens.Menu;
+import tamk.fi.polttopallopeli.Screens.Settings;
 
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
@@ -213,22 +214,40 @@ public class SurvivalMode implements Screen {
     public void setHighScore() {
         long time = timer.getHighScoreTime();
         String score = "score";
+        String profile = "profile";
+        String name;
 
         HighScore.getScore();
         HighScore.setScore();
+        ProfilePreferences.getprofile();
+        ProfilePreferences.setProfile();
+
+        if (Menu.profile.getText().equals("")) {
+            name = "Anonymous";
+        } else {
+            name = Menu.profile.getText();
+        }
 
         for (int i = 0; i < HighScore.scores.length; i++) {
             if (time >= HighScore.scores[i]) {
 
                 for (int j = 9; j > i; j--) {
-                    long putPut = HighScore.prefs.getLong(score + (j - 1));
-                    HighScore.prefs.putLong(score + j, putPut);
+                    long putScore = HighScore.prefs.getLong(score + (j - 1));
+                    HighScore.prefs.putLong(score + j, putScore);
                     HighScore.prefs.flush();
+
+                    String putName = ProfilePreferences.prefs.getString(profile + (j - 1));
+                    ProfilePreferences.prefs.putString(profile + j, putName);
+                    ProfilePreferences.prefs.flush();
                 }
 
                 score = score + i;
                 HighScore.prefs.putLong(score, time);
                 HighScore.prefs.flush();
+
+                profile = profile + i;
+                ProfilePreferences.prefs.putString(profile, name);
+                ProfilePreferences.prefs.flush();
                 break;
             }
         }
