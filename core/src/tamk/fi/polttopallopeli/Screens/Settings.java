@@ -39,6 +39,7 @@ public class Settings implements Screen {
     private TextButton downCalibration;
     private TextButton rightCalibration;
     private TextButton leftCalibration;
+    private TextButton backButton;
 
     private Slider sliderZPositive;
     private Slider sliderZNegative;
@@ -97,7 +98,7 @@ public class Settings implements Screen {
         profile = new TextField("", skin, "default");
         profile.setMaxLength(10);
         profile.setMessageText("Type name here");
-        profile.setSize(colWidth * 3f, rowHeight);
+        profile.setSize(colWidth * 2.9f, rowHeight);
         profile.setPosition(colWidth * 8f, rowHeight);
 
         upCalibration = new TextButton("" + sliderZPositive.getValue(), skin, "default");
@@ -123,6 +124,9 @@ public class Settings implements Screen {
 
         left = new Label("Left Calibration", skin, "default");
         left.setPosition(colWidth * 6.5f, rowHeight * 3.5f);
+
+        backButton = new TextButton("< Back", skin, "default");
+        backButton.setPosition(colWidth / 2, rowHeight / 2);
 
         profileName = new Label("Profile", skin, "default");
         profileName.setPosition(colWidth * 6.5f, rowHeight * 0.9f);
@@ -191,6 +195,18 @@ public class Settings implements Screen {
             }
         });
 
+        backButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                host.setScreen(new Menu(host));
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        stage.addActor(backButton);
         stage.addActor(settings);
         stage.addActor(profile);
         stage.addActor(profileName);
@@ -210,21 +226,12 @@ public class Settings implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 1, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         batch.draw(background, 0, 0, WIDTH, HEIGHT);
         batch.end();
-
-        // For testing purposes
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            host.setScreen(new Menu(host));
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
-            host.setScreen(new Menu(host));
-        }
 
         stage.act();
         stage.draw();

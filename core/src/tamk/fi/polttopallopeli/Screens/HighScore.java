@@ -1,7 +1,6 @@
 package tamk.fi.polttopallopeli.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -12,6 +11,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Dodgeball;
 
@@ -19,6 +24,10 @@ public class HighScore implements Screen  {
     private Dodgeball host;
     private SpriteBatch batch;
     private Texture background;
+
+    private Stage stage;
+    private Skin skin;
+    private TextButton backButton;
 
     public static long scores[] = new long[10];
     public static Preferences prefs;
@@ -44,6 +53,14 @@ public class HighScore implements Screen  {
         batch = host.getBatch();
         background = new Texture("highscorebg.png");
 
+        stage = new Stage(new ScreenViewport(), batch);
+
+        skin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
+
+        backButton = new TextButton("< Back", skin, "default");
+        backButton.setPosition(colWidth / 1.5f, rowHeight / 3f);
+        Gdx.input.setInputProcessor(stage);
+
         font = new BitmapFont();
         layout = new GlyphLayout();
         layout2 = new GlyphLayout();
@@ -66,6 +83,18 @@ public class HighScore implements Screen  {
     @Override
     public void show() {
 
+        backButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                host.setScreen(new Menu(host));
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        stage.addActor(backButton);
     }
 
     @Override
@@ -73,13 +102,12 @@ public class HighScore implements Screen  {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
-        camera.update();
-
         getScore();
         setScore();
 
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        camera.update();
 
         batch.draw(background, 0, 0, WIDTH, HEIGHT);
 
@@ -104,14 +132,10 @@ public class HighScore implements Screen  {
 
         batch.end();
 
-        // For testing purposes
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            host.setScreen(new Menu(host));
-        }
+        stage.act();
+        stage.draw();
 
-        if (Gdx.input.isTouched()) {
-            host.setScreen(new Menu(host));
-        }
+        Gdx.input.setCatchBackKey(true);
     }
 
     public static void setScore() {
@@ -167,5 +191,7 @@ public class HighScore implements Screen  {
     public void dispose() {
         generator.dispose();
         background.dispose();
+        stage.dispose();
+        skin.dispose();
     }
 }
