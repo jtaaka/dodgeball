@@ -84,13 +84,15 @@ public class Settings implements Screen {
 
         sliderLeft = new Container(sliderXNegative);
         sliderLeft.setTransform(true);
-        sliderLeft.setRotation(-180f);
-        sliderLeft.setPosition(colWidth * 2.55f, rowHeight * 5.47f);
+        sliderLeft.rotateBy(180f);
+        sliderLeft.top().right();
+        sliderLeft.setPosition(colWidth * 2f, rowHeight * 5f);
 
         sliderDown = new Container(sliderZNegative);
         sliderDown.setTransform(true);
-        sliderDown.setRotation(-180f);
-        sliderDown.setPosition(colWidth * 3.55f, colWidth * 2f);
+        sliderDown.rotateBy(180f);
+        sliderDown.right();
+        sliderDown.setPosition(colWidth * 3.3f, rowHeight * 4f);
 
         profile = new TextField("", skin, "default");
         profile.setMaxLength(10);
