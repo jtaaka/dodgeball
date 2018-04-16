@@ -77,20 +77,22 @@ public class Settings implements Screen {
 
         sliderXPositive = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationXPositive"));
-        sliderXPositive.setPosition(colWidth * 4f, rowHeight * 5f);
+        sliderXPositive.setPosition(colWidth * 3.9f, rowHeight * 5f);
 
         sliderXNegative = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationXNegative"));
 
         sliderLeft = new Container(sliderXNegative);
         sliderLeft.setTransform(true);
-        sliderLeft.setRotation(-180f);
-        sliderLeft.setPosition(colWidth * 2.55f, rowHeight * 5.47f);
+        sliderLeft.rotateBy(180f);
+        sliderLeft.top().right();
+        sliderLeft.setPosition(colWidth * 2f, rowHeight * 5f);
 
         sliderDown = new Container(sliderZNegative);
         sliderDown.setTransform(true);
-        sliderDown.setRotation(-180f);
-        sliderDown.setPosition(colWidth * 3.60f, rowHeight * 3.95f);
+        sliderDown.rotateBy(180f);
+        sliderDown.right();
+        sliderDown.setPosition(colWidth * 3.3f, rowHeight * 4f);
 
         profile = new TextField("", skin, "default");
         profile.setMaxLength(10);
