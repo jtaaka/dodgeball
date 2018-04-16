@@ -77,7 +77,7 @@ public class Settings implements Screen {
 
         sliderXPositive = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXPositive.setValue(SettingsPreferences.prefs.getFloat("calibrationXPositive"));
-        sliderXPositive.setPosition(colWidth * 3.9f, rowHeight * 5f);
+        sliderXPositive.setPosition(colWidth * 4f, rowHeight * 5f);
 
         sliderXNegative = new Slider(1f, 5f, 0.5f, false, skin, "left-horizontal");
         sliderXNegative.setValue(SettingsPreferences.prefs.getFloat("calibrationXNegative"));
