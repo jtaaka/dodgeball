@@ -90,7 +90,7 @@ public class Settings implements Screen {
         sliderDown = new Container(sliderZNegative);
         sliderDown.setTransform(true);
         sliderDown.setRotation(-180f);
-        sliderDown.setPosition(colWidth * 3.55f, colWidth * 2f);
+        sliderDown.setPosition(colWidth * 3.60f, colWidth * 2.4f);
 
         profile = new TextField("", skin, "default");
         profile.setMaxLength(10);
