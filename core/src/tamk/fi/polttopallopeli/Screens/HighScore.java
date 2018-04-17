@@ -60,7 +60,6 @@ public class HighScore implements Screen  {
 
         backButton = new TextButton("< Back", skin, "default");
         backButton.setPosition(colWidth / 1.5f, rowHeight / 3f);
-        Gdx.input.setInputProcessor(stage);
 
         font = new BitmapFont();
         layout = new GlyphLayout();
@@ -70,13 +69,15 @@ public class HighScore implements Screen  {
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("droid-mono.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 34;
-        parameter.borderWidth = 1;
+        parameter.size = 36;
         parameter.color = Color.WHITE;
+        parameter.borderWidth = 1;
+        parameter.borderColor = Color.BLACK;
 
         font = generator.generateFont(parameter);
-
         layout.setText(font, "HIGH SCORES");
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -108,6 +109,7 @@ public class HighScore implements Screen  {
         ProfilePreferences.setProfile();
 
         batch.begin();
+
         batch.setProjectionMatrix(camera.combined);
         camera.update();
 
@@ -115,6 +117,18 @@ public class HighScore implements Screen  {
 
         font.draw(batch, "HIGH SCORES", WIDTH / 2f - (layout.width / 2f),
                 rowHeight * 12f - layout.height);
+
+        drawScores();
+
+        batch.end();
+
+        stage.act();
+        stage.draw();
+
+        Gdx.input.setCatchBackKey(true);
+    }
+
+    private void drawScores() {
 
         for (int i = 0; i < scores.length; i++) {
 
@@ -129,20 +143,16 @@ public class HighScore implements Screen  {
             formatSec = String.format("%02d", seconds);
             formatHundredths = String.format("%02d", hundredths);
 
-            font.draw(batch, profile, colWidth * 4f,
+            font.draw(batch, i + 1 + ".", colWidth * 3.5f,
+                    rowHeight * 10f - (i * (rowHeight / 1.2f)));
+
+            font.draw(batch, profile, colWidth * 4.5f,
                     rowHeight * 10f - (i * (rowHeight / 1.2f)));
 
             font.draw(batch,formatMin + ":" + formatSec + ":" + formatHundredths,
                     colWidth * 7f,
                     rowHeight * 10f - (i * (rowHeight / 1.2f)));
         }
-
-        batch.end();
-
-        stage.act();
-        stage.draw();
-
-        Gdx.input.setCatchBackKey(true);
     }
 
     public static void setScore() {

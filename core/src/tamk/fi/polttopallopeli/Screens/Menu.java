@@ -1,6 +1,7 @@
 package tamk.fi.polttopallopeli.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,9 +57,13 @@ public class Menu implements Screen {
     final float WIDTH = Gdx.graphics.getWidth();
     final float HEIGHT = Gdx.graphics.getHeight();
 
+    private Preferences prefs;
+
     public Menu(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+
+        prefs = Gdx.app.getPreferences("currentProfile");
 
         lang = Locale.getDefault();
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), lang);
@@ -78,7 +83,7 @@ public class Menu implements Screen {
 
         profileSkin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
 
-        profile = new TextField("", profileSkin, "default");
+        profile = new TextField(prefs.getString("profile"), profileSkin, "default");
         profile.setMaxLength(10);
         profile.setMessageText("Type name here");
         profile.setSize(colWidth * 2.9f, rowHeight);
@@ -297,6 +302,9 @@ public class Menu implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        prefs.putString("profile", profile.getText());
+        profile.setText(prefs.getString("profile"));
 
         stage.act();
         stage.draw();
