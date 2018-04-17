@@ -304,7 +304,7 @@ public class Menu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         prefs.putString("profile", profile.getText());
-        profile.setText(prefs.getString("profile"));
+        prefs.flush();
 
         stage.act();
         stage.draw();
