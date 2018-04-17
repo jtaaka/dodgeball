@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import tamk.fi.polttopallopeli.Balls;
+import tamk.fi.polttopallopeli.CenterOfPlayer;
 import tamk.fi.polttopallopeli.ContactDetection;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.GameTimer;
@@ -35,6 +36,8 @@ public class LevelTemplate implements Screen {
     //private Texture gameOver;
     private int[] ballLocator;
     private HeatMap heatMap;
+    private CenterOfPlayer center;
+    private Vector2 centerPoint;
 
     int MAX_BALL_AMOUNT; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
     float BALL_SPAWN_TIMER;  // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
@@ -64,6 +67,8 @@ public class LevelTemplate implements Screen {
         //gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
+        center = new CenterOfPlayer();
+        centerPoint = new Vector2();
         ball = new Balls[MAX_BALL_AMOUNT];
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
@@ -84,8 +89,6 @@ public class LevelTemplate implements Screen {
     private boolean calculated = false;
     private float divideAmount;
     private float lastDelta;
-    private float xCenter = 0;
-    private float yCenter = 0;
 
     private void heatMapDataHandler(float delta) {
         lastDelta += delta;
@@ -95,8 +98,11 @@ public class LevelTemplate implements Screen {
             divideAmount += 1;
             heatMap.modify(player.getPlayerBodyX(), player.getPlayerBodyY());
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-                xCenter += player.getAccelY();
-                yCenter += player.getAccelZ();
+                centerPoint.x += player.getAccelY();
+                centerPoint.y += player.getAccelZ();
+                if (!player.hit) {
+                    center.modify(player.getAccelY(), player.getAccelZ());
+                }
             }
             lastDelta = 0;
         }
@@ -104,12 +110,13 @@ public class LevelTemplate implements Screen {
         if (!calculated && player.getHealth() == 0 || !calculated && victory) {
             calculated = true;
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-                xCenter = xCenter / divideAmount;
-                yCenter = yCenter / divideAmount;
-                timer.setY(yCenter);
-                timer.setX(xCenter);
-                Gdx.app.log(getClass().getSimpleName(), "xCenter: " + xCenter);
-                Gdx.app.log(getClass().getSimpleName(), "yCenter: " + yCenter);
+                centerPoint.x = centerPoint.x / divideAmount;
+                centerPoint.y = centerPoint.y / divideAmount;
+                timer.setX(centerPoint.x);
+                timer.setY(centerPoint.y);
+                Gdx.app.log(getClass().getSimpleName(), "xCenter: " + centerPoint.x);
+                Gdx.app.log(getClass().getSimpleName(), "yCenter: " + centerPoint.y);
+                center.calculatedCenter(centerPoint);
             }
         }
     }
@@ -233,6 +240,7 @@ public class LevelTemplate implements Screen {
 
         if (victory || defeat) {
             heatMap.draw(batch);
+            center.draw(batch, camera);
         }
 
         //batch.end();

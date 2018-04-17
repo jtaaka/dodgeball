@@ -237,7 +237,7 @@ public class Player extends Sprite {
         return FRAME_TIME * FRAME_COUNT * currentRow;
     }
 
-    boolean hit;
+    public boolean hit;
     float invulnerability;
     float accelZ;
     float accelY;

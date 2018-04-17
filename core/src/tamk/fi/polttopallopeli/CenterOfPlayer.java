@@ -18,7 +18,7 @@ public class CenterOfPlayer extends Sprite {
 
     public CenterOfPlayer() {
         super(new Texture("peruspalloTESTI.png"));
-        setSize(getWidth() / 200f, getHeight() / 200f);
+        setSize(getWidth() / 300f, getHeight() / 300f);
         setOriginCenter();
         center = new Array<CenterOfPlayerObject>();
         shape = new ShapeRenderer();
@@ -27,7 +27,7 @@ public class CenterOfPlayer extends Sprite {
     }
 
     public void modify(float x, float y) {
-        final CenterOfPlayerObject object = new CenterOfPlayerObject(x, y);
+        final CenterOfPlayerObject object = new CenterOfPlayerObject(x / 3f, y / 3f);
         //Gdx.app.log(getClass().getSimpleName(), "Wörk MODIFY?" );
 
         for (CenterOfPlayerObject heatMapObject : center) {
@@ -76,13 +76,14 @@ public class CenterOfPlayer extends Sprite {
             lastPoint = heat.point;
             shape.end();
         }
-batch.begin();
+
         setColor(1,0,0,1);
-        setPosition(Dodgeball.WORLD_WIDTH / 2f + calculatedCenter.x - getWidth() / 2f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y - getHeight() / 2f);
-        setPosition(Dodgeball.WORLD_WIDTH / 2f, Dodgeball.WORLD_HEIGHT / 2f);
+        setPosition(Dodgeball.WORLD_WIDTH / 2f + calculatedCenter.x / 3f - getWidth() / 2f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
+        //setPosition(Dodgeball.WORLD_WIDTH / 2f, Dodgeball.WORLD_HEIGHT / 2f);
+        batch.begin();
         draw(batch);
         batch.end();
-        Gdx.app.log(getClass().getSimpleName(), "x: " + (Dodgeball.WORLD_WIDTH / 2f + calculatedCenter.x - getWidth() / 2f) + " y: " + (Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y - getHeight() / 2f));
+        //Gdx.app.log(getClass().getSimpleName(), "x: " + (Dodgeball.WORLD_WIDTH / 2f + calculatedCenter.x - getWidth() / 2f) + " y: " + (Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y - getHeight() / 2f));
     }
 
     public void dispose() {
