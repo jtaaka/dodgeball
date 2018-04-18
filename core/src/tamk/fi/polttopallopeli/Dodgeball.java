@@ -17,6 +17,8 @@ public class Dodgeball extends Game {
     public static final short OBJECT_PLAYER = 2;
     public static final short OBJECT_BALL = 4;
 
+    public static float VOLUME = 1.0f;
+
     @Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -26,6 +28,14 @@ public class Dodgeball extends Game {
 
 	public SpriteBatch getBatch() {
 	    return batch;
+    }
+
+    public static void muteSounds(){
+        VOLUME = 0.0f;
+    }
+
+    public static void playSounds(){
+        VOLUME = 1.0f;
     }
 
 	@Override

@@ -223,6 +223,8 @@ public class Menu implements Screen {
                 soundOn.remove();
                 soundOff.setPosition(colWidth * 0.5f, rowHeight / 2f);
 
+                Dodgeball.muteSounds();
+
                 stage.addActor(soundOff);
             }
 
@@ -237,6 +239,8 @@ public class Menu implements Screen {
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 soundOff.remove();
                 soundOn.setPosition(colWidth * 0.5f, rowHeight / 2f);
+
+                Dodgeball.playSounds();
 
                 stage.addActor(soundOn);
             }
@@ -284,7 +288,15 @@ public class Menu implements Screen {
         stage.addActor(settingsButton);
         stage.addActor(scoreButton);
         stage.addActor(exitButton);
-        stage.addActor(soundOn);
+
+        if (Dodgeball.VOLUME == 0) {
+            soundOff.setPosition(colWidth * 0.5f, rowHeight / 2f);
+            stage.addActor(soundOff);
+        } else {
+            soundOn.setPosition(colWidth * 0.5f, rowHeight / 2f);
+            stage.addActor(soundOn);
+        }
+
         stage.addActor(musicOn);
 
         if (Locale.getDefault().getLanguage().equals("fi")) {
@@ -334,5 +346,6 @@ public class Menu implements Screen {
     public void dispose() {
         stage.dispose();
         menuSkin.dispose();
+        profileSkin.dispose();
     }
 }

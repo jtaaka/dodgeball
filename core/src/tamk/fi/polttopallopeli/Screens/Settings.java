@@ -92,31 +92,31 @@ public class Settings implements Screen {
         sliderDown.setPosition(colWidth * 3.3f, rowHeight * 4f);
 
         upCalibration = new TextButton("" + sliderZPositive.getValue(), skin, "default");
-        upCalibration.setPosition(colWidth * 10f, rowHeight * 8f);
+        upCalibration.setPosition(colWidth * 10f, rowHeight * 7.5f);
 
         rightCalibration = new TextButton("" + sliderXPositive.getValue(), skin, "default");
-        rightCalibration.setPosition(colWidth * 10f, rowHeight * 6.5f);
+        rightCalibration.setPosition(colWidth * 10f, rowHeight * 6f);
 
         downCalibration = new TextButton("" + sliderZNegative.getValue(), skin, "default");
-        downCalibration.setPosition(colWidth * 10f, rowHeight * 5f);
+        downCalibration.setPosition(colWidth * 10f, rowHeight * 4.5f);
 
         leftCalibration = new TextButton("" + sliderXNegative.getValue(), skin, "default");
-        leftCalibration.setPosition(colWidth * 10f, rowHeight * 3.5f);
+        leftCalibration.setPosition(colWidth * 10f, rowHeight * 3f);
 
         up = new Label("Up Sensitivity", skin, "default");
-        up.setPosition(colWidth * 6.5f, rowHeight * 8f);
+        up.setPosition(colWidth * 6.5f, rowHeight * 7.5f);
 
         right = new Label("Right Sensitivity", skin, "default");
-        right.setPosition(colWidth * 6.5f, rowHeight * 6.5f);
+        right.setPosition(colWidth * 6.5f, rowHeight * 6f);
 
         down = new Label("Down Sensitivity", skin, "default");
-        down.setPosition(colWidth * 6.5f, rowHeight * 5f);
+        down.setPosition(colWidth * 6.5f, rowHeight * 4.5f);
 
         left = new Label("Left Sensitivity", skin, "default");
-        left.setPosition(colWidth * 6.5f, rowHeight * 3.5f);
+        left.setPosition(colWidth * 6.5f, rowHeight * 3f);
 
         backButton = new TextButton("< Back", skin, "default");
-        backButton.setPosition(colWidth / 2, rowHeight / 2);
+        backButton.setPosition(colWidth / 2, rowHeight / 2f);
 
         Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(stage);

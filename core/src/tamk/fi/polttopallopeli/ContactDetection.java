@@ -1,6 +1,7 @@
 package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -8,13 +9,15 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class ContactDetection implements ContactListener {
-    Fixture fixtureA;
-    Fixture fixtureB;
+    public Fixture fixtureA;
+    public Fixture fixtureB;
+    public Sound hitSound;
 
     @Override
     public void beginContact(Contact contact) {
         fixtureA = contact.getFixtureA();
         fixtureB = contact.getFixtureB();
+        hitSound = Gdx.audio.newSound(Gdx.files.internal("hit.ogg"));
 
         if (fixtureA == null || fixtureA.getUserData() == null || fixtureB == null || fixtureB.getUserData() == null) {
             return;
@@ -24,6 +27,7 @@ public class ContactDetection implements ContactListener {
             if (fixtureA.getUserData() instanceof Player) {
                 Player player = (Player) fixtureA.getUserData();
                 if (!player.hit && !player.victory) {
+                    hitSound.play(Dodgeball.VOLUME);
                     Gdx.input.vibrate(200);
                     player.decreaseHealth();
                     player.hit = true;
@@ -31,6 +35,7 @@ public class ContactDetection implements ContactListener {
             } else {
                 Player player = (Player) fixtureB.getUserData();
                 if (!player.hit && !player.victory) {
+                    hitSound.play(Dodgeball.VOLUME);
                     Gdx.input.vibrate(200);
                     player.decreaseHealth();
                     player.hit = true;
