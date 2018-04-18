@@ -28,6 +28,7 @@ public class Player extends Sprite {
     private Texture healthTexture;
     private Animation<TextureRegion> healthAnimation;
     private float healthFrameTime;
+    private float frameDuration = 1/8f;
 
     private Animation<TextureRegion> playerAnime;
     private float currentFrameTime;
@@ -43,8 +44,8 @@ public class Player extends Sprite {
     public boolean victory;
 
     public Player(World world, SpriteBatch batch) {
-        //super(new Texture("walk.png"));
-        super(new Texture("hahmo.png"));
+        super(new Texture("hahmoTex.png"));
+        //super(new Texture("hahmo.png"));
 
         //SettingsPreferences.getSettings();
         //SettingsPreferences.setSettings();
@@ -70,14 +71,14 @@ public class Player extends Sprite {
         TextureRegion[] healthFrames = healthsTo1D(temp);
         healthAnimation = new Animation<TextureRegion>(1/10f, healthFrames);
 
-/*
-        TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 8,
+
+        TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 4,
                 getTexture().getHeight() / 8);
         TextureRegion[] playerFrames = transformTo1D(tmp);
-        playerAnime = new Animation<TextureRegion>(1/10f, playerFrames);
-*/
-        //setSize(getWidth() / 800f, getHeight() / 800f);
-        setSize(getWidth() / 200f, getHeight() / 200f);
+        playerAnime = new Animation<TextureRegion>(frameDuration, playerFrames);
+
+        setSize(getWidth() / 400f / 3f, getHeight() / 800f / 3f);
+        //setSize(getWidth() / 200f, getHeight() / 200f);
         setOriginCenter();
 
         currentFrameTime = 0;
@@ -107,7 +108,7 @@ public class Player extends Sprite {
 
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(getWidth() / 8.5f, getHeight() / 5.5f);
+        shape.setAsBox(getWidth() / 6.5f, getHeight() / 5.5f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -127,7 +128,7 @@ public class Player extends Sprite {
         WeldJointDef weldJointDef = new WeldJointDef();
         weldJointDef.bodyA = body;
         weldJointDef.bodyB = head;
-        weldJointDef.localAnchorA.add(0.02f, getHeight() / 8 * 3.5f);
+        weldJointDef.localAnchorA.add(0.02f, getHeight() / 8 * 3.4f);
         world.createJoint(weldJointDef);
 
         //Kalibroi lähtöasennon, ei vaikuta desktopilla
@@ -147,7 +148,7 @@ public class Player extends Sprite {
 
         int index = 0;
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < 4; j++) {
                 playerFrames[index++] = tmp[i][j];
             }
         }
@@ -175,8 +176,8 @@ public class Player extends Sprite {
 
     private float getDirectionalFrameTime() {
         final float DETECTION_THRESHOLD = 0.5f;
-        final float FRAME_TIME = 1 / 10f;
-        final float FRAME_COUNT = 8;
+        final float FRAME_TIME = frameDuration;
+        final float FRAME_COUNT = 4;
 
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;
@@ -184,52 +185,52 @@ public class Player extends Sprite {
         int currentRow = lastRow;
 
         if (directionX < 0 && directionY > 0) {
-            currentRow = 1;
-        }
-
-        if (directionX > 0 && directionY > 0) {
             currentRow = 3;
         }
 
-        if (directionX > 0 && directionY < 0) {
+        if (directionX > 0 && directionY > 0) {
             currentRow = 5;
         }
 
-        if (directionX < 0 && directionY < 0) {
+        if (directionX > 0 && directionY < 0) {
             currentRow = 7;
         }
 
-        if (directionX < 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
-            currentRow = 0;
+        if (directionX < 0 && directionY < 0) {
+            currentRow = 1;
         }
 
-        if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY > 0) {
+        if (directionX < 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 2;
         }
 
-        if (directionX > 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
+        if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY > 0) {
             currentRow = 4;
         }
 
-        if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY < 0) {
+        if (directionX > 0 && MathUtils.isZero(directionY, DETECTION_THRESHOLD)) {
             currentRow = 6;
+        }
+
+        if (MathUtils.isZero(directionX, DETECTION_THRESHOLD) && directionY < 0) {
+            currentRow = 0;
         }
 
         // seinät
         if (getPlayerBodyX() >= 12.6f) {
-            currentRow = 4;
+            currentRow = 6;
         }
 
         if (getPlayerBodyX() <= 0.2f) {
-            currentRow = 0;
-        }
-
-        if (getPlayerBodyY() >= 7.6f) {
             currentRow = 2;
         }
 
+        if (getPlayerBodyY() >= 7.6f) {
+            currentRow = 4;
+        }
+
         if (getPlayerBodyY() <= 0.4f) {
-            currentRow = 6;
+            currentRow = 0;
         }
 
         //lastRow = currentRow;
@@ -244,7 +245,7 @@ public class Player extends Sprite {
     boolean faceRight = true;
 
     public void playerMove(float delta) {
-        //float initialFrameTime = getDirectionalFrameTime();
+        float initialFrameTime = getDirectionalFrameTime();
 
         if (victory || getHealth() == 0) {
             delta = 0;
@@ -262,25 +263,21 @@ public class Player extends Sprite {
             currentFrameTime += delta;
         }
 
-        /*
-        if (initialFrameTime + currentFrameTime > initialFrameTime + 1/10f * 8f) {
+        if (initialFrameTime + currentFrameTime > initialFrameTime + frameDuration * 4f) {
             currentFrameTime = 0;
         }
-        */
 
-        //TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
+        TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
 
         //batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
         //       getWidth() / 80f, getHeight() / 80f);
         // ^^ OLD? ^^
 
-        /*
-        batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 2.4f,
+
+        batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 4f,
                 getWidth(), getHeight());
-                */
 
-        setPosition(body.getPosition().x - getWidth() / 2.3f,body.getPosition().y - getHeight() / 4);
-
+        //setPosition(body.getPosition().x - getWidth() / 2.3f,body.getPosition().y - getHeight() / 4);
 
         vector.set(0, 0);
 
@@ -304,7 +301,7 @@ public class Player extends Sprite {
         // Accelerometer testing for tablet
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
         accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
-
+/*
         float directionX = body.getLinearVelocity().x;
 
         if (directionX < 0) {
@@ -319,6 +316,7 @@ public class Player extends Sprite {
             }
             setPosition(body.getPosition().x - getWidth() / 1.9f,body.getPosition().y - getHeight() / 4);
         }
+        */
 
         draw(batch);
 
