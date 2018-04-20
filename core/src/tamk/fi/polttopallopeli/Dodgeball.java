@@ -1,6 +1,8 @@
 package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import tamk.fi.polttopallopeli.Screens.SplashScreen;
@@ -18,10 +20,16 @@ public class Dodgeball extends Game {
     public static final short OBJECT_BALL = 4;
 
     public static float VOLUME = 1.0f;
+    public static AssetManager manager;
 
     @Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		manager = new AssetManager();
+		manager.load("hit.ogg", Sound.class);
+		manager.load("hit2.ogg", Sound.class);
+		manager.finishLoading();
 
         setScreen(new SplashScreen(this));
 	}
