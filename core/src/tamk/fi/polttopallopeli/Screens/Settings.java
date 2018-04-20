@@ -62,7 +62,7 @@ public class Settings implements Screen {
 
         skin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
 
-        settings = new Label("Calibration Settings", skin, "default");
+        settings = new Label(host.getLang().get("calibration"), skin, "default");
         settings.setPosition(WIDTH / 2 - settings.getWidth() / 2, HEIGHT - settings.getHeight());
 
         sliderZPositive = new Slider(1f, 5f, 0.5f, true, skin, "up-vertical");
@@ -103,19 +103,19 @@ public class Settings implements Screen {
         leftCalibration = new TextButton("" + sliderXNegative.getValue(), skin, "default");
         leftCalibration.setPosition(colWidth * 10f, rowHeight * 3f);
 
-        up = new Label("Up Sensitivity", skin, "default");
+        up = new Label(host.getLang().get("up"), skin, "default");
         up.setPosition(colWidth * 6.5f, rowHeight * 7.5f);
 
-        right = new Label("Right Sensitivity", skin, "default");
+        right = new Label(host.getLang().get("right"), skin, "default");
         right.setPosition(colWidth * 6.5f, rowHeight * 6f);
 
-        down = new Label("Down Sensitivity", skin, "default");
+        down = new Label(host.getLang().get("down"), skin, "default");
         down.setPosition(colWidth * 6.5f, rowHeight * 4.5f);
 
-        left = new Label("Left Sensitivity", skin, "default");
+        left = new Label(host.getLang().get("left"), skin, "default");
         left.setPosition(colWidth * 6.5f, rowHeight * 3f);
 
-        backButton = new TextButton("< Back", skin, "default");
+        backButton = new TextButton(host.getLang().get("back"), skin, "default");
         backButton.setPosition(colWidth / 2, rowHeight / 2f);
 
         Gdx.input.setCatchBackKey(true);

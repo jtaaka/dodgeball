@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -226,6 +227,10 @@ public class SurvivalMode implements Screen {
             name = "Anonymous";
         } else {
             name = Menu.profile.getText();
+        }
+
+        if (time > HighScore.scores[0]) {
+            Dodgeball.manager.get("highscore.ogg", Sound.class).play(Dodgeball.VOLUME);
         }
 
         for (int i = 0; i < HighScore.scores.length; i++) {

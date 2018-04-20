@@ -1,9 +1,13 @@
 package tamk.fi.polttopallopeli;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 import tamk.fi.polttopallopeli.Screens.SplashScreen;
 
@@ -22,17 +26,28 @@ public class Dodgeball extends Game {
     public static float VOLUME = 1.0f;
     public static AssetManager manager;
 
+    private Locale lang;
+    private I18NBundle myBundle;
+
     @Override
 	public void create () {
 		batch = new SpriteBatch();
 
+        lang = Locale.getDefault();
+        myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), lang);
+
 		manager = new AssetManager();
 		manager.load("hit.ogg", Sound.class);
 		manager.load("hit2.ogg", Sound.class);
+		manager.load("highscore.ogg", Sound.class);
 		manager.finishLoading();
 
         setScreen(new SplashScreen(this));
 	}
+
+	public I18NBundle getLang() {
+        return myBundle;
+    }
 
 	public SpriteBatch getBatch() {
 	    return batch;

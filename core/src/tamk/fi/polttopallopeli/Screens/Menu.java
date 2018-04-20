@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import java.util.Locale;
 
@@ -44,14 +43,6 @@ public class Menu implements Screen {
     private Button fin;
     private Button uk;
 
-    private Locale lang;
-    private String play;
-    private String survival;
-    private String levels;
-    private String highscore;
-    private String settings;
-    private String exit;
-
     final int colWidth = Gdx.graphics.getWidth() / 12;
     final int rowHeight = Gdx.graphics.getHeight() / 12;
     final float WIDTH = Gdx.graphics.getWidth();
@@ -65,16 +56,6 @@ public class Menu implements Screen {
 
         prefs = Gdx.app.getPreferences("currentProfile");
 
-        lang = Locale.getDefault();
-        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), lang);
-
-        play = myBundle.get("play");
-        survival = myBundle.get("survival");
-        levels = myBundle.get("levels");
-        highscore = myBundle.get("highscore");
-        settings = myBundle.get("settings");
-        exit = myBundle.get("exit");
-
         background = new Texture(Gdx.files.internal("menubg.png"));
         bgImage = new Image(background);
         bgImage.setSize(WIDTH, HEIGHT);
@@ -85,32 +66,32 @@ public class Menu implements Screen {
 
         profile = new TextField(prefs.getString("profile"), profileSkin, "default");
         profile.setMaxLength(10);
-        profile.setMessageText("Type name here");
+        profile.setMessageText(host.getLang().get("profile"));
         profile.setSize(colWidth * 2.9f, rowHeight);
         profile.setPosition(colWidth * 8.5f, rowHeight / 2f);
 
         menuSkin = new Skin(Gdx.files.internal("menu.json"));
         menuSkin.getFont("showg").getData().setScale(1.2f);
 
-        playButton = new TextButton(play, menuSkin,"play");
+        playButton = new TextButton(host.getLang().get("play"), menuSkin,"play");
         playButton.setSize(colWidth * 2, rowHeight * 2);
         playButton.setPosition(colWidth * 1f,HEIGHT / 2 - playButton.getHeight() / 2);
 
-        survivalButton = new TextButton(survival, menuSkin, "default");
+        survivalButton = new TextButton(host.getLang().get("survival"), menuSkin, "default");
         survivalButton.setSize(colWidth * 3f, rowHeight);
 
-        levelsButton = new TextButton(levels, menuSkin, "default");
+        levelsButton = new TextButton(host.getLang().get("levels"), menuSkin, "default");
         levelsButton.setSize(colWidth * 3f, rowHeight);
 
-        settingsButton = new TextButton(settings, menuSkin, "default");
+        settingsButton = new TextButton(host.getLang().get("settings"), menuSkin, "default");
         settingsButton.setSize(colWidth * 2.5f, rowHeight);
         settingsButton.setPosition(WIDTH - settingsButton.getWidth() - colWidth,HEIGHT / 2f);
 
-        scoreButton = new TextButton(highscore, menuSkin, "default");
+        scoreButton = new TextButton(host.getLang().get("scores"), menuSkin, "default");
         scoreButton.setSize(colWidth * 2.5f, rowHeight);
         scoreButton.setPosition(WIDTH - settingsButton.getWidth() - colWidth, rowHeight * 4f);
 
-        exitButton = new TextButton(exit, menuSkin, "default");
+        exitButton = new TextButton(host.getLang().get("exit"), menuSkin, "default");
         exitButton.setSize(colWidth * 2.5f, rowHeight);
         exitButton.setPosition(WIDTH - settingsButton.getWidth() - colWidth, rowHeight * 2f);
 
@@ -208,7 +189,6 @@ public class Menu implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
-
             }
 
             @Override

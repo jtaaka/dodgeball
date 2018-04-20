@@ -25,7 +25,7 @@ public class ContactDetection implements ContactListener {
             if (fixtureA.getUserData() instanceof Player) {
                 Player player = (Player) fixtureA.getUserData();
                 if (!player.hit && !player.victory) {
-                    Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME);
+                    Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
                     Dodgeball.manager.get("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
                     Gdx.input.vibrate(200);
                     player.decreaseHealth();
@@ -34,7 +34,7 @@ public class ContactDetection implements ContactListener {
             } else {
                 Player player = (Player) fixtureB.getUserData();
                 if (!player.hit && !player.victory) {
-                    Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME);
+                    Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
                     Dodgeball.manager.get("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
                     Gdx.input.vibrate(200);
                     player.decreaseHealth();

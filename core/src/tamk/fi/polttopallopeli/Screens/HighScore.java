@@ -58,7 +58,7 @@ public class HighScore implements Screen  {
 
         skin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
 
-        backButton = new TextButton("< Back", skin, "default");
+        backButton = new TextButton(host.getLang().get("back"), skin, "default");
         backButton.setPosition(colWidth / 1.5f, rowHeight / 3f);
 
         font = new BitmapFont();
@@ -115,7 +115,7 @@ public class HighScore implements Screen  {
 
         batch.draw(background, 0, 0, WIDTH, HEIGHT);
 
-        font.draw(batch, "HIGH SCORES", WIDTH / 2f - (layout.width / 2f),
+        font.draw(batch, host.getLang().get("highscore"), WIDTH / 2f - (layout.width / 2f),
                 rowHeight * 12f - layout.height);
 
         drawScores();
