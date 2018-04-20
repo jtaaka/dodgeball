@@ -33,6 +33,9 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerAnime;
     private float currentFrameTime;
 
+    private Texture stunTexture;
+    private Animation<TextureRegion> stunAnime;
+
     private float tabletAccelerometerSettingZ;
     private float tabletAccelerometerSettingY;
 
@@ -65,17 +68,23 @@ public class Player extends Sprite {
         healthTexture = new Texture("healths.png");
         invulnerability = 0;
 
+        stunTexture = new Texture("stun.png");
+
         // animaatio healteille
         TextureRegion[][] temp = TextureRegion.split(healthTexture, healthTexture.getWidth(),
                 healthTexture.getHeight() / 4);
-        TextureRegion[] healthFrames = healthsTo1D(temp);
+        TextureRegion[] healthFrames = transformTo1D(temp);
         healthAnimation = new Animation<TextureRegion>(1/10f, healthFrames);
 
-
-        TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 6,
+        temp = TextureRegion.split(getTexture(), getTexture().getWidth() / 6,
                 getTexture().getHeight() / 8);
-        TextureRegion[] playerFrames = transformTo1D(tmp);
+        TextureRegion[] playerFrames = transformTo1D(temp);
         playerAnime = new Animation<TextureRegion>(frameDuration, playerFrames);
+
+        temp = TextureRegion.split(stunTexture, stunTexture.getWidth() / 8,
+                stunTexture.getHeight());
+        TextureRegion[] stunFrames = transformTo1D(temp);
+        stunAnime = new Animation<TextureRegion>(frameDuration, stunFrames);
 
         setSize(getWidth() / 600f / 3f, getHeight() / 800f / 3f);
         //setSize(getWidth() / 200f, getHeight() / 200f);
@@ -147,8 +156,8 @@ public class Player extends Sprite {
         TextureRegion [] playerFrames = new TextureRegion[tmp.length * tmp[0].length];
 
         int index = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < tmp.length; i++) {
+            for (int j = 0; j < tmp[0].length; j++) {
                 playerFrames[index++] = tmp[i][j];
             }
         }
@@ -273,9 +282,14 @@ public class Player extends Sprite {
         //       getWidth() / 80f, getHeight() / 80f);
         // ^^ OLD? ^^
 
-
-        batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 4f,
-                getWidth(), getHeight());
+        if (!hit) {
+            batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 4f,
+                    getWidth(), getHeight());
+        } else {
+            currentFrame = stunAnime.getKeyFrame(invulnerability, true);
+            batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 4f,
+                    getWidth(), getHeight());
+        }
 
         //setPosition(body.getPosition().x - getWidth() / 2.3f,body.getPosition().y - getHeight() / 4);
 
@@ -358,19 +372,6 @@ public class Player extends Sprite {
         return accelY;
     }
 
-    private TextureRegion[] healthsTo1D(TextureRegion[][] tmp) {
-        TextureRegion [] healthFrames = new TextureRegion[tmp.length * tmp[0].length];
-
-        int index = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 1; j++) {
-                healthFrames[index++] = tmp[i][j];
-            }
-        }
-
-        return healthFrames;
-    }
-
     private float getHealthFrames() {
         float FRAME_TIME = 1 / 10f;
 
@@ -417,6 +418,7 @@ public class Player extends Sprite {
         getTexture().dispose();
         world.destroyBody(body);
         healthTexture.dispose();
+        stunTexture.dispose();
         //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }
