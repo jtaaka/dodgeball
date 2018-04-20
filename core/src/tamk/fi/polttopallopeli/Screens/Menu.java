@@ -29,6 +29,8 @@ public class Menu implements Screen {
     private Skin menuSkin;
     private Skin profileSkin;
     public static TextField profile;
+    private Texture profileicon;
+    private Image profileimage;
 
     private Button playButton;
     private Button survivalButton;
@@ -64,11 +66,15 @@ public class Menu implements Screen {
 
         profileSkin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
 
+        profileicon = new Texture("profileicon.png");
+        profileimage = new Image(profileicon);
+        profileimage.setPosition(colWidth * 8.4f, rowHeight / 2f);
+
         profile = new TextField(prefs.getString("profile"), profileSkin, "default");
-        profile.setMaxLength(10);
+        profile.setMaxLength(9);
         profile.setMessageText(host.getLang().get("profile"));
-        profile.setSize(colWidth * 2.9f, rowHeight);
-        profile.setPosition(colWidth * 8.5f, rowHeight / 2f);
+        profile.setSize(colWidth * 2.1f, rowHeight);
+        profile.setPosition(colWidth * 9f, rowHeight / 2f);
 
         menuSkin = new Skin(Gdx.files.internal("menu.json"));
         menuSkin.getFont("showg").getData().setScale(1.2f);
@@ -263,6 +269,7 @@ public class Menu implements Screen {
         });
 
         stage.addActor(bgImage);
+        stage.addActor(profileimage);
         stage.addActor(profile);
         stage.addActor(playButton);
         stage.addActor(settingsButton);
