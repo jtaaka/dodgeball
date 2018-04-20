@@ -72,12 +72,12 @@ public class Player extends Sprite {
         healthAnimation = new Animation<TextureRegion>(1/10f, healthFrames);
 
 
-        TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 4,
+        TextureRegion[][] tmp = TextureRegion.split(getTexture(), getTexture().getWidth() / 6,
                 getTexture().getHeight() / 8);
         TextureRegion[] playerFrames = transformTo1D(tmp);
         playerAnime = new Animation<TextureRegion>(frameDuration, playerFrames);
 
-        setSize(getWidth() / 400f / 3f, getHeight() / 800f / 3f);
+        setSize(getWidth() / 600f / 3f, getHeight() / 800f / 3f);
         //setSize(getWidth() / 200f, getHeight() / 200f);
         setOriginCenter();
 
@@ -148,7 +148,7 @@ public class Player extends Sprite {
 
         int index = 0;
         for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 6; j++) {
                 playerFrames[index++] = tmp[i][j];
             }
         }
@@ -177,7 +177,7 @@ public class Player extends Sprite {
     private float getDirectionalFrameTime() {
         final float DETECTION_THRESHOLD = 0.5f;
         final float FRAME_TIME = frameDuration;
-        final float FRAME_COUNT = 4;
+        final float FRAME_COUNT = 6;
 
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;
@@ -263,7 +263,7 @@ public class Player extends Sprite {
             currentFrameTime += delta;
         }
 
-        if (initialFrameTime + currentFrameTime > initialFrameTime + frameDuration * 4f) {
+        if (initialFrameTime + currentFrameTime > initialFrameTime + frameDuration * 6f) {
             currentFrameTime = 0;
         }
 
@@ -301,7 +301,7 @@ public class Player extends Sprite {
         // Accelerometer testing for tablet
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
         accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
-/*
+        /*
         float directionX = body.getLinearVelocity().x;
 
         if (directionX < 0) {
@@ -317,8 +317,6 @@ public class Player extends Sprite {
             setPosition(body.getPosition().x - getWidth() / 1.9f,body.getPosition().y - getHeight() / 4);
         }
         */
-
-        draw(batch);
 
         if (!MathUtils.isZero(accelY, 0.5f) || !MathUtils.isZero(accelZ, 0.5f)) {
 
