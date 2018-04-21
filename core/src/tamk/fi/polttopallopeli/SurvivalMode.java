@@ -82,17 +82,11 @@ public class SurvivalMode implements Screen {
     private boolean calculated = false;
     private float divideAmount;
     private float lastDelta;
-    private float ballSpawnTimer = 0;
-    private int ballStartCounter = 0;
-    boolean setScore = true;
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    private void heatMapDataHandler(float delta) {
         //HEATMAP DATA COLLECTION
-        lastDelta += delta;
         //Gdx.app.log(getClass().getSimpleName(), ""+ lastDelta);
+        lastDelta += delta;
 
         if (player.getHealth() > 0 && lastDelta > 0.25f) {
             divideAmount += 1;
@@ -121,17 +115,12 @@ public class SurvivalMode implements Screen {
                 center.calculatedCenter(centerPoint);
             }
         }
+    }
 
-        camera.update();
+    private float ballSpawnTimer = 0;
+    private int ballStartCounter = 0;
 
-        batch.setProjectionMatrix(camera.combined);
-
-        batch.begin();
-        batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
-        batch.end();
-
-        player.playerMove(delta);
-
+    private void ballHandler(float delta) {
         // Determines ball spawning at the start
         ballSpawnTimer += delta;
         if (ballStartCounter < BALL_SPAWN_COUNT) {
@@ -164,11 +153,11 @@ public class SurvivalMode implements Screen {
             }
             i++;
         }
+    }
 
-        player.drawHealth(delta);
+    boolean setScore = true;
 
-        //batch.begin();
-
+    private void isGameOver() {
         if (player.getHealth() == 0) {
             /*
             batch.draw(gameOver,Dodgeball.WORLD_WIDTH / 2 - gameOver.getWidth() / 100 / 2,
@@ -185,8 +174,28 @@ public class SurvivalMode implements Screen {
             }
 
         }
+    }
 
-        //batch.end();
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        heatMapDataHandler(delta);
+
+        camera.update();
+
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        batch.end();
+
+        player.playerMove(delta);
+        ballHandler(delta);
+
+        player.drawHealth(delta);
+        isGameOver();
 
         timer.survivalModeTimer();
 
