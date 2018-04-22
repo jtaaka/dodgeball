@@ -218,6 +218,11 @@ public class Settings implements Screen {
         batch.draw(background, 0, 0, WIDTH, HEIGHT);
         batch.end();
 
+        upCalibration.setText("" + sliderZPositive.getValue());
+        downCalibration.setText("" + sliderZNegative.getValue());
+        rightCalibration.setText("" + sliderXPositive.getValue());
+        leftCalibration.setText("" + sliderXNegative.getValue());
+
         stage.act();
         stage.draw();
     }
