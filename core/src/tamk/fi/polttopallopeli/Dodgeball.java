@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -24,6 +25,7 @@ public class Dodgeball extends Game {
     public static final short OBJECT_BALL = 4;
 
     public static float VOLUME = 1.0f;
+    public static float MUSIC_VOLUME = 1.0f;
     public static AssetManager manager;
 
     private Locale lang;
@@ -37,6 +39,8 @@ public class Dodgeball extends Game {
         myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), lang);
 
 		manager = new AssetManager();
+        manager.load("menu.ogg", Music.class);
+        manager.load("survival.ogg", Music.class);
 		manager.load("hit.ogg", Sound.class);
 		manager.load("hit2.ogg", Sound.class);
 		manager.load("highscore.ogg", Sound.class);
@@ -59,6 +63,14 @@ public class Dodgeball extends Game {
 
     public static void playSounds(){
         VOLUME = 1.0f;
+    }
+
+    public static void muteMusic(){
+        MUSIC_VOLUME = 0.0f;
+    }
+
+    public static void playMusic(){
+        MUSIC_VOLUME = 1.0f;
     }
 
 	@Override

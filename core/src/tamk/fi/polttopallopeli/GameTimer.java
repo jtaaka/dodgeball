@@ -119,7 +119,6 @@ public class GameTimer {
     public void levelModeTimer(long timeLimit) {
         timeLimit = (timeLimit + 1) * 1000;
 
-
         if (!freeze) {
             elapsed = (timeLimit * nanosPerMilli + startTime - TimeUtils.nanoTime()) / nanosPerMilli;
         }
@@ -152,5 +151,6 @@ public class GameTimer {
 
     public void dispose() {
         generator.dispose();
+        font.dispose();
     }
 }

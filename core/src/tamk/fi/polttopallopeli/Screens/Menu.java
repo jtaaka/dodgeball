@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -51,10 +52,14 @@ public class Menu implements Screen {
     final float HEIGHT = Gdx.graphics.getHeight();
 
     private Preferences prefs;
+    private Music music;
 
     public Menu(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+
+        music = Dodgeball.manager.get("menu.ogg", Music.class);
+        music.setLooping(true);
 
         prefs = Gdx.app.getPreferences("currentProfile");
 
@@ -243,8 +248,10 @@ public class Menu implements Screen {
                 musicOn.remove();
                 musicOff.setPosition(colWidth * 2f, rowHeight / 2f);
 
-                stage.addActor(musicOff);
+                Dodgeball.muteMusic();
+                music.stop();
 
+                stage.addActor(musicOff);
             }
 
             @Override
@@ -258,6 +265,9 @@ public class Menu implements Screen {
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 musicOff.remove();
                 musicOn.setPosition(colWidth * 2f, rowHeight / 2f);
+
+                Dodgeball.playMusic();
+                music.play();
 
                 stage.addActor(musicOn);
             }
@@ -284,7 +294,15 @@ public class Menu implements Screen {
             stage.addActor(soundOn);
         }
 
-        stage.addActor(musicOn);
+        if (Dodgeball.MUSIC_VOLUME == 0) {
+            music.stop();
+            musicOff.setPosition(colWidth * 2f, rowHeight / 2f);
+            stage.addActor(musicOff);
+        } else {
+            music.play();
+            musicOn.setPosition(colWidth * 2f, rowHeight / 2f);
+            stage.addActor(musicOn);
+        }
 
         if (Locale.getDefault().getLanguage().equals("fi")) {
             fin.setPosition(colWidth * 4f, rowHeight / 2f);
@@ -334,5 +352,6 @@ public class Menu implements Screen {
         stage.dispose();
         menuSkin.dispose();
         profileSkin.dispose();
+        music.dispose();
     }
 }

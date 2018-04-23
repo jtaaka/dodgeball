@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -49,9 +50,19 @@ public class SurvivalMode implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
+    private Music music;
+
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+
+        music = Dodgeball.manager.get("survival.ogg", Music.class);
+
+        if (Dodgeball.MUSIC_VOLUME > 0) {
+            music.setLooping(true);
+            music.play();
+        }
+
         backgroundTexture = new Texture("background1.png");
         //gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
@@ -317,6 +328,7 @@ public class SurvivalMode implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
         backgroundTexture.dispose();
         //gameOver.dispose();
         for (Balls eachBall : ball) {
