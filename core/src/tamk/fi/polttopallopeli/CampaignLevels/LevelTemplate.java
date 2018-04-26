@@ -3,6 +3,7 @@ package tamk.fi.polttopallopeli.CampaignLevels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -51,6 +52,8 @@ public class LevelTemplate implements Screen {
     long timeLimit; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
     public String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
 
+    private Music music;
+
     private boolean victory;
     private boolean defeat;
     //private Box2DDebugRenderer debugRenderer;
@@ -63,6 +66,8 @@ public class LevelTemplate implements Screen {
         this.host = host;
         this.MAX_BALL_AMOUNT = MAX_BALL_AMOUNT;
         batch = host.getBatch();
+
+        music = Dodgeball.manager.get("Clucth.mp3", Music.class);
 
         backgroundTexture = background;
 
@@ -239,21 +244,42 @@ public class LevelTemplate implements Screen {
     Batch secretBatch;
     float alpha = 0;
     boolean rising = true;
+    boolean blackening = false;
+    float blackeningTimer;
 
     private void secretLevel(float delta) {
         if (secretTexture == null) {
             secretTexture = new Texture("black.png");
             secretBatch = new SpriteBatch();
             secretBatch.setColor(1,1,1,0);
+            if (Dodgeball.MUSIC_VOLUME > 0) {
+                music.setLooping(true);
+                music.play();
+            }
         }
 
-        if (alpha < 0.9f && rising) {
-            alpha += 0.5f * delta;
-        } else if (alpha > 0.1f) {
-            alpha -= 0.5f * delta;
-            rising = false;
-        } else {
-            rising = true;
+        blackeningTimer += delta;
+        if (blackeningTimer > 5) {
+            blackening = true;
+        }
+
+        if (blackening) {
+            if (alpha < 1f && rising) {
+                alpha += 0.5f * delta;
+                if (alpha > 1) {
+                    alpha = 1f;
+                }
+            } else if (alpha > 0f) {
+                alpha -= 0.5f * delta;
+                if (alpha < 0) {
+                    alpha = 0f;
+                }
+                rising = false;
+            } else {
+                rising = true;
+                blackening = false;
+                blackeningTimer = 0;
+            }
         }
 
         secretBatch.setColor(1,1,1,alpha);
@@ -261,7 +287,9 @@ public class LevelTemplate implements Screen {
         secretBatch.setProjectionMatrix(camera.combined);
 
         secretBatch.begin();
-        secretBatch.draw(secretTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        if (!victory && !defeat) {
+            secretBatch.draw(secretTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        }
         secretBatch.end();
     }
 
@@ -314,6 +342,7 @@ public class LevelTemplate implements Screen {
         if (secretTexture != null) {
             secretTexture.dispose();
         }
+        music.stop();
         //gameOver.dispose();
         for (Balls eachBall : ball) {
             if (eachBall != null) {

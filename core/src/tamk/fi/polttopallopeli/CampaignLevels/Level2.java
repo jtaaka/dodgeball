@@ -13,13 +13,13 @@ public class Level2 implements Screen {
     boolean whiteTimer = false;
 
     public Level2(Dodgeball host) {
-        background = new Texture("grassbg.png");
+        background = new Texture("background1.png");
         levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background, whiteTimer);
         this.host = host;
 
         levelTemplate.BALL_SPAWN_TIMER = 3; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
         levelTemplate.BALL_SPAWN_COUNT = 3; // Montako palloa lisätään alussa. esim: 3
-        levelTemplate.ADD_NEW_BALL_TIME = 9; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
+        levelTemplate.ADD_NEW_BALL_TIME = 10; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
         levelTemplate.ACCELERATING_BALL = false; // onko levelissä kiihtyvää palloa. true / false
         levelTemplate.TARGETING_BALL = false; // onko levelissä ennakoivaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false

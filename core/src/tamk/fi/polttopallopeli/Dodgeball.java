@@ -44,6 +44,7 @@ public class Dodgeball extends Game {
 		manager.load("hit.ogg", Sound.class);
 		manager.load("hit2.ogg", Sound.class);
 		manager.load("highscore.ogg", Sound.class);
+		manager.load("Clucth.mp3", Music.class);
 		manager.finishLoading();
 
         setScreen(new SplashScreen(this));

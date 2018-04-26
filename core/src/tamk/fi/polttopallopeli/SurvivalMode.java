@@ -43,6 +43,7 @@ public class SurvivalMode implements Screen {
     private final boolean ACCELERATING_BALL = true;
     private final boolean TARGETING_BALL = true;
     private final boolean FASTBALL = true;
+    private final int ADD_NEW_BALL_TIME = 30; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
 
     private Box2DDebugRenderer debugRenderer;
     private float TIME_STEP = 1/60f;
@@ -142,7 +143,7 @@ public class SurvivalMode implements Screen {
                 ballStartCounter++;
             }
             // Adds balls as game advances
-        } else if (ballSpawnTimer > 60 && ballStartCounter < MAX_BALL_AMOUNT) {
+        } else if (ballSpawnTimer > ADD_NEW_BALL_TIME && ballStartCounter < MAX_BALL_AMOUNT) {
             ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
             ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
             ballSpawnTimer = 0;
@@ -328,7 +329,7 @@ public class SurvivalMode implements Screen {
 
     @Override
     public void dispose() {
-        music.dispose();
+        music.stop();
         backgroundTexture.dispose();
         //gameOver.dispose();
         for (Balls eachBall : ball) {

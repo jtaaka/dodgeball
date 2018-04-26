@@ -8,23 +8,23 @@ import tamk.fi.polttopallopeli.Dodgeball;
 public class Level5 implements Screen {
     private LevelTemplate levelTemplate;
     private Dodgeball host;
-    int MAX_BALL_AMOUNT = 7; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+    int MAX_BALL_AMOUNT = 6; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
     private Texture background;
     boolean whiteTimer = false;
 
     public Level5(Dodgeball host) {
-        background = new Texture("background1.png");
+        background = new Texture("snowbg.png");
         levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background, whiteTimer);
         this.host = host;
 
         levelTemplate.BALL_SPAWN_TIMER = 3; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
-        levelTemplate.BALL_SPAWN_COUNT = 5; // Montako palloa lisätään alussa. esim: 3
-        levelTemplate.ADD_NEW_BALL_TIME = 7; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
+        levelTemplate.BALL_SPAWN_COUNT = 4; // Montako palloa lisätään alussa. esim: 3
+        levelTemplate.ADD_NEW_BALL_TIME = 8; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
         levelTemplate.ACCELERATING_BALL = false; // onko levelissä kiihtyvää palloa. true / false
-        levelTemplate.TARGETING_BALL = false; // onko levelissä ennakoivaa palloa. true / false
+        levelTemplate.TARGETING_BALL = true; // onko levelissä ennakoivaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
-        levelTemplate.timeLimit = 80; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-        levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
+        levelTemplate.timeLimit = 75; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
+        levelTemplate.nextLevel = "level6"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
     }
 
     @Override

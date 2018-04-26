@@ -352,6 +352,6 @@ public class Menu implements Screen {
         stage.dispose();
         menuSkin.dispose();
         profileSkin.dispose();
-        music.dispose();
+        music.stop();
     }
 }

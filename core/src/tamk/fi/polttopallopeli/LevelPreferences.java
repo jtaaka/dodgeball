@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class LevelPreferences {
-    public static int level[] = new int[10];
+    public static int level[] = new int[11];
     public static Preferences prefs;
 
     public static void setStatus() {
@@ -19,6 +19,7 @@ public class LevelPreferences {
         prefs.putInteger("level8", level[7]);
         prefs.putInteger("level9", level[8]);
         prefs.putInteger("level10", level[9]);
+        prefs.putInteger("level11", level[10]);
         prefs.flush();
     }
 
@@ -34,5 +35,6 @@ public class LevelPreferences {
         level[7] = prefs.getInteger("level8",0);
         level[8] = prefs.getInteger("level9",0);
         level[9] = prefs.getInteger("level10",0);
+        level[10] = prefs.getInteger("level11", 0);
     }
 }

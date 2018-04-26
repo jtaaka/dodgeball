@@ -13,17 +13,17 @@ public class Level4 implements Screen {
     boolean whiteTimer = false;
 
     public Level4(Dodgeball host) {
-        background = new Texture("sandbg.png");
+        background = new Texture("grassbg.png");
         levelTemplate = new LevelTemplate(host, MAX_BALL_AMOUNT, background, whiteTimer);
         this.host = host;
 
         levelTemplate.BALL_SPAWN_TIMER = 3; // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
-        levelTemplate.BALL_SPAWN_COUNT = 4; // Montako palloa lisätään alussa. esim: 3
+        levelTemplate.BALL_SPAWN_COUNT = 3; // Montako palloa lisätään alussa. esim: 3
         levelTemplate.ADD_NEW_BALL_TIME = 8; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
         levelTemplate.ACCELERATING_BALL = false; // onko levelissä kiihtyvää palloa. true / false
         levelTemplate.TARGETING_BALL = false; // onko levelissä ennakoivaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
-        levelTemplate.timeLimit = 70; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
+        levelTemplate.timeLimit = 60; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level5"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
     }
 

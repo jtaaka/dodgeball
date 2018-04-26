@@ -3,8 +3,13 @@ package tamk.fi.polttopallopeli.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.CampaignLevels.Level1;
+import tamk.fi.polttopallopeli.CampaignLevels.Level11;
 import tamk.fi.polttopallopeli.CampaignLevels.Level2;
 import tamk.fi.polttopallopeli.CampaignLevels.Level3;
 import tamk.fi.polttopallopeli.CampaignLevels.Level4;
@@ -32,6 +38,8 @@ public class Levels implements Screen {
     private Stage stage;
     private Skin levelSkin;
     private Texture background;
+    private Texture secret;
+    private Rectangle secretRect;
 
     private Button level1;
     private Button level2;
@@ -55,6 +63,9 @@ public class Levels implements Screen {
     private Button lock9;
     private Button lock10;
 
+    Vector3 touchPos;
+    OrthographicCamera camera;
+
     final int colWidth = Gdx.graphics.getWidth() / 12;
     final int rowHeight = Gdx.graphics.getHeight() / 12;
     final float WIDTH = Gdx.graphics.getWidth();
@@ -64,6 +75,13 @@ public class Levels implements Screen {
         this.host = host;
         batch = host.getBatch();
         background = new Texture("levelsbg.png");
+        secret = new Texture("skullbutton.png");
+        secretRect = new Rectangle(WIDTH / 2f - secret.getWidth() / 4f / 2f , HEIGHT * 0.6f,
+                secret.getWidth() / 4f, secret.getHeight() / 4f);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, WIDTH, HEIGHT);
+        touchPos = new Vector3();
 
         stage = new Stage(new ScreenViewport(), batch);
 
@@ -356,7 +374,22 @@ public class Levels implements Screen {
 
         batch.begin();
         batch.draw(background, 0, 0, WIDTH, HEIGHT);
+        if (LevelPreferences.level[10] != 0) {
+            batch.draw(secret, WIDTH / 2f - secret.getWidth() / 4f / 2f, HEIGHT * 0.6f,
+                    secret.getWidth() / 4f, secret.getHeight() / 4f);
+        }
         batch.end();
+
+        if (LevelPreferences.level[10] != 0) {
+            if (Gdx.input.isTouched()) {
+                touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                touchPos = camera.unproject(touchPos);
+
+                if (secretRect.contains(touchPos.x, touchPos.y)) {
+                    host.setScreen(new Level11(host));
+                }
+            }
+        }
 
         stage.act();
         stage.draw();
