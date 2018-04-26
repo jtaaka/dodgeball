@@ -25,7 +25,7 @@ public class Level1 implements Screen {
         levelTemplate.TARGETING_BALL = false; // onko levelissä ennakoivaa palloa. true / false
         levelTemplate.FASTBALL = true; // onko levelissä nopeampaa palloa. true / false
         levelTemplate.timeLimit = 30; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
-        levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
+        levelTemplate.nextLevel = "secret"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
         // testaukseen
         LevelPreferences.prefs.putInteger("level3", 1);
         LevelPreferences.prefs.putInteger("level4", 1);

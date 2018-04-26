@@ -176,7 +176,7 @@ public class SurvivalMode implements Screen {
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
                     */
             timer.setFreeze();
-            heatMap.draw(batch);
+            //heatMap.draw(batch);
             center.draw(batch, camera);
 
             if (setScore) {
@@ -210,7 +210,7 @@ public class SurvivalMode implements Screen {
 
         timer.survivalModeTimer();
 
-        debugRenderer.render(world, camera.combined);
+        //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
         // For testing purposes

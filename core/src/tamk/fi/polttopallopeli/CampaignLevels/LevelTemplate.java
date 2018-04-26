@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -30,6 +31,7 @@ public class LevelTemplate implements Screen {
     private Body walls;
     private Player player;
     private Texture backgroundTexture;
+    private Texture secretTexture;
     private OrthographicCamera camera;
     private Balls[] ball;
     private GameTimer timer;
@@ -186,6 +188,10 @@ public class LevelTemplate implements Screen {
 
         isGameOver();
 
+        if (nextLevel.equals("secret")) {
+            secretLevel(delta);
+        }
+
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
@@ -230,6 +236,35 @@ public class LevelTemplate implements Screen {
         shape.dispose();
     }
 
+    Batch secretBatch;
+    float alpha = 0;
+    boolean rising = true;
+
+    private void secretLevel(float delta) {
+        if (secretTexture == null) {
+            secretTexture = new Texture("black.png");
+            secretBatch = new SpriteBatch();
+            secretBatch.setColor(1,1,1,0);
+        }
+
+        if (alpha < 0.9f && rising) {
+            alpha += 0.5f * delta;
+        } else if (alpha > 0.1f) {
+            alpha -= 0.5f * delta;
+            rising = false;
+        } else {
+            rising = true;
+        }
+
+        secretBatch.setColor(1,1,1,alpha);
+
+        secretBatch.setProjectionMatrix(camera.combined);
+
+        secretBatch.begin();
+        secretBatch.draw(secretTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
+        secretBatch.end();
+    }
+
     private void isGameOver() {
         //batch.begin();
 
@@ -239,7 +274,7 @@ public class LevelTemplate implements Screen {
         }
 
         if (victory || defeat) {
-            heatMap.draw(batch);
+            //heatMap.draw(batch);
             center.draw(batch, camera);
         }
 
@@ -276,6 +311,9 @@ public class LevelTemplate implements Screen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+        if (secretTexture != null) {
+            secretTexture.dispose();
+        }
         //gameOver.dispose();
         for (Balls eachBall : ball) {
             if (eachBall != null) {
