@@ -38,6 +38,7 @@ public class Player extends Sprite {
 
     private float tabletAccelerometerSettingZ;
     private float tabletAccelerometerSettingY;
+    private boolean useXaccelerometer = false;
 
     private float calibrationZPositive;
     private float calibrationZNegative;
@@ -144,7 +145,12 @@ public class Player extends Sprite {
         tabletAccelerometerSettingZ = 0;
         tabletAccelerometerSettingY = 0;
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-            tabletAccelerometerSettingZ = Gdx.input.getAccelerometerZ();
+            if (Gdx.input.getAccelerometerZ() > 5) {
+                tabletAccelerometerSettingZ = Gdx.input.getAccelerometerX();
+                useXaccelerometer = true;
+            } else {
+                tabletAccelerometerSettingZ = Gdx.input.getAccelerometerZ();
+            }
             tabletAccelerometerSettingY = Gdx.input.getAccelerometerY();
         }
 
@@ -314,7 +320,11 @@ public class Player extends Sprite {
 
         // Accelerometer testing for tablet
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
-        accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
+        if (useXaccelerometer) {
+            accelZ = Gdx.input.getAccelerometerX() - tabletAccelerometerSettingZ;
+        } else {
+            accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
+        }
         /*
         float directionX = body.getLinearVelocity().x;
 
@@ -354,6 +364,10 @@ public class Player extends Sprite {
 
         }
 
+        if (useXaccelerometer) {
+            vector.y = -vector.y;
+        }
+
         body.applyForceToCenter(vector, true);
         batch.end();
     }
@@ -365,6 +379,9 @@ public class Player extends Sprite {
 
 
     public float getAccelZ() {
+        if (useXaccelerometer) {
+            return -accelZ;
+        }
         return accelZ;
     }
 
