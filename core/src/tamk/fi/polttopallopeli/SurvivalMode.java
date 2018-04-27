@@ -208,7 +208,10 @@ public class SurvivalMode implements Screen {
         batch.end();
 
         player.playerMove(delta);
-        ballHandler(delta);
+
+        if (timer.getElapsedTime() >= 4) {
+            ballHandler(delta);
+        }
 
         player.drawHealth(delta);
         isGameOver();
