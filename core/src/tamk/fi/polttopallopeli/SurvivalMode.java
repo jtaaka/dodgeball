@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Screens.HighScore;
 import tamk.fi.polttopallopeli.Screens.Menu;
@@ -52,10 +54,12 @@ public class SurvivalMode implements Screen {
     private float accumulator = 0;
 
     private Music music;
+    private Stage stage;
 
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
+        stage = new Stage(new ScreenViewport(), batch);
 
         music = Dodgeball.manager.get("survival.ogg", Music.class);
 
@@ -79,7 +83,7 @@ public class SurvivalMode implements Screen {
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
 
-        timer = new GameTimer(batch, false);
+        timer = new GameTimer(batch, false, stage);
 
         world.setContactListener(new ContactDetection());
 
@@ -221,6 +225,10 @@ public class SurvivalMode implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
         }
+
+        timer.countDownTimer();
+        stage.act(delta);
+        stage.draw();
     }
 
     private void doPhysicsStep(float deltaTime) {

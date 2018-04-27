@@ -232,19 +232,19 @@ public class Player extends Sprite {
         }
 
         // seinät
-        if (getPlayerBodyX() >= 12.6f) {
+        if (getPlayerBodyX() >= 12.5f) {
             currentRow = 6;
         }
 
-        if (getPlayerBodyX() <= 0.2f) {
+        if (getPlayerBodyX() <= 0.24f) {
             currentRow = 2;
         }
 
-        if (getPlayerBodyY() >= 7.6f) {
+        if (getPlayerBodyY() >= 7.2f) {
             currentRow = 4;
         }
 
-        if (getPlayerBodyY() <= 0.4f) {
+        if (getPlayerBodyY() <= 0.235f) {
             currentRow = 0;
         }
 
@@ -346,12 +346,10 @@ public class Player extends Sprite {
 
             if (accelY > 0) {
                 vector.x = accelY * delta * calibrationXPositive;
-
             }
 
             if (accelY < 0) {
                 vector.x = accelY * delta * calibrationXNegative;
-
             }
 
             if (accelZ > 0) {
@@ -361,7 +359,6 @@ public class Player extends Sprite {
             if (accelZ < 0) {
                 vector.y = accelZ * delta * calibrationZNegative;
             }
-
         }
 
         if (useXaccelerometer) {

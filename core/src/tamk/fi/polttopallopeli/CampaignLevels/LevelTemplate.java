@@ -15,6 +15,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import tamk.fi.polttopallopeli.Balls;
 import tamk.fi.polttopallopeli.CenterOfPlayer;
 import tamk.fi.polttopallopeli.ContactDetection;
@@ -62,10 +65,13 @@ public class LevelTemplate implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
+    private Stage stage;
+
     public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background, boolean whiteTimer) {
         this.host = host;
         this.MAX_BALL_AMOUNT = MAX_BALL_AMOUNT;
         batch = host.getBatch();
+        stage = new Stage(new ScreenViewport(), batch);
 
         music = Dodgeball.manager.get("Clucth.mp3", Music.class);
 
@@ -82,7 +88,7 @@ public class LevelTemplate implements Screen {
         //debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
-        timer = new GameTimer(batch, whiteTimer);
+        timer = new GameTimer(batch, whiteTimer, stage);
         world.setContactListener(new ContactDetection());
         victory = false;
         defeat = false;
@@ -208,6 +214,10 @@ public class LevelTemplate implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
         }
+
+        timer.countDownTimer();
+        stage.act(delta);
+        stage.draw();
     }
 
     private void doPhysicsStep(float deltaTime) {
@@ -308,7 +318,9 @@ public class LevelTemplate implements Screen {
 
         //batch.end();
 
-        timer.levelModeTimer(timeLimit);
+        if (timer.getElapsedTime() <= timeLimit) {
+            timer.levelModeTimer(timeLimit);
+        }
 
         if (timer.getElapsedTime() > timeLimit && !defeat) {
             timer.setFreeze();
