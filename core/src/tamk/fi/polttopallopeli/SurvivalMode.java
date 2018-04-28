@@ -16,12 +16,16 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Screens.HighScore;
 import tamk.fi.polttopallopeli.Screens.Menu;
-import tamk.fi.polttopallopeli.Screens.Settings;
 
 public class SurvivalMode implements Screen {
     private SpriteBatch batch;
@@ -33,7 +37,6 @@ public class SurvivalMode implements Screen {
     private OrthographicCamera camera;
     private Balls[] ball;
     private GameTimer timer;
-    //private Texture gameOver;
     private int[] ballLocator;
     private HeatMap heatMap;
     private CenterOfPlayer center;
@@ -53,8 +56,18 @@ public class SurvivalMode implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
+    final int colWidth = Gdx.graphics.getWidth() / 12;
+    final int rowHeight = Gdx.graphics.getHeight() / 12;
+    final float WIDTH = Gdx.graphics.getWidth();
+
     private Music music;
     private Stage stage;
+    private Skin skin;
+    private Label gameOverText;
+    private TextButton playAgain;
+    private TextButton menu;
+    private TextButton heat;
+    private TextButton playerMovement;
 
     public SurvivalMode(Dodgeball host) {
         this.host = host;
@@ -69,7 +82,6 @@ public class SurvivalMode implements Screen {
         }
 
         backgroundTexture = new Texture("background1.png");
-        //gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
         center = new CenterOfPlayer();
@@ -87,6 +99,7 @@ public class SurvivalMode implements Screen {
 
         world.setContactListener(new ContactDetection());
 
+        gameOverScreen();
         worldWalls();
     }
 
@@ -221,12 +234,12 @@ public class SurvivalMode implements Screen {
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
-        // For testing purposes
-        if (Gdx.input.isTouched() && player.getHealth() == 0) {
-            host.setScreen(new Menu(host));
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            host.setScreen(new Menu(host));
+        if (player.getHealth() == 0) {
+            stage.addActor(gameOverText);
+            stage.addActor(playAgain);
+            stage.addActor(menu);
+            stage.addActor(heat);
+            stage.addActor(playerMovement);
         }
 
         timer.countDownTimer();
@@ -318,6 +331,80 @@ public class SurvivalMode implements Screen {
         shape.dispose();
     }
 
+    public void gameOverScreen() {
+        skin = new Skin(Gdx.files.internal("menu.json"));
+
+        gameOverText = new Label(host.getLang().get("gameover"), skin, "default");
+        gameOverText.setFontScale(2f, 2f);
+        gameOverText.setPosition(WIDTH / 2 - gameOverText.getWidth(), rowHeight * 8f);
+
+        playAgain = new TextButton(host.getLang().get("playagain"), skin,"default");
+        playAgain.setSize(colWidth * 3f, rowHeight);
+        playAgain.setPosition(WIDTH / 2 - (playAgain.getWidth() / 2f), rowHeight * 6f);
+
+        menu = new TextButton(host.getLang().get("menu"), skin, "default");
+        menu.setSize(colWidth * 3f, rowHeight);
+        menu.setPosition(WIDTH / 2 - (menu.getWidth() / 2f), rowHeight * 4.8f);
+
+        heat = new TextButton(host.getLang().get("heatmap"), skin, "default");
+        heat.setSize(colWidth * 3f, rowHeight);
+        heat.setPosition(WIDTH / 2 - (heat.getWidth() / 2f), rowHeight * 3.6f);
+
+        playerMovement = new TextButton(host.getLang().get("playermovement"), skin, "default");
+        playerMovement.setSize(colWidth * 3f, rowHeight);
+        playerMovement.setPosition(WIDTH / 2 - (playerMovement.getWidth() / 2f), rowHeight * 2.4f);
+
+        playAgain.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                host.setScreen(new SurvivalMode(host));
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        menu.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                host.setScreen(new Menu(host));
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        heat.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        playerMovement.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        Gdx.input.setInputProcessor(stage);
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -353,6 +440,8 @@ public class SurvivalMode implements Screen {
         heatMap.dispose();
         world.destroyBody(walls);
         world.dispose();
+        stage.dispose();
+        skin.dispose();
         Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

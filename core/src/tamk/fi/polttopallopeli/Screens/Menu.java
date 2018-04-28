@@ -33,12 +33,13 @@ public class Menu implements Screen {
     private Texture profileicon;
     private Image profileimage;
 
-    private Button playButton;
-    private Button survivalButton;
-    private Button levelsButton;
-    private Button settingsButton;
-    private Button scoreButton;
-    private Button exitButton;
+    private TextButton playButton;
+    private TextButton survivalButton;
+    private TextButton levelsButton;
+    private TextButton settingsButton;
+    private TextButton scoreButton;
+    private TextButton exitButton;
+
     private Button soundOn;
     private Button soundOff;
     private Button musicOn;

@@ -41,14 +41,8 @@ public class GameTimer {
     private float x;
     private float y;
 
-    //final int colWidth = Gdx.graphics.getWidth() / 12;
-    //final int rowHeight = Gdx.graphics.getHeight() / 12;
     final float WIDTH = Gdx.graphics.getWidth();
     final float HEIGHT = Gdx.graphics.getHeight();
-
-    private float deltaTime = Gdx.graphics.getDeltaTime();
-
-    private SequenceAction sequenceAction;
 
     //private BitmapFont fpsFont;
     //private float fps;
@@ -236,5 +230,6 @@ public class GameTimer {
     public void dispose() {
         generator.dispose();
         font.dispose();
+        stage.dispose();
     }
 }

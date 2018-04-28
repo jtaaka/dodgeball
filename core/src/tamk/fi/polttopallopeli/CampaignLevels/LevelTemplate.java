@@ -15,7 +15,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Balls;
@@ -39,7 +44,6 @@ public class LevelTemplate implements Screen {
     private OrthographicCamera camera;
     private Balls[] ball;
     private GameTimer timer;
-    //private Texture gameOver;
     private int[] ballLocator;
     private HeatMap heatMap;
     private CenterOfPlayer center;
@@ -65,7 +69,19 @@ public class LevelTemplate implements Screen {
     private int POSITION_ITERATIONS = 2;
     private float accumulator = 0;
 
+    final int colWidth = Gdx.graphics.getWidth() / 12;
+    final int rowHeight = Gdx.graphics.getHeight() / 12;
+    final float WIDTH = Gdx.graphics.getWidth();
+
     private Stage stage;
+    private Skin skin;
+    private Label gameOverText;
+    private Label victoryText;
+    private TextButton playAgain;
+    private TextButton nextLevelButton;
+    private TextButton menu;
+    private TextButton heat;
+    private TextButton playerMovement;
 
     public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background, boolean whiteTimer) {
         this.host = host;
@@ -73,11 +89,10 @@ public class LevelTemplate implements Screen {
         batch = host.getBatch();
         stage = new Stage(new ScreenViewport(), batch);
 
-        music = Dodgeball.manager.get("Clucth.mp3", Music.class);
+        music = Dodgeball.manager.get("Clucth.ogg", Music.class);
 
         backgroundTexture = background;
 
-        //gameOver = new Texture("gameover.png");
         ballLocator = new int[32];
         heatMap = new HeatMap();
         center = new CenterOfPlayer();
@@ -92,6 +107,8 @@ public class LevelTemplate implements Screen {
         world.setContactListener(new ContactDetection());
         victory = false;
         defeat = false;
+
+        gameOverScreen();
         worldWalls();
     }
 
@@ -180,6 +197,32 @@ public class LevelTemplate implements Screen {
         }
     }
 
+    private void addActors() {
+
+        if (player.getHealth() == 0) {
+            stage.addActor(gameOverText);
+            stage.addActor(playAgain);
+            stage.addActor(menu);
+            stage.addActor(heat);
+            stage.addActor(playerMovement);
+        }
+
+        if (victory && nextLevel.equals("level11")) {
+            stage.addActor(victoryText);
+            stage.addActor(menu);
+            stage.addActor(heat);
+            stage.addActor(playerMovement);
+        }
+
+        if (victory && !nextLevel.equals("level11")) {
+            stage.addActor(victoryText);
+            stage.addActor(nextLevelButton);
+            stage.addActor(menu);
+            stage.addActor(heat);
+            stage.addActor(playerMovement);
+        }
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 1, 1);
@@ -210,14 +253,16 @@ public class LevelTemplate implements Screen {
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
-        // For testing purposes
+        /*// For testing purposes
         if (Gdx.input.isTouched() && player.getHealth() == 0 || victory && Gdx.input.isTouched()) {
             host.setScreen(new Menu(host));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             host.setScreen(new Menu(host));
-        }
+        }*/
+
+        addActors();
 
         timer.countDownTimer();
         stage.act(delta);
@@ -335,6 +380,174 @@ public class LevelTemplate implements Screen {
         }
     }
 
+    public void gameOverScreen() {
+        skin = new Skin(Gdx.files.internal("menu.json"));
+
+        gameOverText = new Label(host.getLang().get("gameover"), skin, "default");
+        gameOverText.setFontScale(2f, 2f);
+        gameOverText.setPosition(WIDTH / 2 - gameOverText.getWidth(), rowHeight * 8f);
+
+        victoryText = new Label(host.getLang().get("victory"), skin, "default");
+        victoryText.setFontScale(2f, 2f);
+        victoryText.setPosition(WIDTH / 2 - victoryText.getWidth(), rowHeight * 8f);
+
+        playAgain = new TextButton(host.getLang().get("playagain"), skin,"default");
+        playAgain.setSize(colWidth * 3f, rowHeight);
+        playAgain.setPosition(WIDTH / 2 - (playAgain.getWidth() / 2f), rowHeight * 6f);
+
+        nextLevelButton = new TextButton(host.getLang().get("nextlevel"), skin,"default");
+        nextLevelButton.setSize(colWidth * 3f, rowHeight);
+        nextLevelButton.setPosition(WIDTH / 2 - (playAgain.getWidth() / 2f), rowHeight * 6f);
+
+        menu = new TextButton(host.getLang().get("menu"), skin, "default");
+        menu.setSize(colWidth * 3f, rowHeight);
+        menu.setPosition(WIDTH / 2 - (menu.getWidth() / 2f), rowHeight * 4.8f);
+
+        heat = new TextButton(host.getLang().get("heatmap"), skin, "default");
+        heat.setSize(colWidth * 3f, rowHeight);
+        heat.setPosition(WIDTH / 2 - (heat.getWidth() / 2f), rowHeight * 3.6f);
+
+        playerMovement = new TextButton(host.getLang().get("playermovement"), skin, "default");
+        playerMovement.setSize(colWidth * 3f, rowHeight);
+        playerMovement.setPosition(WIDTH / 2 - (playerMovement.getWidth() / 2f), rowHeight * 2.4f);
+
+        playAgain.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+                if (nextLevel.equals("level2")) {
+                    host.setScreen(new Level1(host));
+                }
+
+                if (nextLevel.equals("level3")) {
+                    host.setScreen(new Level2(host));
+                }
+
+                if (nextLevel.equals("level4")) {
+                    host.setScreen(new Level3(host));
+                }
+
+                if (nextLevel.equals("level5")) {
+                    host.setScreen(new Level4(host));
+                }
+
+                if (nextLevel.equals("level6")) {
+                    host.setScreen(new Level5(host));
+                }
+
+                if (nextLevel.equals("level7")) {
+                    host.setScreen(new Level6(host));
+                }
+
+                if (nextLevel.equals("level8")) {
+                    host.setScreen(new Level7(host));
+                }
+
+                if (nextLevel.equals("level9")) {
+                    host.setScreen(new Level8(host));
+                }
+
+                if (nextLevel.equals("level10")) {
+                    host.setScreen(new Level9(host));
+                }
+
+                if (nextLevel.equals("level11")) {
+                    host.setScreen(new Level10(host));
+                }
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        nextLevelButton.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+                if (nextLevel.equals("level2")) {
+                    host.setScreen(new Level2(host));
+                }
+
+                if (nextLevel.equals("level3")) {
+                    host.setScreen(new Level3(host));
+                }
+
+                if (nextLevel.equals("level4")) {
+                    host.setScreen(new Level4(host));
+                }
+
+                if (nextLevel.equals("level5")) {
+                    host.setScreen(new Level5(host));
+                }
+
+                if (nextLevel.equals("level6")) {
+                    host.setScreen(new Level6(host));
+                }
+
+                if (nextLevel.equals("level7")) {
+                    host.setScreen(new Level7(host));
+                }
+
+                if (nextLevel.equals("level8")) {
+                    host.setScreen(new Level8(host));
+                }
+
+                if (nextLevel.equals("level9")) {
+                    host.setScreen(new Level9(host));
+                }
+
+                if (nextLevel.equals("level10")) {
+                    host.setScreen(new Level10(host));
+                }
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        menu.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                host.setScreen(new Menu(host));
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        heat.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        playerMovement.addListener(new InputListener() {
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+            }
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        Gdx.input.setInputProcessor(stage);
+    }
+
     @Override
     public void resize(int width, int height) {
     }
@@ -370,6 +583,8 @@ public class LevelTemplate implements Screen {
         heatMap.dispose();
         world.destroyBody(walls);
         world.dispose();
+        stage.dispose();
+        skin.dispose();
         Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

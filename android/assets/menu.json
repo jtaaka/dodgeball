@@ -50,6 +50,13 @@ com.badlogic.gdx.graphics.Color: {
 		}
 	}
 
+  com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+    default: {
+      font: showg
+      fontColor: blue
+    }
+  }
+
 
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {

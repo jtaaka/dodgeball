@@ -27,7 +27,7 @@ public class Level1 implements Screen {
         levelTemplate.timeLimit = 35; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
         // testaukseen
-        LevelPreferences.prefs.putInteger("level2", 1);
+        /*LevelPreferences.prefs.putInteger("level2", 1);
         LevelPreferences.prefs.putInteger("level3", 1);
         LevelPreferences.prefs.putInteger("level4", 1);
         LevelPreferences.prefs.putInteger("level5", 1);
@@ -36,7 +36,7 @@ public class Level1 implements Screen {
         LevelPreferences.prefs.putInteger("level8", 1);
         LevelPreferences.prefs.putInteger("level9", 1);
         LevelPreferences.prefs.putInteger("level10", 1);
-        LevelPreferences.prefs.putInteger("level11", 1);
+        LevelPreferences.prefs.putInteger("level11", 1);*/
     }
 
     @Override
