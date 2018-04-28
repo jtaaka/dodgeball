@@ -236,19 +236,20 @@ public class LevelTemplate implements Screen {
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         batch.end();
 
-        player.playerMove(delta);
 
         if (timer.getElapsedTime() >= 4) {
             ballHandler(delta);
         }
+        
+        if (nextLevel.equals("secret")) {
+            secretLevel(delta);
+        }
 
+        player.playerMove(delta);
         player.drawHealth(delta);
 
         isGameOver();
 
-        if (nextLevel.equals("secret")) {
-            secretLevel(delta);
-        }
 
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);

@@ -81,7 +81,8 @@ public class GameTimer {
         parameter.borderWidth = 1;
 
         if (whiteTimer) {
-            parameter.color = Color.WHITE;
+            parameter.color = Color.BLACK;
+            parameter.borderColor = Color.WHITE;
         } else {
             parameter.color = Color.BLACK;
         }

@@ -10,7 +10,7 @@ public class Level11 implements Screen {
     private Dodgeball host;
     int MAX_BALL_AMOUNT = 15; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
     private Texture background;
-    boolean whiteTimer = false;
+    boolean whiteTimer = true;
 
     public Level11(Dodgeball host) {
         background = new Texture("marmoribg.png");
