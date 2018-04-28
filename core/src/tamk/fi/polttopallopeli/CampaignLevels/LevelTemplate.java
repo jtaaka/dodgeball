@@ -207,16 +207,16 @@ public class LevelTemplate implements Screen {
             stage.addActor(playerMovement);
         }
 
-        if (victory && nextLevel.equals("level11")) {
+        if (victory && !nextLevel.equals("level11") && !nextLevel.equals("secret")) {
             stage.addActor(victoryText);
+            stage.addActor(nextLevelButton);
             stage.addActor(menu);
             stage.addActor(heat);
             stage.addActor(playerMovement);
         }
 
-        if (victory && !nextLevel.equals("level11")) {
+        if (victory && nextLevel.equals("level11") || victory && nextLevel.equals("secret")) {
             stage.addActor(victoryText);
-            stage.addActor(nextLevelButton);
             stage.addActor(menu);
             stage.addActor(heat);
             stage.addActor(playerMovement);
@@ -453,6 +453,10 @@ public class LevelTemplate implements Screen {
 
                 if (nextLevel.equals("level11")) {
                     host.setScreen(new Level10(host));
+                }
+
+                if (nextLevel.equals("secret")) {
+                    host.setScreen(new Level11(host));
                 }
             }
 
