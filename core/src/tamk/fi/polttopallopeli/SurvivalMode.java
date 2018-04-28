@@ -358,6 +358,7 @@ public class SurvivalMode implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 host.setScreen(new SurvivalMode(host));
+                music.play();
             }
 
             @Override
