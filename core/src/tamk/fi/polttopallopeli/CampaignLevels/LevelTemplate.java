@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Balls;
@@ -83,6 +84,9 @@ public class LevelTemplate implements Screen {
     private TextButton menu;
     private TextButton heat;
     private TextButton playerMovement;
+
+    private long pauseTime = 0;
+    private long pauseDelay = 0;
 
     public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background, boolean whiteTimer) {
         this.host = host;
@@ -257,7 +261,6 @@ public class LevelTemplate implements Screen {
 
         isGameOver();
 
-
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
 
@@ -375,11 +378,11 @@ public class LevelTemplate implements Screen {
 
         //batch.end();
 
-        if (timer.getElapsedTime() <= timeLimit) {
-            timer.levelModeTimer(timeLimit);
+        if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000) <= timeLimit) {
+            timer.levelModeTimer(timeLimit, pauseDelay);
         }
 
-        if (timer.getElapsedTime() > timeLimit && !defeat) {
+        if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000) > timeLimit && !defeat) {
             timer.setFreeze();
             victory = true;
             player.victory = true;
@@ -566,10 +569,12 @@ public class LevelTemplate implements Screen {
 
     @Override
     public void pause() {
+        pauseTime = TimeUtils.nanoTime() - pauseDelay;
     }
 
     @Override
     public void resume() {
+        pauseDelay = TimeUtils.timeSinceNanos(pauseTime);
     }
 
     @Override

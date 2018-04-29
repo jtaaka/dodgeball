@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Screens.HighScore;
@@ -69,6 +70,9 @@ public class SurvivalMode implements Screen {
     private TextButton menu;
     private TextButton heat;
     private TextButton playerMovement;
+
+    private long pauseTime = 0;
+    private long pauseDelay = 0;
 
     public SurvivalMode(Dodgeball host) {
         this.host = host;
@@ -236,7 +240,7 @@ public class SurvivalMode implements Screen {
         player.drawHealth(delta);
         isGameOver();
 
-        timer.survivalModeTimer();
+        timer.survivalModeTimer(pauseDelay);
 
         //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
@@ -420,12 +424,12 @@ public class SurvivalMode implements Screen {
 
     @Override
     public void pause() {
-
+        pauseTime = TimeUtils.nanoTime() - pauseDelay;
     }
 
     @Override
     public void resume() {
-
+        pauseDelay = TimeUtils.timeSinceNanos(pauseTime);
     }
 
     @Override

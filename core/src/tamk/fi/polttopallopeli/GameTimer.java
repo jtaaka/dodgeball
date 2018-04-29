@@ -159,10 +159,10 @@ public class GameTimer {
         }
     }
 
-    public void survivalModeTimer() {
+    public void survivalModeTimer(long pauseDelay) {
 
         if (!freeze) {
-            elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli - 5000;
+            elapsed = (TimeUtils.nanoTime() - startTime - pauseDelay) / nanosPerMilli - 5000;
         }
 
         int minutes = (int) (elapsed / (1000 * 60));
@@ -193,11 +193,11 @@ public class GameTimer {
         batch.end();
     }
 
-    public void levelModeTimer(long timeLimit) {
+    public void levelModeTimer(long timeLimit, long pauseDelay) {
         timeLimit = (timeLimit + 1) * 1000;
 
         if (!freeze) {
-            elapsed = (timeLimit * nanosPerMilli + startTime - TimeUtils.nanoTime()) / nanosPerMilli;
+            elapsed = (timeLimit * nanosPerMilli + startTime - TimeUtils.nanoTime() + pauseDelay) / nanosPerMilli;
         }
 
         int minutes = (int) (elapsed / (1000 * 60));
