@@ -179,6 +179,8 @@ public class Player extends Sprite {
         health = Math.max(0, health - 1);
     }
 
+    public void increaseHealth() { health = Math.max(3, health + 1); }
+
     public float getPlayerBodyX() {
         return body.getPosition().x;
     }

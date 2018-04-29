@@ -56,6 +56,7 @@ public class LevelTemplate implements Screen {
     boolean ACCELERATING_BALL; // onko levelissä kiihtyvää palloa. true / false
     boolean TARGETING_BALL; // onko levelissä ennakoivaa palloa. true / false
     boolean FASTBALL; // onko levelissä nopeampaa palloa. true / false
+    boolean HEALINGBALL; // onko levelissä parantavaa palloa. true / false
     long timeLimit; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
     public String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
 
@@ -160,14 +161,14 @@ public class LevelTemplate implements Screen {
             ballSpawnTimer += delta;
             if (ballStartCounter < BALL_SPAWN_COUNT) {
                 if (ballSpawnTimer > BALL_SPAWN_TIMER) {
-                    ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
+                    ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
                     ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                     ballSpawnTimer = 0;
                     ballStartCounter++;
                 }
                 // Adds balls as game advances
             } else if (ballSpawnTimer > ADD_NEW_BALL_TIME && ballStartCounter < MAX_BALL_AMOUNT) {
-                ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
+                ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
                 ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                 ballSpawnTimer = 0;
                 ballStartCounter++;
@@ -177,11 +178,17 @@ public class LevelTemplate implements Screen {
             for (Balls eachBall : ball) {
                 if (eachBall != null) {
                     eachBall.draw(delta);
+                    if (eachBall.healingUsed) {
+                        ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
+                        eachBall.dispose();
+                        ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
+                        ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
+                    }
                     if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
                             eachBall.getX() < -2 || eachBall.getY() < -2) {
                         ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
                         eachBall.dispose();
-                        ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
+                        ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
                         ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
                         //Gdx.app.log(getClass().getSimpleName(), "respawning");
                     }

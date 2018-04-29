@@ -48,6 +48,7 @@ public class SurvivalMode implements Screen {
     private final boolean ACCELERATING_BALL = true;
     private final boolean TARGETING_BALL = true;
     private final boolean FASTBALL = true;
+    private final boolean HEALINGBALL = true;
     private final int ADD_NEW_BALL_TIME = 30; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
 
     private Box2DDebugRenderer debugRenderer;
@@ -154,14 +155,14 @@ public class SurvivalMode implements Screen {
         ballSpawnTimer += delta;
         if (ballStartCounter < BALL_SPAWN_COUNT) {
             if (ballSpawnTimer > BALL_SPAWN_TIMER) {
-                ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
+                ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
                 ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
                 ballSpawnTimer = 0;
                 ballStartCounter++;
             }
             // Adds balls as game advances
         } else if (ballSpawnTimer > ADD_NEW_BALL_TIME && ballStartCounter < MAX_BALL_AMOUNT) {
-            ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
+            ball[ballStartCounter] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
             ballLocator[ball[ballStartCounter].getLocationToUpdateBallLocator()] = 1;
             ballSpawnTimer = 0;
             ballStartCounter++;
@@ -171,11 +172,17 @@ public class SurvivalMode implements Screen {
         for (Balls eachBall : ball) {
             if (eachBall != null) {
                 eachBall.draw(delta);
+                if (eachBall.healingUsed) {
+                    ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
+                    eachBall.dispose();
+                    ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
+                    ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
+                }
                 if (eachBall.getX() > Dodgeball.WORLD_WIDTH + 2 || eachBall.getY() > Dodgeball.WORLD_HEIGHT + 2 ||
                         eachBall.getX() < -2 || eachBall.getY() < -2) {
                     ballLocator[eachBall.getLocationToUpdateBallLocator()] = 0;
                     eachBall.dispose();
-                    ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL);
+                    ball[i] = new Balls(world, batch, player.getBody(), ballLocator, ACCELERATING_BALL, TARGETING_BALL, FASTBALL, HEALINGBALL);
                     ballLocator[ball[i].getLocationToUpdateBallLocator()] = 1;
                     //Gdx.app.log(getClass().getSimpleName(), "respawning");
                 }

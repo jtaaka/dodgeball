@@ -24,10 +24,16 @@ public class ContactDetection implements ContactListener {
         if (fixtureA.getUserData() instanceof Player || fixtureB.getUserData() instanceof Player) {
             if (fixtureA.getUserData() instanceof Player) {
                 Player player = (Player) fixtureA.getUserData();
+                Balls ball = (Balls) fixtureB.getUserData();
                 if (!player.hit && !player.victory) {
                     Gdx.input.vibrate(200);
-                    player.decreaseHealth();
-                    player.hit = true;
+                    if (ball.ballIsHealingBall) {
+                        player.increaseHealth();
+                        ball.healingUsed = true;
+                    } else {
+                        player.decreaseHealth();
+                        player.hit = true;
+                    }
                     if (Dodgeball.VOLUME > 0) {
                         Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
                         Dodgeball.manager.get("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
@@ -35,10 +41,16 @@ public class ContactDetection implements ContactListener {
                 }
             } else {
                 Player player = (Player) fixtureB.getUserData();
+                Balls ball = (Balls) fixtureA.getUserData();
                 if (!player.hit && !player.victory) {
                     Gdx.input.vibrate(200);
-                    player.decreaseHealth();
-                    player.hit = true;
+                    if (ball.healingBall) {
+                        player.increaseHealth();
+                        ball.healingUsed = true;
+                    } else {
+                        player.decreaseHealth();
+                        player.hit = true;
+                    }
                     if (Dodgeball.VOLUME > 0) {
                         Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
                         Dodgeball.manager.get("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
