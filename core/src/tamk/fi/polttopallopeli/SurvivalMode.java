@@ -233,7 +233,7 @@ public class SurvivalMode implements Screen {
 
         player.playerMove(delta);
 
-        if (timer.getElapsedTime() >= 4) {
+        if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000) >= 4) {
             ballHandler(delta);
         }
 
@@ -253,7 +253,7 @@ public class SurvivalMode implements Screen {
             stage.addActor(playerMovement);
         }
 
-        timer.countDownTimer();
+        timer.countDownTimer((TimeUtils.nanosToMillis(pauseDelay) / 1000));
         stage.act(delta);
         stage.draw();
     }

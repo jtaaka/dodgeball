@@ -131,29 +131,29 @@ public class GameTimer {
         return (TimeUtils.nanoTime() - startTime) / nanosPerMilli / 1000;
     }
 
-    public void countDownTimer() {
+    public void countDownTimer(long pauseDelay) {
         freeze = true;
 
-        if (getElapsedTime() >= 1f) {
+        if (getElapsedTime() - pauseDelay >= 1f) {
             stage.addActor(countDown3);
         }
 
-        if (getElapsedTime() >= 2f) {
+        if (getElapsedTime() - pauseDelay >= 2f) {
             countDown3.remove();
             stage.addActor(countDown2);
         }
 
-        if (getElapsedTime() >= 3f) {
+        if (getElapsedTime() - pauseDelay >= 3f) {
             countDown2.remove();
             stage.addActor(countDown1);
         }
 
-        if (getElapsedTime() >= 4f) {
+        if (getElapsedTime() - pauseDelay >= 4f) {
             countDown1.remove();
             stage.addActor(go);
         }
 
-        if (getElapsedTime() >= 5f) {
+        if (getElapsedTime() - pauseDelay >= 5f) {
             go.remove();
             freeze = false;
         }

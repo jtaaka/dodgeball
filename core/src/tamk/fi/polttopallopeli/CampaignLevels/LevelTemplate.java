@@ -246,9 +246,10 @@ public class LevelTemplate implements Screen {
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         batch.end();
+        System.out.println(timer.getElapsedTime());
 
 
-        if (timer.getElapsedTime() >= 4) {
+        if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000)  >= 4) {
             ballHandler(delta);
         }
         
@@ -275,7 +276,7 @@ public class LevelTemplate implements Screen {
 
         addActors();
 
-        timer.countDownTimer();
+        timer.countDownTimer((TimeUtils.nanosToMillis(pauseDelay) / 1000));
         stage.act(delta);
         stage.draw();
     }
