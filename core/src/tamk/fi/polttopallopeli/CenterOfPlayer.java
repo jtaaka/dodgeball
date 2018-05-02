@@ -15,10 +15,13 @@ public class CenterOfPlayer extends Sprite {
     private ShapeRenderer shape;
     private Vector2 calculatedCenter;
     private Vector2 lastPoint;
+    Texture background;
 
     public CenterOfPlayer() {
-        super(new Texture("peruspalloTESTI.png"));
+        super(new Texture("tahtain.png"));
         setSize(getWidth() / 300f, getHeight() / 300f);
+        background = new Texture("taulu.png");
+
         setOriginCenter();
         center = new Array<CenterOfPlayerObject>();
         shape = new ShapeRenderer();
@@ -27,7 +30,7 @@ public class CenterOfPlayer extends Sprite {
     }
 
     public void modify(float x, float y) {
-        final CenterOfPlayerObject object = new CenterOfPlayerObject(x / 3f, y / 3f);
+        final CenterOfPlayerObject object = new CenterOfPlayerObject(x / 6f, y / 6f);
         //Gdx.app.log(getClass().getSimpleName(), "Wörk MODIFY?" );
 
         for (CenterOfPlayerObject heatMapObject : center) {
@@ -46,7 +49,7 @@ public class CenterOfPlayer extends Sprite {
         Color color;
 
         CenterOfPlayerObject(float x, float y) {
-            point = new Vector2(Dodgeball.WORLD_WIDTH / 2f + x,Dodgeball.WORLD_HEIGHT / 2f + y);   //OG point = new Vector2(round(x), round(y));
+            point = new Vector2(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f + x,Dodgeball.WORLD_HEIGHT / 2f + y);   //OG point = new Vector2(round(x), round(y));
             //color = new Color(0.1f, 0, 0, 0.1f);
             //Gdx.app.log(getClass().getSimpleName(), "Wörk? POINT" + point );
         }
@@ -66,19 +69,24 @@ public class CenterOfPlayer extends Sprite {
     }
 
     public void draw(Batch batch, Camera camera) {
-        lastPoint.x = Dodgeball.WORLD_WIDTH / 2f;
+        lastPoint.x = Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f;
         lastPoint.y = Dodgeball.WORLD_HEIGHT / 2f;
+
+        batch.begin();
+        batch.draw(background, Dodgeball.WORLD_WIDTH / 25f, Dodgeball.WORLD_HEIGHT / 4f, background.getWidth() / 200f, background.getHeight() / 200f);
+        batch.end();
 
         for (CenterOfPlayerObject heat : center) {
             shape.setProjectionMatrix(camera.combined);
             shape.begin(ShapeRenderer.ShapeType.Line);
+            shape.setColor(Color.BLACK);
             shape.line(heat.point, lastPoint);
             lastPoint = heat.point;
             shape.end();
         }
 
         setColor(1,0,0,1);
-        setPosition(Dodgeball.WORLD_WIDTH / 2f + calculatedCenter.x / 3f - getWidth() / 2f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
+        setPosition(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f + calculatedCenter.x / 3f - getWidth() / 2f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
         //setPosition(Dodgeball.WORLD_WIDTH / 2f, Dodgeball.WORLD_HEIGHT / 2f);
         batch.begin();
         draw(batch);

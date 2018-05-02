@@ -70,6 +70,8 @@ public class SurvivalMode implements Screen {
     private TextButton menu;
     private TextButton heat;
     private TextButton playerMovement;
+    private boolean showMovement = false;
+    private boolean showHeat = false;
 
     private long pauseTime = 0;
     private long pauseDelay = 0;
@@ -205,8 +207,13 @@ public class SurvivalMode implements Screen {
                     gameOver.getWidth() / 100, gameOver.getHeight() / 100);
                     */
             timer.setFreeze();
-            //heatMap.draw(batch);
-            center.draw(batch, camera);
+            if (showHeat) {
+                heatMap.draw(batch);
+            }
+
+            if (showMovement) {
+                center.draw(batch, camera);
+            }
 
             if (setScore) {
                 setHighScore();
@@ -393,7 +400,11 @@ public class SurvivalMode implements Screen {
         heat.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-
+                if (showHeat) {
+                    showHeat = false;
+                } else {
+                    showHeat = true;
+                }
             }
 
             @Override
@@ -405,7 +416,11 @@ public class SurvivalMode implements Screen {
         playerMovement.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-
+                if (showMovement) {
+                    showMovement = false;
+                } else {
+                    showMovement = true;
+                }
             }
 
             @Override

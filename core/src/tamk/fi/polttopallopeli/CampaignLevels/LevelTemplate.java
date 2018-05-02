@@ -84,6 +84,8 @@ public class LevelTemplate implements Screen {
     private TextButton menu;
     private TextButton heat;
     private TextButton playerMovement;
+    private boolean showMovement = false;
+    private boolean showHeat = false;
 
     private long pauseTime = 0;
     private long pauseDelay = 0;
@@ -365,7 +367,6 @@ public class LevelTemplate implements Screen {
     }
 
     private void isGameOver() {
-        //batch.begin();
 
         if (player.getHealth() == 0 && !victory) {
             timer.setFreeze();
@@ -373,11 +374,14 @@ public class LevelTemplate implements Screen {
         }
 
         if (victory || defeat) {
-            //heatMap.draw(batch);
-            center.draw(batch, camera);
-        }
+            if (showHeat) {
+                heatMap.draw(batch);
+            }
 
-        //batch.end();
+            if (showMovement) {
+                center.draw(batch, camera);
+            }
+        }
 
         if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000) <= timeLimit) {
             timer.levelModeTimer(timeLimit, pauseDelay);
@@ -540,7 +544,11 @@ public class LevelTemplate implements Screen {
         heat.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-
+                if (showHeat) {
+                    showHeat = false;
+                } else {
+                    showHeat = true;
+                }
             }
 
             @Override
@@ -552,7 +560,11 @@ public class LevelTemplate implements Screen {
         playerMovement.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-
+                if (showMovement) {
+                    showMovement = false;
+                } else {
+                    showMovement = true;
+                }
             }
 
             @Override
