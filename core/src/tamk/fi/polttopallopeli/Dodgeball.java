@@ -26,7 +26,7 @@ public class Dodgeball extends Game {
 
     public static float VOLUME = 1.0f;
     public static float MUSIC_VOLUME = 1.0f;
-    public static AssetManager manager;
+    public AssetManager manager;
 
     private Locale lang;
     private I18NBundle myBundle;
@@ -41,6 +41,7 @@ public class Dodgeball extends Game {
 		manager = new AssetManager();
         manager.load("menu.ogg", Music.class);
         manager.load("survival.ogg", Music.class);
+        manager.load("India.ogg", Music.class);
         manager.load("Clucth.ogg", Music.class);
 		manager.load("hit.ogg", Sound.class);
 		manager.load("hit2.ogg", Sound.class);
@@ -49,6 +50,10 @@ public class Dodgeball extends Game {
 
         setScreen(new SplashScreen(this));
 	}
+
+	public <T> T getManager(String identifier, Class<T> type) {
+        return manager.get(identifier, type);
+    }
 
 	public I18NBundle getLang() {
         return myBundle;

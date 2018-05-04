@@ -28,60 +28,233 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import tamk.fi.polttopallopeli.Screens.HighScore;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
+/**
+ * Class for the survival mode.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class SurvivalMode implements Screen {
+
+    /**
+     * Defines SpriteBatch for level template.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Defines world.
+     */
     private World world;
+
+    /**
+     * Defines world walls.
+     */
     private Body walls;
+
+    /**
+     * Defines player.
+     */
     private Player player;
+
+    /**
+     * Defines background texture for world.
+     */
     private Texture backgroundTexture;
+
+    /**
+     * Defines camera for the world.
+     */
     private OrthographicCamera camera;
+
+    /**
+     * Defines balls for the world.
+     */
     private Balls[] ball;
+
+    /**
+     * Defines game timer.
+     */
     private GameTimer timer;
+
+    /**
+     * Defines ball locator.
+     */
     private int[] ballLocator;
+
+    /**
+     * Defines heatmap for player movement.
+     */
     private HeatMap heatMap;
+
+    /**
+     * Defines center of the player.
+     */
     private CenterOfPlayer center;
+
+    /**
+     * Defines center point.
+     */
     private Vector2 centerPoint;
 
+    /**
+     * Defines max ball amount in world.
+     */
     private final int MAX_BALL_AMOUNT = 10;
+
+    /**
+     * Defines ball spawn timer.
+     */
     private final float BALL_SPAWN_TIMER = 3;
+
+    /**
+     * Defines how many balls are added at the start.
+     */
     private final int BALL_SPAWN_COUNT = 3;
+
+    /**
+     * Defines if there is an accelerating ball or not.
+     */
     private final boolean ACCELERATING_BALL = true;
+
+    /**
+     * Defines if there is a targeting ball or not.
+     */
     private final boolean TARGETING_BALL = true;
+
+    /**
+     * Defines if there is a fast ball or not.
+     */
     private final boolean FASTBALL = true;
+
+    /**
+     * Defines if there is a healing ball or not.
+     */
     private final boolean HEALINGBALL = true;
+
+    /**
+     * Defines the time to add new ball to the world.
+     */
     private final int ADD_NEW_BALL_TIME = 30; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
 
-    private Box2DDebugRenderer debugRenderer;
+    //private Box2DDebugRenderer debugRenderer;
+
+    /**
+     * Defines time step.
+     */
     private float TIME_STEP = 1/60f;
+
+    /**
+     * Defines velocity iterations.
+     */
     private int VELOCITY_ITERATIONS = 6;
+
+    /**
+     * Defines position iterations.
+     */
     private int POSITION_ITERATIONS = 2;
+
+    /**
+     * Defines the accumulator for physics steps.
+     */
     private float accumulator = 0;
 
+    /**
+     * Defines device's screen column width to help position buttons.
+     */
     final int colWidth = Gdx.graphics.getWidth() / 12;
+
+    /**
+     * Defines device's screen row height to help position buttons.
+     */
     final int rowHeight = Gdx.graphics.getHeight() / 12;
+
+    /**
+     * Defines device's screen width.
+     */
     final float WIDTH = Gdx.graphics.getWidth();
 
+    /**
+     * Defines music for the game.
+     */
     private Music music;
+
+    /**
+     * Defines stage for the level.
+     */
     private Stage stage;
+
+    /**
+     * Defines skin for texts and buttons.
+     */
     private Skin skin;
+
+    /**
+     * Defines game over text label.
+     */
     private Label gameOverText;
+
+    /**
+     * Defines play again button.
+     */
     private TextButton playAgain;
+
+    /**
+     * defines menu button.
+     */
     private TextButton menu;
+
+    /**
+     * Defines heatmap drawing button.
+     */
     private TextButton heat;
+
+    /**
+     * Defines player movement drawing button.
+     */
     private TextButton playerMovement;
+
+    /**
+     * Defines if movement drawing is shown or not.
+     */
     private boolean showMovement = false;
+
+    /**
+     * Defines if heatmap drawing is shown or not.
+     */
     private boolean showHeat = false;
 
+    /**
+     * Defines the time when game is paused.
+     */
     private long pauseTime = 0;
+
+    /**
+     * Defines the time that was spent in pause mode.
+     */
     private long pauseDelay = 0;
 
+    /**
+     * Constructor for survival mode.
+     *
+     * @param host "main class" host.
+     */
     public SurvivalMode(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
         stage = new Stage(new ScreenViewport(), batch);
 
-        music = Dodgeball.manager.get("survival.ogg", Music.class);
+        if (music != null) {
+            music.dispose();
+        }
+
+        music = host.getManager("survival.ogg", Music.class);
 
         if (Dodgeball.MUSIC_VOLUME > 0) {
             music.setLooping(true);
@@ -98,13 +271,13 @@ public class SurvivalMode implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
 
-        debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
 
         timer = new GameTimer(batch, false, stage);
 
-        world.setContactListener(new ContactDetection());
+        world.setContactListener(new ContactDetection(host));
+        Gdx.input.setCatchBackKey(true);
 
         gameOverScreen();
         worldWalls();
@@ -119,6 +292,11 @@ public class SurvivalMode implements Screen {
     private float divideAmount;
     private float lastDelta;
 
+    /**
+     * Handles heatmap and center point data logging.
+     *
+     * @param delta is deltatime.
+     */
     private void heatMapDataHandler(float delta) {
         //HEATMAP DATA COLLECTION
         //Gdx.app.log(getClass().getSimpleName(), ""+ lastDelta);
@@ -156,6 +334,11 @@ public class SurvivalMode implements Screen {
     private float ballSpawnTimer = 0;
     private int ballStartCounter = 0;
 
+    /**
+     * Handles ball spawning and disposing.
+     *
+     * @param delta is deltatime.
+     */
     private void ballHandler(float delta) {
         // Determines ball spawning at the start
         ballSpawnTimer += delta;
@@ -199,6 +382,9 @@ public class SurvivalMode implements Screen {
 
     boolean setScore = true;
 
+    /**
+     * Checks if the game is over.
+     */
     private void isGameOver() {
         if (player.getHealth() == 0) {
             /*
@@ -260,11 +446,20 @@ public class SurvivalMode implements Screen {
             stage.addActor(playerMovement);
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            host.setScreen(new Menu(host));
+        }
+
         timer.countDownTimer((TimeUtils.nanosToMillis(pauseDelay) / 1000));
         stage.act(delta);
         stage.draw();
     }
 
+    /**
+     * Makes sure that the world step time is constant.
+     *
+     * @param deltaTime is deltatime.
+     */
     private void doPhysicsStep(float deltaTime) {
 
         float frameTime = Math.min(deltaTime, 0.25f);
@@ -275,7 +470,10 @@ public class SurvivalMode implements Screen {
         }
     }
 
-    public void setHighScore() {
+    /**
+     * Sets the high score times and names from profile preferences.
+     */
+    private void setHighScore() {
         long time = timer.getHighScoreTime();
         String score = "score";
         String profile = "profile";
@@ -293,7 +491,7 @@ public class SurvivalMode implements Screen {
         }
 
         if (time > HighScore.scores[0]) {
-            Dodgeball.manager.get("highscore.ogg", Sound.class).play(Dodgeball.VOLUME);
+            host.getManager("highscore.ogg", Sound.class).play(Dodgeball.VOLUME);
         }
 
         for (int i = 0; i < HighScore.scores.length; i++) {
@@ -321,6 +519,9 @@ public class SurvivalMode implements Screen {
         }
     }
 
+    /**
+     * Defines world walls.
+     */
     private void worldWalls() {
 
         BodyDef bodyDef = new BodyDef();
@@ -349,7 +550,10 @@ public class SurvivalMode implements Screen {
         shape.dispose();
     }
 
-    public void gameOverScreen() {
+    /**
+     * Adds game over screen buttons when the game is over.
+     */
+    private void gameOverScreen() {
         skin = new Skin(Gdx.files.internal("menu.json"));
 
         gameOverText = new Label(host.getLang().get("gameover"), skin, "default");
@@ -456,7 +660,6 @@ public class SurvivalMode implements Screen {
     public void dispose() {
         music.stop();
         backgroundTexture.dispose();
-        //gameOver.dispose();
         for (Balls eachBall : ball) {
             if (eachBall != null) {
                 eachBall.dispose();

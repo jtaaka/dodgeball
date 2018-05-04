@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -34,69 +35,274 @@ import tamk.fi.polttopallopeli.LevelPreferences;
 import tamk.fi.polttopallopeli.Player;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
+/**
+ * Template class for all levels.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class LevelTemplate implements Screen {
+
+    /**
+     * Defines SpriteBatch for level template.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Defines world.
+     */
     private World world;
+
+    /**
+     * Defines world walls.
+     */
     private Body walls;
+
+    /**
+     * Defines player.
+     */
     private Player player;
+
+    /**
+     * Defines background texture for world.
+     */
     private Texture backgroundTexture;
+
+    /**
+     * Defines secret level's texture.
+     */
     private Texture secretTexture;
+
+    /**
+     * Defines camera for the world.
+     */
     private OrthographicCamera camera;
+
+    /**
+     * Defines balls for the world.
+     */
     private Balls[] ball;
+
+    /**
+     * Defines game timer.
+     */
     private GameTimer timer;
+
+    /**
+     * Defines ball locator.
+     */
     private int[] ballLocator;
+
+    /**
+     * Defines heatmap for player movement.
+     */
     private HeatMap heatMap;
+
+    /**
+     * Defines center of the player.
+     */
     private CenterOfPlayer center;
+
+    /**
+     * Defines center point.
+     */
     private Vector2 centerPoint;
 
+    /**
+     * Defines max ball amount in world.
+     */
     int MAX_BALL_AMOUNT; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+
+    /**
+     * Defines ball spawn timer.
+     */
     float BALL_SPAWN_TIMER;  // Kauanko odotetaan pallon tuloa alussa (ja jos useampi alussa niin kauanko niiden välillä). SEKUNTTI. esim: 4
+
+    /**
+     * Defines how many balls are added at the start.
+     */
     int BALL_SPAWN_COUNT; // Montako palloa lisätään alussa. esim: 3
+
+    /**
+     * Defines the time to add new ball to the world.
+     */
     int ADD_NEW_BALL_TIME; // Koska lisätään uusi pallo alun jälkeen. SEKUNTTI. esim: 60
+
+    /**
+     * Defines if there is an accelerating ball or not.
+     */
     boolean ACCELERATING_BALL; // onko levelissä kiihtyvää palloa. true / false
+
+    /**
+     * Defines if there is a targeting ball or not.
+     */
     boolean TARGETING_BALL; // onko levelissä ennakoivaa palloa. true / false
+
+    /**
+     * Defines if there is a fast ball or not.
+     */
     boolean FASTBALL; // onko levelissä nopeampaa palloa. true / false
+
+    /**
+     * Defines if there is a healing ball or not.
+     */
     boolean HEALINGBALL; // onko levelissä parantavaa palloa. true / false
+
+    /**
+     * Defines the timelimit for the level.
+     */
     long timeLimit; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
+
+    /**
+     * Defines the next level.
+     */
     public String nextLevel; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
 
+    /**
+     * Defines a music for the level.
+     */
     private Music music;
 
+    /**
+     * Defines a music for the level.
+     */
+    private Music music2;
+
+    /**
+     * Defines a music for the level.
+     */
+    private Music music3;
+
+    /**
+     * Tells if a player won or not.
+     */
     private boolean victory;
+
+    /**
+     * Tells if a player was defeated.
+     */
     private boolean defeat;
-    //private Box2DDebugRenderer debugRenderer;
+
+    /**
+     * Defines time step.
+     */
     private float TIME_STEP = 1/60f;
+
+    /**
+     * Defines velocity iterations.
+     */
     private int VELOCITY_ITERATIONS = 6;
+
+    /**
+     * Defines position iterations.
+     */
     private int POSITION_ITERATIONS = 2;
+
+    /**
+     * Defines the accumulator for physics steps.
+     */
     private float accumulator = 0;
 
+    /**
+     * Defines device's screen column width to help position buttons.
+     */
     final int colWidth = Gdx.graphics.getWidth() / 12;
+
+    /**
+     * Defines device's screen row height to help position buttons.
+     */
     final int rowHeight = Gdx.graphics.getHeight() / 12;
+
+    /**
+     * Defines device's screen width.
+     */
     final float WIDTH = Gdx.graphics.getWidth();
 
+    /**
+     * Defines stage for the level.
+     */
     private Stage stage;
+
+    /**
+     * Defines a skin for button styles.
+     */
     private Skin skin;
+
+    /**
+     * Defines game over text label.
+     */
     private Label gameOverText;
+
+    /**
+     * Defines victory text label.
+     */
     private Label victoryText;
+
+    /**
+     * Defines play again button.
+     */
     private TextButton playAgain;
+
+    /**
+     * Defines next level button.
+     */
     private TextButton nextLevelButton;
+
+    /**
+     * Defines menu button.
+     */
     private TextButton menu;
+
+    /**
+     * Defines heatmap drawing button.
+     */
     private TextButton heat;
+
+    /**
+     * Defines player movement drawing button.
+     */
     private TextButton playerMovement;
+
+    /**
+     * Defines if movement drawing is shown or not.
+     */
     private boolean showMovement = false;
+
+    /**
+     * Defines if heatmap drawing is shown or not.
+     */
     private boolean showHeat = false;
 
+    /**
+     * Defines the time when game is paused.
+     */
     private long pauseTime = 0;
+
+    /**
+     * Defines the time that was spent in pause mode.
+     */
     private long pauseDelay = 0;
 
+    /**
+     * Level template constructor.
+     *
+     * @param host "main class" host.
+     * @param MAX_BALL_AMOUNT maximum number of balls on the screen.
+     * @param background background texture.
+     * @param whiteTimer white timer or not.
+     */
     public LevelTemplate(Dodgeball host, int MAX_BALL_AMOUNT, Texture background, boolean whiteTimer) {
         this.host = host;
         this.MAX_BALL_AMOUNT = MAX_BALL_AMOUNT;
         batch = host.getBatch();
         stage = new Stage(new ScreenViewport(), batch);
-
-        music = Dodgeball.manager.get("Clucth.ogg", Music.class);
 
         backgroundTexture = background;
 
@@ -111,10 +317,13 @@ public class LevelTemplate implements Screen {
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
         timer = new GameTimer(batch, whiteTimer, stage);
-        world.setContactListener(new ContactDetection());
+        world.setContactListener(new ContactDetection(host));
         victory = false;
         defeat = false;
 
+        Gdx.input.setCatchBackKey(true);
+
+        playMusic();
         gameOverScreen();
         worldWalls();
     }
@@ -123,10 +332,46 @@ public class LevelTemplate implements Screen {
     public void show() {
     }
 
+    /**
+     *
+     */
     private boolean calculated = false;
+
+    /**
+     *
+     */
     private float divideAmount;
+
+    /**
+     *
+     */
     private float lastDelta;
 
+    private void playMusic() {
+        if (Dodgeball.MUSIC_VOLUME > 0) {
+            if (music != null) {
+                music.dispose();
+            }
+            switch (MathUtils.random(1,2)) {
+                case 1:
+                    music = host.getManager("India.ogg", Music.class);
+                    music.setLooping(true);
+                    music.play();
+                    break;
+                case 2:
+                    music = host.getManager("survival.ogg", Music.class);
+                    music.setLooping(true);
+                    music.play();
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Draws heatmap.
+     *
+     * @param delta is deltatime.
+     */
     private void heatMapDataHandler(float delta) {
         lastDelta += delta;
         //Gdx.app.log(getClass().getSimpleName(), ""+ lastDelta);
@@ -158,9 +403,21 @@ public class LevelTemplate implements Screen {
         }
     }
 
+    /**
+     *
+     */
     private float ballSpawnTimer = 0;
+
+    /**
+     *
+     */
     private int ballStartCounter = 0;
 
+    /**
+     * Handles ball spawning and disposing.
+     *
+     * @param delta is deltatime.
+     */
     private void ballHandler(float delta) {
         if (!victory) {
             // Determines ball spawning at the start
@@ -210,6 +467,9 @@ public class LevelTemplate implements Screen {
         }
     }
 
+    /**
+     * Adds button actors.
+     */
     private void addActors() {
 
         if (player.getHealth() == 0) {
@@ -263,26 +523,23 @@ public class LevelTemplate implements Screen {
         player.drawHealth(delta);
 
         isGameOver();
-
-        //debugRenderer.render(world, camera.combined);
         doPhysicsStep(delta);
+        addActors();
 
-        /*// For testing purposes
-        if (Gdx.input.isTouched() && player.getHealth() == 0 || victory && Gdx.input.isTouched()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             host.setScreen(new Menu(host));
         }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            host.setScreen(new Menu(host));
-        }*/
-
-        addActors();
 
         timer.countDownTimer((TimeUtils.nanosToMillis(pauseDelay) / 1000));
         stage.act(delta);
         stage.draw();
     }
 
+    /**
+     * Makes sure that the world step time is constant.
+     *
+     * @param deltaTime is deltatime.
+     */
     private void doPhysicsStep(float deltaTime) {
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
@@ -292,6 +549,9 @@ public class LevelTemplate implements Screen {
         }
     }
 
+    /**
+     * Defines world walls.
+     */
     private void worldWalls() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -314,7 +574,7 @@ public class LevelTemplate implements Screen {
         shape.dispose();
     }
 
-    Batch secretBatch;
+    private Batch secretBatch;
     float alpha = 0;
     boolean rising = true;
     boolean blackening = false;
@@ -326,6 +586,11 @@ public class LevelTemplate implements Screen {
             secretBatch = new SpriteBatch();
             secretBatch.setColor(1,1,1,0);
             if (Dodgeball.MUSIC_VOLUME > 0) {
+                if (music != null) {
+                    music.dispose();
+                }
+
+                music = host.getManager("Clucth.ogg", Music.class);
                 music.setLooping(true);
                 music.play();
             }
@@ -366,6 +631,9 @@ public class LevelTemplate implements Screen {
         secretBatch.end();
     }
 
+    /**
+     * Checks if the game is over.
+     */
     private void isGameOver() {
 
         if (player.getHealth() == 0 && !victory) {
@@ -396,7 +664,10 @@ public class LevelTemplate implements Screen {
         }
     }
 
-    public void gameOverScreen() {
+    /**
+     * Adds game over screen buttons when the game is over.
+     */
+    private void gameOverScreen() {
         skin = new Skin(Gdx.files.internal("menu.json"));
 
         gameOverText = new Label(host.getLang().get("gameover"), skin, "default");
@@ -474,6 +745,8 @@ public class LevelTemplate implements Screen {
                 if (nextLevel.equals("secret")) {
                     host.setScreen(new Level11(host));
                 }
+
+                playMusic();
             }
 
             @Override
@@ -601,8 +874,11 @@ public class LevelTemplate implements Screen {
         if (secretTexture != null) {
             secretTexture.dispose();
         }
-        music.stop();
-        //gameOver.dispose();
+
+        if (music != null) {
+            music.stop();
+        }
+
         for (Balls eachBall : ball) {
             if (eachBall != null) {
                 eachBall.dispose();
@@ -615,6 +891,9 @@ public class LevelTemplate implements Screen {
         world.dispose();
         stage.dispose();
         skin.dispose();
-        Gdx.app.log(getClass().getSimpleName(), "disposing");
+        if (secretBatch != null) {
+            secretBatch.dispose();
+        }
+        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

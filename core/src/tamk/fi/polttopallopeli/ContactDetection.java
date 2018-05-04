@@ -9,8 +9,13 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class ContactDetection implements ContactListener {
-    public Fixture fixtureA;
-    public Fixture fixtureB;
+    private Fixture fixtureA;
+    private Fixture fixtureB;
+    private Dodgeball host;
+
+    public ContactDetection(Dodgeball host) {
+        this.host = host;
+    }
 
     @Override
     public void beginContact(Contact contact) {
@@ -35,8 +40,8 @@ public class ContactDetection implements ContactListener {
                         player.hit = true;
                     }
                     if (Dodgeball.VOLUME > 0) {
-                        Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
-                        Dodgeball.manager.get("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
+                        host.getManager("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
+                        host.getManager("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
                     }
                 }
             } else {
@@ -52,8 +57,8 @@ public class ContactDetection implements ContactListener {
                         player.hit = true;
                     }
                     if (Dodgeball.VOLUME > 0) {
-                        Dodgeball.manager.get("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
-                        Dodgeball.manager.get("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
+                        host.getManager("hit2.ogg", Sound.class).play(Dodgeball.VOLUME / 2f);
+                        host.getManager("hit.ogg", Sound.class).play(Dodgeball.VOLUME);
                     }
                 }
             }

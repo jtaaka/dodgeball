@@ -59,7 +59,7 @@ public class Menu implements Screen {
         this.host = host;
         batch = host.getBatch();
 
-        music = Dodgeball.manager.get("menu.ogg", Music.class);
+        music = host.getManager("menu.ogg", Music.class);
         music.setLooping(true);
 
         prefs = Gdx.app.getPreferences("currentProfile");

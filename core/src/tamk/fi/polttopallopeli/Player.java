@@ -17,6 +17,14 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 
+/**
+ * Class for the player in the game.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Player extends Sprite {
     private World world;
     protected Body body;
@@ -47,6 +55,12 @@ public class Player extends Sprite {
 
     public boolean victory;
 
+    /**
+     * Constructor for the player.
+     *
+     * @param world world for the player.
+     * @param batch spritebatch for the player.
+     */
     public Player(World world, SpriteBatch batch) {
         super(new Texture("hahmoTex.png"));
         //super(new Texture("hahmo.png"));
@@ -141,7 +155,15 @@ public class Player extends Sprite {
         weldJointDef.localAnchorA.add(0.02f, getHeight() / 8 * 3.4f);
         world.createJoint(weldJointDef);
 
-        //Kalibroi lähtöasennon, ei vaikuta desktopilla
+        playerCalibration();
+        shape.dispose();
+        circle.dispose();
+    }
+
+    /**
+     * Calibrates the player's starting accelerometer position.
+     */
+    private void playerCalibration() {
         tabletAccelerometerSettingZ = 0;
         tabletAccelerometerSettingY = 0;
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
@@ -151,11 +173,9 @@ public class Player extends Sprite {
             } else {
                 tabletAccelerometerSettingZ = Gdx.input.getAccelerometerZ();
             }
+
             tabletAccelerometerSettingY = Gdx.input.getAccelerometerY();
         }
-
-        shape.dispose();
-        circle.dispose();
     }
 
     private TextureRegion[] transformTo1D(TextureRegion[][] tmp) {
