@@ -6,10 +6,18 @@ import com.badlogic.gdx.graphics.Texture;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
 
+/**
+ * Defines Level 1 variables.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Level1 implements Screen {
     private LevelTemplate levelTemplate;
     private Dodgeball host;
-    int MAX_BALL_AMOUNT = 4; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+    private int MAX_BALL_AMOUNT = 4; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
     private Texture background;
     boolean whiteTimer = false;
 

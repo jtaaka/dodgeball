@@ -5,6 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 
 import tamk.fi.polttopallopeli.Dodgeball;
 
+/**
+ * Defines Level 2 variables.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Level2 implements Screen {
     private LevelTemplate levelTemplate;
     private Dodgeball host;

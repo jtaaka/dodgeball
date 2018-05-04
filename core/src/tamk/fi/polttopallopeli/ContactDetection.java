@@ -8,6 +8,14 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+/**
+ * Defines contacts between the player and a ball.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class ContactDetection implements ContactListener {
     private Fixture fixtureA;
     private Fixture fixtureB;
@@ -17,6 +25,10 @@ public class ContactDetection implements ContactListener {
         this.host = host;
     }
 
+    /**
+     * Manages actions to be done in contacts.
+     * @param contact Detected contact data.
+     */
     @Override
     public void beginContact(Contact contact) {
         fixtureA = contact.getFixtureA();

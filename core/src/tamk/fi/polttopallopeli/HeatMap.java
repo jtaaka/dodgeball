@@ -5,14 +5,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by Joni on 22.3.2018.
+ * Handles players location logging.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
  */
-
 public class HeatMap extends Sprite {
     private Array<HeatMapObject> heatMap;
 
@@ -23,6 +26,14 @@ public class HeatMap extends Sprite {
         heatMap = new Array<HeatMapObject>();
     }
 
+    /**
+     * Sets player location.
+     *
+     * If location is too close to existing one, adds more color to it.
+     *
+     * @param x x-location
+     * @param y y-location
+     */
     public void modify(float x, float y) {
         final HeatMapObject object = new HeatMapObject(x, y);
         //Gdx.app.log(getClass().getSimpleName(), "Wörk MODIFY?" );
@@ -58,6 +69,10 @@ public class HeatMap extends Sprite {
         }
     }
 
+    /**
+     * Draws heatmap.
+     * @param batch Spritebatch.
+     */
     public void draw(Batch batch) {
         batch.begin();
         for (HeatMapObject heat : heatMap) {

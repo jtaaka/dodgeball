@@ -62,7 +62,7 @@ public class Player extends Sprite {
      * @param batch spritebatch for the player.
      */
     public Player(World world, SpriteBatch batch) {
-        super(new Texture("hahmoTex.png"));
+        super(new Texture("animaatio.png"));
         //super(new Texture("hahmo.png"));
 
         //SettingsPreferences.getSettings();
@@ -91,7 +91,7 @@ public class Player extends Sprite {
         TextureRegion[] healthFrames = transformTo1D(temp);
         healthAnimation = new Animation<TextureRegion>(1/10f, healthFrames);
 
-        temp = TextureRegion.split(getTexture(), getTexture().getWidth() / 6,
+        temp = TextureRegion.split(getTexture(), getTexture().getWidth() / 9,
                 getTexture().getHeight() / 8);
         TextureRegion[] playerFrames = transformTo1D(temp);
         playerAnime = new Animation<TextureRegion>(frameDuration, playerFrames);
@@ -101,7 +101,7 @@ public class Player extends Sprite {
         TextureRegion[] stunFrames = transformTo1D(temp);
         stunAnime = new Animation<TextureRegion>(frameDuration, stunFrames);
 
-        setSize(getWidth() / 600f / 3f, getHeight() / 800f / 3f);
+        setSize(getWidth() / 900f / 3f, getHeight() / 800f / 3f);
         //setSize(getWidth() / 200f, getHeight() / 200f);
         setOriginCenter();
 
@@ -216,7 +216,7 @@ public class Player extends Sprite {
     private float getDirectionalFrameTime() {
         final float DETECTION_THRESHOLD = 0.5f;
         final float FRAME_TIME = frameDuration;
-        final float FRAME_COUNT = 6;
+        final float FRAME_COUNT = 9;
 
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;

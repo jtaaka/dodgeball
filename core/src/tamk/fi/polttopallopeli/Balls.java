@@ -16,30 +16,109 @@ import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Defines a ball and its drawing.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Balls extends Sprite {
+    /**
+     * Defines world.
+     */
     private World world;
+    /**
+     * Defines ball body.
+     */
     private Body body;
+    /**
+     * Defines player body.
+     */
     private Body playerBody;
+    /**
+     * Defines Spritebatch.
+     */
     private Batch batch;
+    /**
+     * Defines ball texture.
+     */
     private Texture ball;
-    FixtureDef fixtureDef;
+    /**
+     * Defines FixtureDef for a ball.
+     */
+    private FixtureDef fixtureDef;
 
+    /**
+     * Ball spawning location.
+     */
     private float xCoordinate;
+    /**
+     * Ball spawning location.
+     */
     private float yCoordinate;
+    /**
+     * Current player location.
+     */
     private float playerX;
+    /**
+     * Current player location.
+     */
     private float playerY;
+    /**
+     * Ball spawning point that can be logged.
+     */
     private int ballLocation;
-    float xForce;
-    float yForce;
+    /**
+     * Force given to a ball.
+     */
+    private float xForce;
+    /**
+     * Force given to a ball.
+     */
+    private float yForce;
 
-    boolean acceleratingBall;
-    boolean targetingBall;
-    boolean fastball;
+    /**
+     * Defines if they are used.
+     */
+    private boolean acceleratingBall;
+    /**
+     * Defines if they are used.
+     */
+    private boolean targetingBall;
+    /**
+     * Defines if they are used.
+     */
+    private boolean fastball;
+    /**
+     * Defines if they are used.
+     */
     boolean healingBall;
+    /**
+     * Defines if the ball is a healingBall. Defined for ContactDetection.
+     */
     boolean ballIsHealingBall = false;
+    /**
+     * Defines if the healing is used. Defined for Dispose.
+     */
     public boolean healingUsed = false;
+    /**
+     * Defines if accelerating balls functionality is done.
+     */
     private boolean acceleratingBallAction = false;
 
+    /**
+     * Overloads constructor.
+     * @param world current world state.
+     * @param batch Spritebatch.
+     * @param playerBody current player state.
+     * @param ballLocator array that keeps track of available spawnpoints.
+     * @param ACCELERATING_BALL boolean, are they used.
+     * @param TARGETING_BALL boolean, are they used.
+     * @param FASTBALL boolean, are they used.
+     * @param HEALINGBALL boolean, are they used.
+     */
     public Balls(World world, Batch batch, Body playerBody, int[] ballLocator,boolean ACCELERATING_BALL,
                  boolean TARGETING_BALL,boolean FASTBALL, boolean HEALINGBALL) {
         super(new Texture("ball.png"));
@@ -103,12 +182,19 @@ public class Balls extends Sprite {
         body.applyForceToCenter(xForce, yForce,true);
     }
 
+    /**
+     * Defines ball type randomly.
+     */
     private void ballType () {
-        switch (MathUtils.random(1,20)) {
+        switch (MathUtils.random(1,40)) {
             case 1:
             case 2:
             case 3:
             case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
                 if (fastball) {
                     xForce = (playerX - xCoordinate) / 30;
                     yForce = (playerY - yCoordinate) / 30;
@@ -117,6 +203,7 @@ public class Balls extends Sprite {
                     break;
                 }
             case 10:
+            case 11:
                 if (acceleratingBall) {
                     xForce = (playerX - xCoordinate) / 50;
                     yForce = (playerY - yCoordinate) / 50;
@@ -136,6 +223,9 @@ public class Balls extends Sprite {
                     break;
                 }
             case 20:
+            case 21:
+            case 22:
+            case 23:
                 if (targetingBall) {
                     setColor(Color.CHARTREUSE);
                     xForce = (playerX + playerBody.getLinearVelocity().x * 2f - xCoordinate) / 30;
@@ -150,6 +240,10 @@ public class Balls extends Sprite {
         }
     }
 
+    /**
+     * Gets ball spawning point.
+     * @return int ballLocation.
+     */
     public int getLocationToUpdateBallLocator() {
         return ballLocation;
     }
@@ -251,6 +345,9 @@ public class Balls extends Sprite {
         }
     }
 
+    /**
+     * Hides balls from screen.
+     */
     public void outOfSightOutOfMind() {
         setPosition(-4f, -4f);
     }
@@ -275,8 +372,12 @@ public class Balls extends Sprite {
         return Dodgeball.WINDOW_WIDTH / 2 - getWidth() / 2;
     }
 
-    float accelWait;
+    private float accelWait;
 
+    /**
+     * Draws ball and checks accelerating ball action.
+     * @param delta is deltaTime
+     */
     public void draw(float delta) {
         accelWait += delta;
         if (acceleratingBallAction && accelWait > 1.8f) {

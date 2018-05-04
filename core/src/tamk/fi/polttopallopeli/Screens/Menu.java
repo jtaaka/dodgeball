@@ -21,6 +21,14 @@ import java.util.Locale;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.SurvivalMode;
 
+/**
+ * Defines Main Menu.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Menu implements Screen {
     private Dodgeball host;
     private SpriteBatch batch;

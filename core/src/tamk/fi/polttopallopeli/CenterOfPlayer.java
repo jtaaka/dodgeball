@@ -10,6 +10,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Handles players center point and lean logging.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class CenterOfPlayer extends Sprite {
     private Array<CenterOfPlayerObject> center;
     private ShapeRenderer shape;
@@ -29,6 +37,11 @@ public class CenterOfPlayer extends Sprite {
         lastPoint = new Vector2();
     }
 
+    /**
+     * Sets player leaning.
+     * @param x x-location
+     * @param y y-location
+     */
     public void modify(float x, float y) {
         final CenterOfPlayerObject object = new CenterOfPlayerObject(x / 6f, y / 6f);
         //Gdx.app.log(getClass().getSimpleName(), "Wörk MODIFY?" );
@@ -64,10 +77,22 @@ public class CenterOfPlayer extends Sprite {
         }
     }
 
+    /**
+     * Sets calculated centerpoint of player.
+     * @param calculatedCenter is players center point.
+     */
     public void calculatedCenter(Vector2 calculatedCenter) {
         this.calculatedCenter = calculatedCenter;
     }
 
+    /**
+     * Draws players movement directions and center point.
+     *
+     * Also draws background image where movement directions and center point are focused.
+     *
+     * @param batch Spritebatch.
+     * @param camera world camera.
+     */
     public void draw(Batch batch, Camera camera) {
         lastPoint.x = Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f;
         lastPoint.y = Dodgeball.WORLD_HEIGHT / 2f;
@@ -87,7 +112,6 @@ public class CenterOfPlayer extends Sprite {
 
         setColor(1,0,0,1);
         setPosition(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f + calculatedCenter.x / 3f - getWidth() / 2f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
-        //setPosition(Dodgeball.WORLD_WIDTH / 2f, Dodgeball.WORLD_HEIGHT / 2f);
         batch.begin();
         draw(batch);
         batch.end();
