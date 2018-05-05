@@ -67,6 +67,10 @@ public class Menu implements Screen {
         this.host = host;
         batch = host.getBatch();
 
+        if (music != null) {
+            music.dispose();
+        }
+
         music = host.getManager("menu.ogg", Music.class);
         music.setLooping(true);
 

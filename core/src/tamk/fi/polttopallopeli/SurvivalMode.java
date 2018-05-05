@@ -592,6 +592,7 @@ public class SurvivalMode implements Screen {
         menu.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                music.dispose();
                 host.setScreen(new Menu(host));
             }
 

@@ -508,8 +508,6 @@ public class LevelTemplate implements Screen {
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
         batch.end();
-        System.out.println(timer.getElapsedTime());
-
 
         if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000)  >= 4) {
             ballHandler(delta);
@@ -655,7 +653,7 @@ public class LevelTemplate implements Screen {
             timer.levelModeTimer(timeLimit, pauseDelay);
         }
 
-        if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000) > timeLimit && !defeat) {
+        if (timer.getElapsedTime() - (TimeUtils.nanosToMillis(pauseDelay) / 1000) >= timeLimit && !defeat) {
             timer.setFreeze();
             victory = true;
             player.victory = true;
@@ -746,7 +744,9 @@ public class LevelTemplate implements Screen {
                     host.setScreen(new Level11(host));
                 }
 
-                playMusic();
+                if (!nextLevel.equals("secret")) {
+                    playMusic();
+                }
             }
 
             @Override
@@ -758,6 +758,7 @@ public class LevelTemplate implements Screen {
         nextLevelButton.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                music.dispose();
 
                 if (nextLevel.equals("level2")) {
                     host.setScreen(new Level2(host));
@@ -794,6 +795,8 @@ public class LevelTemplate implements Screen {
                 if (nextLevel.equals("level10")) {
                     host.setScreen(new Level10(host));
                 }
+
+                playMusic();
             }
 
             @Override
@@ -805,6 +808,7 @@ public class LevelTemplate implements Screen {
         menu.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                music.dispose();
                 host.setScreen(new Menu(host));
             }
 
