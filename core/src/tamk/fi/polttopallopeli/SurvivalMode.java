@@ -250,10 +250,6 @@ public class SurvivalMode implements Screen {
         batch = host.getBatch();
         stage = new Stage(new ScreenViewport(), batch);
 
-        if (music != null) {
-            music.dispose();
-        }
-
         music = host.getManager("survival.ogg", Music.class);
 
         if (Dodgeball.MUSIC_VOLUME > 0) {

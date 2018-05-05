@@ -323,6 +323,10 @@ public class LevelTemplate implements Screen {
 
         Gdx.input.setCatchBackKey(true);
 
+        music = host.getManager("India.ogg", Music.class);
+        music2 = host.getManager("survival.ogg", Music.class);
+        music3 = host.getManager("Clucth.ogg", Music.class);
+
         playMusic();
         gameOverScreen();
         worldWalls();
@@ -349,19 +353,19 @@ public class LevelTemplate implements Screen {
 
     private void playMusic() {
         if (Dodgeball.MUSIC_VOLUME > 0) {
-            if (music != null) {
-                music.dispose();
-            }
+
             switch (MathUtils.random(1,2)) {
                 case 1:
-                    music = host.getManager("India.ogg", Music.class);
+                    music2.stop();
+
                     music.setLooping(true);
                     music.play();
                     break;
                 case 2:
-                    music = host.getManager("survival.ogg", Music.class);
-                    music.setLooping(true);
-                    music.play();
+                    music.stop();
+
+                    music2.setLooping(true);
+                    music2.play();
                     break;
             }
         }
@@ -525,6 +529,9 @@ public class LevelTemplate implements Screen {
         addActors();
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            music.stop();
+            music2.stop();
+            music3.stop();
             host.setScreen(new Menu(host));
         }
 
@@ -584,13 +591,11 @@ public class LevelTemplate implements Screen {
             secretBatch = new SpriteBatch();
             secretBatch.setColor(1,1,1,0);
             if (Dodgeball.MUSIC_VOLUME > 0) {
-                if (music != null) {
-                    music.dispose();
-                }
+                music.stop();
+                music2.stop();
 
-                music = host.getManager("Clucth.ogg", Music.class);
-                music.setLooping(true);
-                music.play();
+                music3.setLooping(true);
+                music3.play();
             }
         }
 
@@ -744,9 +749,7 @@ public class LevelTemplate implements Screen {
                     host.setScreen(new Level11(host));
                 }
 
-                if (!nextLevel.equals("secret")) {
-                    playMusic();
-                }
+                playMusic();
             }
 
             @Override
@@ -758,7 +761,6 @@ public class LevelTemplate implements Screen {
         nextLevelButton.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                music.dispose();
 
                 if (nextLevel.equals("level2")) {
                     host.setScreen(new Level2(host));
@@ -809,6 +811,8 @@ public class LevelTemplate implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 music.stop();
+                music2.stop();
+                music3.stop();
                 host.setScreen(new Menu(host));
             }
 
@@ -875,6 +879,7 @@ public class LevelTemplate implements Screen {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+
         if (secretTexture != null) {
             secretTexture.dispose();
         }
@@ -883,11 +888,20 @@ public class LevelTemplate implements Screen {
             music.stop();
         }
 
+        if (music2 != null) {
+            music2.stop();
+        }
+
+        if (music3 != null) {
+            music3.stop();
+        }
+
         for (Balls eachBall : ball) {
             if (eachBall != null) {
                 eachBall.dispose();
             }
         }
+
         player.dispose();
         timer.dispose();
         heatMap.dispose();
@@ -895,6 +909,7 @@ public class LevelTemplate implements Screen {
         world.dispose();
         stage.dispose();
         skin.dispose();
+
         if (secretBatch != null) {
             secretBatch.dispose();
         }
