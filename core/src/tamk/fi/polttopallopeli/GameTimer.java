@@ -21,6 +21,14 @@ import com.badlogic.gdx.utils.TimeUtils;
 import tamk.fi.polttopallopeli.CampaignLevels.LevelTemplate;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
+/**
+ * Handles game timer.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class GameTimer {
     private BitmapFont font;
     private GlyphLayout layout;
@@ -38,13 +46,17 @@ public class GameTimer {
     private long nanosPerMilli = 1000000;
     private long elapsed;
     private boolean freeze;
-    private float x;
-    private float y;
 
     private final float WIDTH = Gdx.graphics.getWidth();
     private final float HEIGHT = Gdx.graphics.getHeight();
 
-
+    /**
+     * Overloads constructor.
+     *
+     * @param batch host sprite batch.
+     * @param whiteTimer indicates if outlined timer is used.
+     * @param stage is same as in game.
+     */
     public GameTimer(SpriteBatch batch, boolean whiteTimer, Stage stage) {
         this.batch = batch;
         this.stage = stage;
@@ -98,18 +110,17 @@ public class GameTimer {
         go.addAction(Actions.scaleBy(1f, 1f, 0.3f));
     }
 
+    /**
+     * Freezes timer.
+     */
     public void setFreeze() {
         freeze = true;
     }
 
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
+    /**
+     * Gets time result on survival mode.
+     * @return
+     */
     public long getHighScoreTime() {
         if (!freeze) {
             elapsed = (TimeUtils.nanoTime() - startTime) / nanosPerMilli;
@@ -150,6 +161,10 @@ public class GameTimer {
         }
     }
 
+    /**
+     * Handles timer for survival mode counting up.
+     * @param pauseDelay how long game was paused.
+     */
     public void survivalModeTimer(long pauseDelay) {
 
         if (!freeze) {
@@ -174,6 +189,11 @@ public class GameTimer {
         batch.end();
     }
 
+    /**
+     * Handles timer for levels counting down and stopping at 0.
+     * @param timeLimit Sets the timer to this.
+     * @param pauseDelay How long game was paused.
+     */
     public void levelModeTimer(long timeLimit, long pauseDelay) {
         timeLimit = (timeLimit + 1) * 1000;
 

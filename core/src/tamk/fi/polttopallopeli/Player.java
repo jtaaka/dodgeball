@@ -63,7 +63,6 @@ public class Player extends Sprite {
      */
     public Player(World world, SpriteBatch batch) {
         super(new Texture("animaatio.png"));
-        //super(new Texture("hahmo.png"));
 
         //SettingsPreferences.getSettings();
         //SettingsPreferences.setSettings();
@@ -155,7 +154,7 @@ public class Player extends Sprite {
         weldJointDef.localAnchorA.add(0.02f, getHeight() / 8 * 3.4f);
         world.createJoint(weldJointDef);
 
-        Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
+        //Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
         playerCalibration();
         shape.dispose();
         circle.dispose();
@@ -167,20 +166,24 @@ public class Player extends Sprite {
     private void playerCalibration() {
         tabletAccelerometerSettingZ = 0;
         tabletAccelerometerSettingY = 0;
-        Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
+        //Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
+
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             float accelo = Gdx.input.getAccelerometerZ();
             float acceloX = Gdx.input.getAccelerometerX();
+
             if (accelo > 9) {
-                accelo = 7;
+                accelo = 7f;
             } else if (accelo < -9) {
-                accelo = -7;
+                accelo = -7f;
             }
+
             if (acceloX > 9) {
-                acceloX = 7;
+                acceloX = 7f;
             } else if (acceloX < -9) {
-                acceloX = -7;
+                acceloX = -7f;
             }
+
             if (accelo > 5) {
                 tabletAccelerometerSettingZ = acceloX;
                 useXaccelerometer = true;
@@ -225,8 +228,11 @@ public class Player extends Sprite {
         return body.getPosition().y;
     }
 
-    int lastRow = 6;
-
+    /**
+     * Determines correct animation frame based on player body velocity.
+     *
+     * @return returns correct starting point in texture region.
+     */
     private float getDirectionalFrameTime() {
         final float DETECTION_THRESHOLD = 0.5f;
         final float FRAME_TIME = frameDuration;
@@ -235,7 +241,7 @@ public class Player extends Sprite {
         float directionX = body.getLinearVelocity().x;
         float directionY = body.getLinearVelocity().y;
 
-        int currentRow = lastRow;
+        int currentRow = 6;
 
         if (directionX < 0 && directionY > 0) {
             currentRow = 3;
@@ -286,17 +292,31 @@ public class Player extends Sprite {
             currentRow = 0;
         }
 
-        //lastRow = currentRow;
-
         return FRAME_TIME * FRAME_COUNT * currentRow;
     }
 
+    /**
+     * Used to indicate if player has been hit and for stun animation.
+     */
     public boolean hit;
+    /**
+     * Used to time how long player is invulnerable after being hit.
+     */
     float invulnerability;
+    /**
+     * Used for player movement calculations using Z or X accelerometer.
+     */
     float accelZ;
+    /**
+     * Used for player movement calculations using Y accelerometer.
+     */
     float accelY;
-    boolean faceRight = true;
 
+    /**
+     * Handles player movement and drawing.
+     *
+     * @param delta is delta time.
+     */
     public void playerMove(float delta) {
         float initialFrameTime = getDirectionalFrameTime();
 
@@ -322,10 +342,6 @@ public class Player extends Sprite {
 
         TextureRegion currentFrame = playerAnime.getKeyFrame(initialFrameTime + currentFrameTime, true);
 
-        //batch.draw(currentFrame, body.getPosition().x - getWidth() / 160f, body.getPosition().y - getHeight() / 220f,
-        //       getWidth() / 80f, getHeight() / 80f);
-        // ^^ OLD? ^^
-
         if (!hit) {
             batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 4f,
                     getWidth(), getHeight());
@@ -334,8 +350,6 @@ public class Player extends Sprite {
             batch.draw(currentFrame, body.getPosition().x - getWidth() / 2f, body.getPosition().y - getHeight() / 4f,
                     getWidth(), getHeight());
         }
-
-        //setPosition(body.getPosition().x - getWidth() / 2.3f,body.getPosition().y - getHeight() / 4);
 
         vector.set(0, 0);
 
@@ -363,22 +377,6 @@ public class Player extends Sprite {
         } else {
             accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
         }
-        /*
-        float directionX = body.getLinearVelocity().x;
-
-        if (directionX < 0) {
-            if (!faceRight) {
-                flip(true, false);
-                faceRight = true;
-            }
-        } else {
-            if (faceRight) {
-                flip(true, false);
-                faceRight = false;
-            }
-            setPosition(body.getPosition().x - getWidth() / 1.9f,body.getPosition().y - getHeight() / 4);
-        }
-        */
 
         if (!MathUtils.isZero(accelY, 0.5f) || !MathUtils.isZero(accelZ, 0.5f)) {
 
@@ -407,12 +405,20 @@ public class Player extends Sprite {
         batch.end();
     }
 
+    /**
+     * Gets player body.
+     *
+     * @return Body body.
+     */
     public Body getBody() {
         return body;
     }
 
-
-
+    /**
+     * Gets player forward and backward leaning.
+     *
+     * @return correct float value of leaning depending on which accelerometer is in use.
+     */
     public float getAccelZ() {
         if (useXaccelerometer) {
             return -accelZ;
@@ -420,6 +426,11 @@ public class Player extends Sprite {
         return accelZ;
     }
 
+    /**
+     * Gets player sideways leaning.
+     *
+     * @return float value of current lean.
+     */
     public float getAccelY() {
         return accelY;
     }

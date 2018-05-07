@@ -3,10 +3,24 @@ package tamk.fi.polttopallopeli;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
+/**
+ * Class for level preferences.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class LevelPreferences {
     public static int level[] = new int[11];
+    /**
+     * Defines level preferences.
+     */
     public static Preferences prefs;
 
+    /**
+     * Sets levels unlock status.
+     */
     public static void setStatus() {
         prefs = Gdx.app.getPreferences("LevelsPreferences");
         prefs.putInteger("level1", 1); // val 1 = auki, val 0 = lukossa
@@ -23,6 +37,9 @@ public class LevelPreferences {
         prefs.flush();
     }
 
+    /**
+     * Gets levels unlock status.
+     */
     public static void getStatus() {
         prefs = Gdx.app.getPreferences("LevelsPreferences");
         level[0] = prefs.getInteger("level1", 0);

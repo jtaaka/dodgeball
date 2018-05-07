@@ -44,12 +44,9 @@ public class CenterOfPlayer extends Sprite {
      */
     public void modify(float x, float y) {
         final CenterOfPlayerObject object = new CenterOfPlayerObject(x / 6f, y / 6f);
-        //Gdx.app.log(getClass().getSimpleName(), "Wörk MODIFY?" );
 
         for (CenterOfPlayerObject heatMapObject : center) {
             if (heatMapObject.point.equals(object.point)) {
-                //heatMapObject.addHeatValue();
-                //Gdx.app.log(getClass().getSimpleName(), "Wörk IF?" );
                 return;
             }
         }
@@ -59,22 +56,12 @@ public class CenterOfPlayer extends Sprite {
 
     private class CenterOfPlayerObject {
         Vector2 point;
-        Color color;
 
         CenterOfPlayerObject(float x, float y) {
-            point = new Vector2(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f + x,Dodgeball.WORLD_HEIGHT / 2f + y);   //OG point = new Vector2(round(x), round(y));
-            //color = new Color(0.1f, 0, 0, 0.1f);
-            //Gdx.app.log(getClass().getSimpleName(), "Wörk? POINT" + point );
+            point = new Vector2(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f +
+                    x,Dodgeball.WORLD_HEIGHT / 2f + y);
         }
 
-        void addHeatValue() {
-            //color.add(0.017f, 0, 0, 0.015f);
-            //Gdx.app.log(getClass().getSimpleName(), "Wörk? " + color);
-        }
-
-        private float round(float value) {
-            return (float) Math.round((value) * 2.5f) / 2.5f;
-        }
     }
 
     /**
@@ -90,7 +77,7 @@ public class CenterOfPlayer extends Sprite {
      *
      * Also draws background image where movement directions and center point are focused.
      *
-     * @param batch Spritebatch.
+     * @param batch Sprite batch.
      * @param camera world camera.
      */
     public void draw(Batch batch, Camera camera) {
@@ -111,7 +98,7 @@ public class CenterOfPlayer extends Sprite {
         }
 
         setColor(1,0,0,1);
-        setPosition(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f + calculatedCenter.x / 3f - getWidth() / 2f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
+        setPosition(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 4f + calculatedCenter.x / 3f - getWidth() / 4f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
         batch.begin();
         draw(batch);
         batch.end();

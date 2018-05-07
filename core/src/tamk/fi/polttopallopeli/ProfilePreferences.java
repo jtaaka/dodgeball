@@ -5,10 +5,24 @@ import com.badlogic.gdx.Preferences;
 
 import tamk.fi.polttopallopeli.Screens.Settings;
 
+/**
+ * Class for profile preferences.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class ProfilePreferences {
     public static String name[] = new String[10];
+    /**
+     * Defines profile preferences.
+     */
     public static Preferences prefs;
 
+    /**
+     * Sets profiles.
+     */
     public static void setProfile() {
         prefs = Gdx.app.getPreferences("ProfilePreferences");
         prefs.putString("profile0", name[0]);
@@ -24,6 +38,9 @@ public class ProfilePreferences {
         prefs.flush();
     }
 
+    /**
+     * Gets profiles.
+     */
     public static void getprofile() {
         prefs = Gdx.app.getPreferences("ProfilePreferences");
         name[0] = prefs.getString("profile0", "Anonymous");
