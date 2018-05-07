@@ -41,11 +41,9 @@ public class GameTimer {
     private float x;
     private float y;
 
-    final float WIDTH = Gdx.graphics.getWidth();
-    final float HEIGHT = Gdx.graphics.getHeight();
+    private final float WIDTH = Gdx.graphics.getWidth();
+    private final float HEIGHT = Gdx.graphics.getHeight();
 
-    //private BitmapFont fpsFont;
-    //private float fps;
 
     public GameTimer(SpriteBatch batch, boolean whiteTimer, Stage stage) {
         this.batch = batch;
@@ -90,13 +88,6 @@ public class GameTimer {
         font = generator.generateFont(parameter);
 
         layout.setText(font, "00:00");
-
-        // fps testaukseen
-        /*fpsFont = new BitmapFont();
-        FreeTypeFontGenerator.FreeTypeFontParameter p2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        p2.size = 20;
-        p2.color = Color.BLACK;
-        fpsFont = generator.generateFont(p2);*/
 
         countDown3.addAction(Actions.scaleBy(1.2f, 1.2f, 0.3f));
 
@@ -180,16 +171,6 @@ public class GameTimer {
         font.draw(batch, formatMin + ":" + formatSec, WIDTH - (layout.width + 50f),
                 HEIGHT - layout.height / 2);
 
-
-        /*fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
-                Dodgeball.WINDOW_HEIGHT - 100f);
-
-        // Pelaajan liikkeen keskipiste x ja y
-        if (x != 0 && y != 0) {
-            fpsFont.draw(batch, "y: " + y, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -200f);
-            fpsFont.draw(batch, "x: " + x, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -250f);
-        }*/
-
         batch.end();
     }
 
@@ -206,8 +187,6 @@ public class GameTimer {
         String formatMin = String.format("%02d", minutes);
         String formatSec = String.format("%02d", seconds);
 
-        //fps = Gdx.graphics.getFramesPerSecond();
-
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         camera.update();
@@ -216,14 +195,6 @@ public class GameTimer {
             font.draw(batch, formatMin + ":" + formatSec, WIDTH - (layout.width + 50f),
                     HEIGHT - layout.height / 2);
         }
-        /*fpsFont.draw(batch, (int)fps + " fps", Dodgeball.WINDOW_WIDTH / 400f,
-                Dodgeball.WINDOW_HEIGHT - 100f);
-
-        // Pelaajan liikkeen keskipiste x ja y
-        if (x != 0 && y != 0) {
-            fpsFont.draw(batch, "y: " + y, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -200f);
-            fpsFont.draw(batch, "x: " + x, Dodgeball.WINDOW_WIDTH / 400f, Dodgeball.WINDOW_HEIGHT -250f);
-        }*/
 
         batch.end();
     }

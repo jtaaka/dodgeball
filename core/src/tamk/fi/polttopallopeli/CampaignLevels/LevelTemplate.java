@@ -266,6 +266,11 @@ public class LevelTemplate implements Screen {
     private TextButton heat;
 
     /**
+     * Defines x and y calculations.
+     */
+    private TextButton centerCalculation;
+
+    /**
      * Defines player movement drawing button.
      */
     private TextButton playerMovement;
@@ -694,6 +699,10 @@ public class LevelTemplate implements Screen {
         playerMovement.setSize(colWidth * 3f, rowHeight);
         playerMovement.setPosition(WIDTH / 2 - (playerMovement.getWidth() / 2f), rowHeight * 2.4f);
 
+        centerCalculation = new TextButton("X: " + centerPoint.x + "\nY: " + centerPoint.y, skin, "default");
+        centerCalculation.setSize(colWidth * 1.5f, rowHeight * 1.5f);
+        centerCalculation.setPosition(colWidth * 1.55f, rowHeight * 1.5f);
+
         playAgain.addListener(new InputListener() {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -835,8 +844,15 @@ public class LevelTemplate implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 if (showMovement) {
+                    centerCalculation.remove();
                     showMovement = false;
                 } else {
+                    centerCalculation = new TextButton("X: " + String.format("%.01f", centerPoint.x)
+                            + "\nY: " + String.format("%.01f", centerPoint.y), skin, "default");
+                    centerCalculation.setSize(colWidth * 1.5f, rowHeight * 1.5f);
+
+                    centerCalculation.setPosition(colWidth * 1.55f, rowHeight * 1.5f);
+                    stage.addActor(centerCalculation);
                     showMovement = true;
                 }
             }

@@ -221,6 +221,11 @@ public class SurvivalMode implements Screen {
     private TextButton playerMovement;
 
     /**
+     * Defines x and y calculations.
+     */
+    private TextButton centerCalculation;
+
+    /**
      * Defines if movement drawing is shown or not.
      */
     private boolean showMovement = false;
@@ -618,8 +623,15 @@ public class SurvivalMode implements Screen {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 if (showMovement) {
+                    centerCalculation.remove();
                     showMovement = false;
                 } else {
+                    centerCalculation = new TextButton("X: " + String.format("%.01f", centerPoint.x)
+                            + "\nY: " + String.format("%.01f", centerPoint.y), skin, "default");
+                    centerCalculation.setSize(colWidth * 1.5f, rowHeight * 1.5f);
+
+                    centerCalculation.setPosition(colWidth * 1.55f, rowHeight * 1.5f);
+                    stage.addActor(centerCalculation);
                     showMovement = true;
                 }
             }
