@@ -12,18 +12,41 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.Screens.Menu;
 
+/**
+ * A class for the splash screen.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class SplashScreen implements Screen {
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
-    private Texture splashTexture;
+
+    /**
+     * Defines a background image for the splash screen.
+     */
     private Image splashImage;
+
+    /**
+     * Defines a stage for the splash screen.
+     */
     private Stage stage;
 
+    /**
+     * Constructor for the splash screen.
+     *
+     * @param host "main class" host.
+     */
     public SplashScreen (Dodgeball host) {
         this.host = host;
 
         stage = new Stage();
-        splashTexture = new Texture("splashscreen.png");
-        splashImage = new Image(splashTexture);
+        splashImage = new Image(new Texture("splashscreen.png"));
     }
 
     @Override
@@ -75,7 +98,6 @@ public class SplashScreen implements Screen {
 
     @Override
     public void dispose() {
-        splashTexture.dispose();
         stage.dispose();
     }
 }

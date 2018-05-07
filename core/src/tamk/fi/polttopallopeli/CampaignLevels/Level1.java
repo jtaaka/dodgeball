@@ -35,17 +35,6 @@ public class Level1 implements Screen {
         levelTemplate.HEALINGBALL = false; // onko levelissä parantavaa palloa. true / false
         levelTemplate.timeLimit = 35; //Tätä vaihtamalla vaihtuu kentän ajallinen pituus. Yksikkö on sekuntti. esim: 60
         levelTemplate.nextLevel = "level2"; // Seuraava avautuva kenttä. Esimerkiksi: "level2"
-        // testaukseen
-        LevelPreferences.prefs.putInteger("level2", 1);
-        LevelPreferences.prefs.putInteger("level3", 1);
-        LevelPreferences.prefs.putInteger("level4", 1);
-        LevelPreferences.prefs.putInteger("level5", 1);
-        LevelPreferences.prefs.putInteger("level6", 1);
-        LevelPreferences.prefs.putInteger("level7", 1);
-        LevelPreferences.prefs.putInteger("level8", 1);
-        LevelPreferences.prefs.putInteger("level9", 1);
-        LevelPreferences.prefs.putInteger("level10", 1);
-        LevelPreferences.prefs.putInteger("level11", 1);
     }
 
     @Override

@@ -21,34 +21,126 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.ProfilePreferences;
 
+/**
+ * Highscore class for the best times in survival mode.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class HighScore implements Screen  {
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Defines SpriteBatch for high score screen.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines background texture for world.
+     */
     private Texture background;
 
+    /**
+     * Defines stage for the level.
+     */
     private Stage stage;
+
+    /**
+     * Defines a skin for button styles.
+     */
     private Skin skin;
+
+    /**
+     * Defines back button.
+     */
     private TextButton backButton;
 
+    /**
+     * Defines an array of highscore times.
+     */
     public static long scores[] = new long[10];
+
+    /**
+     * Defines highscore preferences.
+     */
     public static Preferences prefs;
 
+    /**
+     * Defines a font for the highscore times.
+     */
     private BitmapFont font;
+
+    /**
+     * Defines a layout for the text.
+     */
     private GlyphLayout layout;
+
+    /**
+     * Defines a generator for the font.
+     */
     private FreeTypeFontGenerator generator;
+
+    /**
+     * Defines a camera for the highscore screen.
+     */
     private OrthographicCamera camera;
 
+    /**
+     * Defines device's screen width.
+     */
     private float WIDTH = Gdx.graphics.getWidth();
-    private float HEIGHT = Gdx.graphics.getHeight();
-    final int colWidth = Gdx.graphics.getWidth() / 12;
-    final int rowHeight = Gdx.graphics.getHeight() / 12;
 
+    /**
+     * Defines device's screen height.
+     */
+    private float HEIGHT = Gdx.graphics.getHeight();
+
+    /**
+     * Defines device's screen column width to help position buttons.
+     */
+    private final int colWidth = Gdx.graphics.getWidth() / 12;
+
+    /**
+     * Defines device's screen row height to help position buttons.
+     */
+    private final int rowHeight = Gdx.graphics.getHeight() / 12;
+
+    /**
+     * Defines a time variable for high score time.
+     */
     private long time;
+
+    /**
+     * Defines a profile variable for profile names.
+     */
     private String profile;
+
+    /**
+     * Defines a variable for minutes formatting.
+     */
     private String formatMin;
+
+    /**
+     * Defines a variable for seconds formatting.
+     */
     private String formatSec;
+
+    /**
+     * Defines a variable for hundredths formatting.
+     */
     private String formatHundredths;
 
+    /**
+     * Constructor for high score class.
+     *
+     * @param host "main class" host
+     */
     public HighScore (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
@@ -128,6 +220,9 @@ public class HighScore implements Screen  {
         Gdx.input.setCatchBackKey(true);
     }
 
+    /**
+     * Draws scores on screen.
+     */
     private void drawScores() {
 
         for (int i = 0; i < scores.length; i++) {
@@ -155,6 +250,9 @@ public class HighScore implements Screen  {
         }
     }
 
+    /**
+     * Sets high scores to profile preferences.
+     */
     public static void setScore() {
         prefs = Gdx.app.getPreferences("HighScorePreferences");
         prefs.putLong("score0", scores[0]);
@@ -170,6 +268,9 @@ public class HighScore implements Screen  {
         prefs.flush();
     }
 
+    /**
+     * Gets high scores from profile preferences.
+     */
     public static void getScore() {
         prefs = Gdx.app.getPreferences("HighScorePreferences");
         scores[0] = prefs.getLong("score0", 0);

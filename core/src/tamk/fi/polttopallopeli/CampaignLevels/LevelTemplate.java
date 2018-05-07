@@ -213,17 +213,17 @@ public class LevelTemplate implements Screen {
     /**
      * Defines device's screen column width to help position buttons.
      */
-    final int colWidth = Gdx.graphics.getWidth() / 12;
+    private final int colWidth = Gdx.graphics.getWidth() / 12;
 
     /**
      * Defines device's screen row height to help position buttons.
      */
-    final int rowHeight = Gdx.graphics.getHeight() / 12;
+    private final int rowHeight = Gdx.graphics.getHeight() / 12;
 
     /**
      * Defines device's screen width.
      */
-    final float WIDTH = Gdx.graphics.getWidth();
+    private final float WIDTH = Gdx.graphics.getWidth();
 
     /**
      * Defines stage for the level.
@@ -407,14 +407,7 @@ public class LevelTemplate implements Screen {
         }
     }
 
-    /**
-     *
-     */
     private float ballSpawnTimer = 0;
-
-    /**
-     *
-     */
     private int ballStartCounter = 0;
 
     /**

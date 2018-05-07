@@ -30,39 +30,142 @@ import tamk.fi.polttopallopeli.SurvivalMode;
  * @version 1.0
  */
 public class Menu implements Screen {
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Defines SpriteBatch for menu.
+     */
     private SpriteBatch batch;
-    private Texture background;
+
+    /**
+     * Defines a background image for menu.
+     */
     private Image bgImage;
+
+    /**
+     * Defines a stage for the menu.
+     */
     private Stage stage;
+
+    /**
+     * Defines a skin for the menu.
+     */
     private Skin menuSkin;
+
+    /**
+     * Defines a skin for the profile.
+     */
     private Skin profileSkin;
+
+    /**
+     * Defines a text field for the profile.
+     */
     public static TextField profile;
-    private Texture profileicon;
+
+    /**
+     * Defines a profile icon image.
+     */
     private Image profileimage;
 
+    /**
+     * Defines a play button.
+     */
     private TextButton playButton;
+
+    /**
+     * Defines a survival mode button.
+     */
     private TextButton survivalButton;
+
+    /**
+     * Defines a levels mode button.
+     */
     private TextButton levelsButton;
+
+    /**
+     * Defines a settings button.
+     */
     private TextButton settingsButton;
+
+    /**
+     * Defines a a high score button.
+     */
     private TextButton scoreButton;
+
+    /**
+     * Defines an exit button.
+     */
     private TextButton exitButton;
 
+    /**
+     * Defines a sound on button.
+     */
     private Button soundOn;
+
+    /**
+     * Defines a sound off button.
+     */
     private Button soundOff;
+
+    /**
+     * Defines a music on button.
+     */
     private Button musicOn;
+
+    /**
+     * Defines a music off button.
+     */
     private Button musicOff;
+
+    /**
+     * Defines a fin flag button.
+     */
     private Button fin;
+
+    /**
+     * Defines a uk flag button.
+     */
     private Button uk;
 
-    final int colWidth = Gdx.graphics.getWidth() / 12;
-    final int rowHeight = Gdx.graphics.getHeight() / 12;
-    final float WIDTH = Gdx.graphics.getWidth();
-    final float HEIGHT = Gdx.graphics.getHeight();
+    /**
+     * Defines device's screen column width to help position buttons.
+     */
+    private final int colWidth = Gdx.graphics.getWidth() / 12;
 
+    /**
+     * Defines device's screen row height to help position buttons.
+     */
+    private final int rowHeight = Gdx.graphics.getHeight() / 12;
+
+    /**
+     * Defines device's screen width.
+     */
+    private final float WIDTH = Gdx.graphics.getWidth();
+
+    /**
+     * Defines device's screen height.
+     */
+    private final float HEIGHT = Gdx.graphics.getHeight();
+
+    /**
+     * Defines a current profile preference.
+     */
     private Preferences prefs;
+
+    /**
+     * Defines the menu music.
+     */
     private Music music;
 
+    /**
+     * Constructor for the menu class.
+     *
+     * @param host "main class" host.
+     */
     public Menu(Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
@@ -76,16 +179,14 @@ public class Menu implements Screen {
 
         prefs = Gdx.app.getPreferences("currentProfile");
 
-        background = new Texture(Gdx.files.internal("menubg.png"));
-        bgImage = new Image(background);
+        bgImage = new Image(new Texture(Gdx.files.internal("menubg.png")));
         bgImage.setSize(WIDTH, HEIGHT);
 
         stage = new Stage(new ScreenViewport(), batch);
 
         profileSkin = new Skin(Gdx.files.internal("Holo-dark-xhdpi.json"));
 
-        profileicon = new Texture("profileicon.png");
-        profileimage = new Image(profileicon);
+        profileimage = new Image(new Texture("profileicon.png"));
         profileimage.setPosition(colWidth * 8.4f, rowHeight / 2f);
 
         profile = new TextField(prefs.getString("profile"), profileSkin, "default");

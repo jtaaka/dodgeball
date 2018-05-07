@@ -32,45 +32,186 @@ import tamk.fi.polttopallopeli.CampaignLevels.Level10;
 import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.LevelPreferences;
 
+/**
+ * A class for levels screen.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Levels implements Screen {
+
+    /**
+     * Defines SpriteBatch for levels screen.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Defines stage for the level.
+     */
     private Stage stage;
+
+    /**
+     * Defines a skin for button styles.
+     */
     private Skin levelSkin;
+
+    /**
+     * Defines background texture for world.
+     */
     private Texture background;
+
+    /**
+     * Defines secret level texture.
+     */
     private Texture secret;
+
+    /**
+     * Defines a recrangle for the secret level button.
+     */
     private Rectangle secretRect;
 
+    /**
+     * Defines a button for the level.
+     */
     private Button level1;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level2;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level3;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level4;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level5;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level6;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level7;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level8;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level9;
+
+    /**
+     * Defines a button for the level.
+     */
     private Button level10;
+
+    /**
+     * Defines a back button.
+     */
     private Button pointer;
 
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock2;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock3;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock4;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock5;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock6;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock7;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock8;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock9;
+
+    /**
+     * Defines a lock button for the level.
+     */
     private Button lock10;
 
-    Vector3 touchPos;
-    OrthographicCamera camera;
+    /**
+     * Defines a vector for touch position.
+     */
+    private Vector3 touchPos;
 
-    final int colWidth = Gdx.graphics.getWidth() / 12;
-    final int rowHeight = Gdx.graphics.getHeight() / 12;
-    final float WIDTH = Gdx.graphics.getWidth();
-    final float HEIGHT = Gdx.graphics.getHeight();
+    /**
+     * Defines a lock button for the level.
+     */
+    private OrthographicCamera camera;
 
+    /**
+     * Defines device's screen column width to help position buttons.
+     */
+    private final int colWidth = Gdx.graphics.getWidth() / 12;
+
+    /**
+     * Defines device's screen row height to help position buttons.
+     */
+    private final int rowHeight = Gdx.graphics.getHeight() / 12;
+
+    /**
+     * Defines device's screen width.
+     */
+    private final float WIDTH = Gdx.graphics.getWidth();
+
+    /**
+     * Defines device's screen height.
+     */
+    private final float HEIGHT = Gdx.graphics.getHeight();
+
+    /**
+     * Constructor for levels screen.
+     *
+     * @param host "main class" host.
+     */
     public Levels (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();

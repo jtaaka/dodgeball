@@ -20,37 +20,146 @@ import tamk.fi.polttopallopeli.Dodgeball;
 import tamk.fi.polttopallopeli.ProfilePreferences;
 import tamk.fi.polttopallopeli.SettingsPreferences;
 
+/**
+ * A class for the settings screen.
+ *
+ * @author  Juho Taakala <juho.taakala@cs.tamk.fi>
+ *          Joni Alanko <joni.alanko@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Settings implements Screen {
+
+    /**
+     * Defines SpriteBatch for the settings screen.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Defines a background texture for the settings screen.
+     */
     private Texture background;
+
+    /**
+     * Defines a skin for the settings stuff.
+     */
     private Skin skin;
 
+    /**
+     * Defines a up text label.
+     */
     private Label up;
+
+    /**
+     * Defines a down text label.
+     */
     private Label down;
+
+    /**
+     * Defines a right text label.
+     */
     private Label right;
+
+    /**
+     * Defines a left text label.
+     */
     private Label left;
+
+    /**
+     * Defines a settings text label.
+     */
     private Label settings;
 
+    /**
+     * Defines a up calibration button.
+     */
     private TextButton upCalibration;
+
+    /**
+     * Defines a down calibration button.
+     */
     private TextButton downCalibration;
+
+    /**
+     * Defines a right calibration button.
+     */
     private TextButton rightCalibration;
+
+    /**
+     * Defines a left calibration button.
+     */
     private TextButton leftCalibration;
+
+    /**
+     * Defines a back button.
+     */
     private TextButton backButton;
 
+    /**
+     * Defines a Z-axis slider.
+     */
     private Slider sliderZPositive;
+
+    /**
+     * Defines a negative Z-axis slider.
+     */
     private Slider sliderZNegative;
+
+    /**
+     * Defines a X-axis slider.
+     */
     private Slider sliderXPositive;
+
+    /**
+     * Defines a negative X-axis slider.
+     */
     private Slider sliderXNegative;
+
+    /**
+     * Defines a container for the left slider.
+     */
     private Container sliderLeft;
+
+    /**
+     * Defines a container for the down slider.
+     */
     private Container sliderDown;
+
+    /**
+     * Defines a stage for the settings screen.
+     */
     private Stage stage;
 
-    final int colWidth = Gdx.graphics.getWidth() / 12;
-    final int rowHeight = Gdx.graphics.getHeight() / 12;
-    final float WIDTH = Gdx.graphics.getWidth();
-    final float HEIGHT = Gdx.graphics.getHeight();
+    /**
+     * Defines device's screen column width to help position buttons.
+     */
+    private final int colWidth = Gdx.graphics.getWidth() / 12;
 
+    /**
+     * Defines device's screen row height to help position buttons.
+     */
+    private final int rowHeight = Gdx.graphics.getHeight() / 12;
+
+    /**
+     * Defines device's screen width.
+     */
+    private final float WIDTH = Gdx.graphics.getWidth();
+
+    /**
+     * Defines device's screen height.
+     */
+    private final float HEIGHT = Gdx.graphics.getHeight();
+
+    /**
+     * Constructor for settings screen.
+     *
+     * @param host "main class" host.
+     */
     public Settings (Dodgeball host) {
         this.host = host;
         batch = host.getBatch();
