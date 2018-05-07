@@ -12,6 +12,14 @@ import java.util.Locale;
 
 import tamk.fi.polttopallopeli.Screens.SplashScreen;
 
+/**
+ * Main class.
+ *
+ * @author  Joni Alanko <joni.alanko@cs.tamk.fi>
+ *          Juho Taakala <juho.taakala@cs.tamk.fi>
+ * @since   2018.0222
+ * @version 1.0
+ */
 public class Dodgeball extends Game {
 	private SpriteBatch batch;
 	public static final float WINDOW_WIDTH = 1280;
@@ -20,12 +28,30 @@ public class Dodgeball extends Game {
     public static final float WORLD_WIDTH = 12.8f;
 	public static final float WORLD_HEIGHT = 8.0f;
 
+    /**
+     * Wall identifier.
+     */
 	public static final short OBJECT_WALL = 1;
+    /**
+     * Player identiefier.
+     */
     public static final short OBJECT_PLAYER = 2;
+    /**
+     * Ball identifier.
+     */
     public static final short OBJECT_BALL = 4;
 
+    /**
+     * Used for sound volume.
+     */
     public static float VOLUME = 1.0f;
+    /**
+     * Used for music volume.
+     */
     public static float MUSIC_VOLUME = 1.0f;
+    /**
+     * Used for music and sound handling.
+     */
     public AssetManager manager;
 
     private Locale lang;
@@ -51,10 +77,23 @@ public class Dodgeball extends Game {
         setScreen(new SplashScreen(this));
 	}
 
+    /**
+     * Gets asset manager.
+     *
+     * @param identifier String asset name.
+     * @param type Class type.
+     * @param <T> Class type.
+     * @return
+     */
 	public <T> T getManager(String identifier, Class<T> type) {
         return manager.get(identifier, type);
     }
 
+    /**
+     * Gets language bundle.
+     *
+     * @return bundle.
+     */
 	public I18NBundle getLang() {
         return myBundle;
     }

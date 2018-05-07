@@ -155,6 +155,7 @@ public class Player extends Sprite {
         weldJointDef.localAnchorA.add(0.02f, getHeight() / 8 * 3.4f);
         world.createJoint(weldJointDef);
 
+        Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
         playerCalibration();
         shape.dispose();
         circle.dispose();
@@ -166,12 +167,25 @@ public class Player extends Sprite {
     private void playerCalibration() {
         tabletAccelerometerSettingZ = 0;
         tabletAccelerometerSettingY = 0;
+        Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-            if (Gdx.input.getAccelerometerZ() > 5) {
-                tabletAccelerometerSettingZ = Gdx.input.getAccelerometerX();
+            float accelo = Gdx.input.getAccelerometerZ();
+            float acceloX = Gdx.input.getAccelerometerX();
+            if (accelo > 9) {
+                accelo = 7;
+            } else if (accelo < -9) {
+                accelo = -7;
+            }
+            if (acceloX > 9) {
+                acceloX = 7;
+            } else if (acceloX < -9) {
+                acceloX = -7;
+            }
+            if (accelo > 5) {
+                tabletAccelerometerSettingZ = acceloX;
                 useXaccelerometer = true;
             } else {
-                tabletAccelerometerSettingZ = Gdx.input.getAccelerometerZ();
+                tabletAccelerometerSettingZ = accelo;
             }
 
             tabletAccelerometerSettingY = Gdx.input.getAccelerometerY();
