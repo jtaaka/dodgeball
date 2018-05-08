@@ -1,6 +1,5 @@
 package tamk.fi.polttopallopeli;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,7 +22,7 @@ public class CenterOfPlayer extends Sprite {
     private ShapeRenderer shape;
     private Vector2 calculatedCenter;
     private Vector2 lastPoint;
-    Texture background;
+    private Texture background;
 
     public CenterOfPlayer() {
         super(new Texture("tahtain.png"));
@@ -39,6 +38,7 @@ public class CenterOfPlayer extends Sprite {
 
     /**
      * Sets player leaning.
+     *
      * @param x x-location
      * @param y y-location
      */
@@ -66,6 +66,7 @@ public class CenterOfPlayer extends Sprite {
 
     /**
      * Sets calculated centerpoint of player.
+     *
      * @param calculatedCenter is players center point.
      */
     public void calculatedCenter(Vector2 calculatedCenter) {
@@ -74,7 +75,6 @@ public class CenterOfPlayer extends Sprite {
 
     /**
      * Draws players movement directions and center point.
-     *
      * Also draws background image where movement directions and center point are focused.
      *
      * @param batch Sprite batch.
@@ -104,6 +104,9 @@ public class CenterOfPlayer extends Sprite {
         batch.end();
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         getTexture().dispose();
     }

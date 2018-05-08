@@ -1,6 +1,5 @@
 package tamk.fi.polttopallopeli;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,6 +16,10 @@ import com.badlogic.gdx.utils.Array;
  * @version 1.0
  */
 public class HeatMap extends Sprite {
+
+    /**
+     * Defines an array of heatmap objects.
+     */
     private Array<HeatMapObject> heatMap;
 
     public HeatMap() {
@@ -71,6 +74,7 @@ public class HeatMap extends Sprite {
 
     /**
      * Draws heatmap.
+     *
      * @param batch Spritebatch.
      */
     public void draw(Batch batch) {

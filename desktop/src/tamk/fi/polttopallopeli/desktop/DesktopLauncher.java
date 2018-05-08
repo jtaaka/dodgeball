@@ -7,7 +7,7 @@ import tamk.fi.polttopallopeli.Dodgeball;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1280; //16:10 aspect ratio for tablet
+		config.width = 1280;
 		config.height = 800;
 		new LwjglApplication(new Dodgeball(), config);
 	}

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 import tamk.fi.polttopallopeli.Dodgeball;
-import tamk.fi.polttopallopeli.LevelPreferences;
 
 /**
  * Defines Level 1 variables.
@@ -15,6 +14,7 @@ import tamk.fi.polttopallopeli.LevelPreferences;
  * @version 1.0
  */
 public class Level1 implements Screen {
+
     /**
      * Defines level template.
      */

@@ -27,6 +27,7 @@ public class ContactDetection implements ContactListener {
 
     /**
      * Manages actions to be done in contacts.
+     *
      * @param contact Detected contact data.
      */
     @Override

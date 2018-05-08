@@ -318,7 +318,6 @@ public class LevelTemplate implements Screen {
         ball = new Balls[MAX_BALL_AMOUNT];
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Dodgeball.WORLD_WIDTH, Dodgeball.WORLD_HEIGHT);
-        //debugRenderer = new Box2DDebugRenderer();
         world = new World(new Vector2(0, 0), true);
         player = new Player(world, batch);
         timer = new GameTimer(batch, whiteTimer, stage);
@@ -341,19 +340,8 @@ public class LevelTemplate implements Screen {
     public void show() {
     }
 
-    /**
-     *
-     */
     private boolean calculated = false;
-
-    /**
-     *
-     */
     private float divideAmount;
-
-    /**
-     *
-     */
     private float lastDelta;
 
     private void playMusic() {
@@ -583,6 +571,11 @@ public class LevelTemplate implements Screen {
     boolean blackening = false;
     float blackeningTimer;
 
+    /**
+     * Defines the secret level.
+     *
+     * @param delta is deltatime.
+     */
     private void secretLevel(float delta) {
         if (secretTexture == null) {
             secretTexture = new Texture("black.png");
@@ -922,6 +915,5 @@ public class LevelTemplate implements Screen {
         if (secretBatch != null) {
             secretBatch.dispose();
         }
-        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

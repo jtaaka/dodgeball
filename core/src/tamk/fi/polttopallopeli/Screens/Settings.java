@@ -13,11 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import tamk.fi.polttopallopeli.Dodgeball;
-import tamk.fi.polttopallopeli.ProfilePreferences;
 import tamk.fi.polttopallopeli.SettingsPreferences;
 
 /**

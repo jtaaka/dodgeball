@@ -27,12 +27,25 @@ public class Dodgeball extends Game {
      */
     private SpriteBatch batch;
 
-
+    /**
+     * Defines the window width.
+     */
     public static final float WINDOW_WIDTH = 1280;
+
+    /**
+     * Defines the window height.
+     */
     public static final float WINDOW_HEIGHT = 800;
 
+    /**
+     * Defines the world width to be used in the game.
+     */
     public static final float WORLD_WIDTH = 12.8f;
-	public static final float WORLD_HEIGHT = 8.0f;
+
+    /**
+     * Defines the world height to be used in the game.
+     */
+    public static final float WORLD_HEIGHT = 8.0f;
 
     /**
      * Wall identifier.
@@ -115,22 +128,39 @@ public class Dodgeball extends Game {
         return myBundle;
     }
 
-	public SpriteBatch getBatch() {
+    /**
+     * Gets SpriteBatch.
+     *
+     * @return SpriteBatch.
+     */
+    public SpriteBatch getBatch() {
 	    return batch;
     }
 
+    /**
+     * Mutes sounds.
+     */
     public static void muteSounds(){
         VOLUME = 0.0f;
     }
 
+    /**
+     * Plays sounds at maximum volume.
+     */
     public static void playSounds(){
         VOLUME = 1.0f;
     }
 
+    /**
+     * Mutes music.
+     */
     public static void muteMusic(){
         MUSIC_VOLUME = 0.0f;
     }
 
+    /**
+     * Plays music at maximum volume.
+     */
     public static void playMusic(){
         MUSIC_VOLUME = 1.0f;
     }

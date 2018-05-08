@@ -1,6 +1,5 @@
 package tamk.fi.polttopallopeli;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,15 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SizeToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import tamk.fi.polttopallopeli.CampaignLevels.LevelTemplate;
-import tamk.fi.polttopallopeli.Screens.Menu;
 
 /**
  * Handles game timer.
@@ -199,7 +191,6 @@ public class GameTimer {
     public long getElapsedTime() {
         return (TimeUtils.nanoTime() - startTime) / nanosPerMilli / 1000;
     }
-
 
     /**
      * Count down timer for the game start.

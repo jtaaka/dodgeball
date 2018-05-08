@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import tamk.fi.polttopallopeli.Dodgeball;
-import tamk.fi.polttopallopeli.Screens.Menu;
 
 /**
  * A class for the splash screen.
