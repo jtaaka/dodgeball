@@ -15,10 +15,29 @@ import tamk.fi.polttopallopeli.LevelPreferences;
  * @version 1.0
  */
 public class Level1 implements Screen {
+    /**
+     * Defines level template.
+     */
     private LevelTemplate levelTemplate;
+
+    /**
+     * Defines "main class" as a host.
+     */
     private Dodgeball host;
+
+    /**
+     * Max ball amount on the field.
+     */
     private int MAX_BALL_AMOUNT = 4; // Maksimi määrä palloja kentällä yhtäaikaa. esim: 10
+
+    /**
+     * Defines background texture for the level.
+     */
     private Texture background;
+
+    /**
+     * Defines if the white timer is used or not.
+     */
     boolean whiteTimer = false;
 
     public Level1(Dodgeball host) {

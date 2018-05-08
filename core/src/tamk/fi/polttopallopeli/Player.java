@@ -26,33 +26,115 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
  * @version 1.0
  */
 public class Player extends Sprite {
+
+    /**
+     * Defines world.
+     */
     private World world;
-    protected Body body;
-    protected Body head;
+
+    /**
+     * Defines player's body.
+     */
+    private Body body;
+
+    /**
+     * Defines player's head.
+     */
+    private Body head;
+
+    /**
+     * Defines SpriteBatch for player.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines vector for player movement.
+     */
     private Vector2 vector;
 
+    /**
+     * Defines player's healths.
+     */
     private int health;
+
+    /**
+     * Defines texture for healths.
+     */
     private Texture healthTexture;
+
+    /**
+     * Defines animation for healths.
+     */
     private Animation<TextureRegion> healthAnimation;
+
+    /**
+     * Defines frame time for healths.
+     */
     private float healthFrameTime;
+
+    /**
+     * Defines frame duration.
+     */
     private float frameDuration = 1/8f;
 
+    /**
+     * Defines animation for player.
+     */
     private Animation<TextureRegion> playerAnime;
+
+    /**
+     * Defines current frame time.
+     */
     private float currentFrameTime;
 
+    /**
+     * Defines stun texture for player.
+     */
     private Texture stunTexture;
+
+    /**
+     * Defines stun animation for player.
+     */
     private Animation<TextureRegion> stunAnime;
 
+    /**
+     * Defines accelerometer Z setting.
+     */
     private float tabletAccelerometerSettingZ;
+
+    /**
+     * Defines accelerometer Y setting.
+     */
     private float tabletAccelerometerSettingY;
+
+    /**
+     * Defines if accelerometer X is used.
+     */
     private boolean useXaccelerometer = false;
 
+    /**
+     * Defines calibration for Z+ axis.
+     */
     private float calibrationZPositive;
+
+    /**
+     * Defines calibration for Z- axis.
+     */
     private float calibrationZNegative;
+
+    /**
+     * Defines calibration for X+ axis.
+     */
     private float calibrationXPositive;
+
+    /**
+     * Defines calibration for X- axis.
+     */
     private float calibrationXNegative;
 
+    /**
+     * Defines if player won or not.
+     */
     public boolean victory;
 
     /**
@@ -101,12 +183,10 @@ public class Player extends Sprite {
         stunAnime = new Animation<TextureRegion>(frameDuration, stunFrames);
 
         setSize(getWidth() / 900f / 3f, getHeight() / 800f / 3f);
-        //setSize(getWidth() / 200f, getHeight() / 200f);
         setOriginCenter();
 
         currentFrameTime = 0;
         healthFrameTime = 0;
-        // Ylempi testauksessa
 
         this.world = world;
         this.batch = batch;
@@ -121,7 +201,7 @@ public class Player extends Sprite {
         bodyDef.position.set((Dodgeball.WORLD_WIDTH / 2f),
                 (Dodgeball.WORLD_HEIGHT / 2f));
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 1f; //0.5f OG
+        bodyDef.linearDamping = 1f;
 
         body = world.createBody(bodyDef);
 
@@ -129,13 +209,12 @@ public class Player extends Sprite {
                 (Dodgeball.WORLD_HEIGHT / 1.8f));
         head = world.createBody(bodyDef);
 
-
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(getWidth() / 6.5f, getHeight() / 5.5f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.15f; // 0.05f OG
+        fixtureDef.density = 0.15f;
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_PLAYER;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_BALL;
@@ -154,7 +233,6 @@ public class Player extends Sprite {
         weldJointDef.localAnchorA.add(0.02f, getHeight() / 8 * 3.4f);
         world.createJoint(weldJointDef);
 
-        //Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
         playerCalibration();
         shape.dispose();
         circle.dispose();
@@ -166,7 +244,6 @@ public class Player extends Sprite {
     private void playerCalibration() {
         tabletAccelerometerSettingZ = 0;
         tabletAccelerometerSettingY = 0;
-        //Gdx.app.log("Testi", "Zmeter: " + Gdx.input.getAccelerometerZ());
 
         if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
             float accelo = Gdx.input.getAccelerometerZ();
@@ -195,6 +272,12 @@ public class Player extends Sprite {
         }
     }
 
+    /**
+     * Transforms animation texture to 1D.
+     *
+     * @param tmp temporary 2D array.
+     * @return 1D array of player frames.
+     */
     private TextureRegion[] transformTo1D(TextureRegion[][] tmp) {
         TextureRegion [] playerFrames = new TextureRegion[tmp.length * tmp[0].length];
 
@@ -208,22 +291,43 @@ public class Player extends Sprite {
         return playerFrames;
     }
 
+    /**
+     * Get player's health amount.
+     *
+     * @return players health amount.
+     */
     public int getHealth() {
         return health;
     }
 
+    /**
+     * Decrease player's health amount.
+     */
     public void decreaseHealth() {
         health = Math.max(0, health - 1);
     }
 
+    /**
+     * Increase player's health amount.
+     */
     public void increaseHealth() {
         health = Math.min(3, health + 1);
     }
 
+    /**
+     * Get player body x position.
+     *
+     * @return player body y position.
+     */
     public float getPlayerBodyX() {
         return body.getPosition().x;
     }
 
+    /**
+     * Get player body y position.
+     *
+     * @return player body y position.
+     */
     public float getPlayerBodyY() {
         return body.getPosition().y;
     }
@@ -370,12 +474,11 @@ public class Player extends Sprite {
             vector.y = -5f * delta;
         }
 
-        // Accelerometer testing for tablet
         accelY = Gdx.input.getAccelerometerY() - tabletAccelerometerSettingY;
         if (useXaccelerometer) {
             accelZ = Gdx.input.getAccelerometerX() - tabletAccelerometerSettingZ;
         } else {
-            accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ; //ei vaikuta Desktopilla
+            accelZ = Gdx.input.getAccelerometerZ() - tabletAccelerometerSettingZ;
         }
 
         if (!MathUtils.isZero(accelY, 0.5f) || !MathUtils.isZero(accelZ, 0.5f)) {
@@ -459,6 +562,11 @@ public class Player extends Sprite {
         return FRAME_TIME * currentRow;
     }
 
+    /**
+     * Draws player's health animation to screen.
+     *
+     * @param delta is deltatime.
+     */
     public void drawHealth(float delta) {
         float initialFrameTime = getHealthFrames();
 
@@ -482,6 +590,5 @@ public class Player extends Sprite {
         world.destroyBody(body);
         healthTexture.dispose();
         stunTexture.dispose();
-        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

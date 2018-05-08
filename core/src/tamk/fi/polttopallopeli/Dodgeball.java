@@ -21,8 +21,14 @@ import tamk.fi.polttopallopeli.Screens.SplashScreen;
  * @version 1.0
  */
 public class Dodgeball extends Game {
-	private SpriteBatch batch;
-	public static final float WINDOW_WIDTH = 1280;
+
+    /**
+     * Defines SpriteBatch for the game.
+     */
+    private SpriteBatch batch;
+
+
+    public static final float WINDOW_WIDTH = 1280;
     public static final float WINDOW_HEIGHT = 800;
 
     public static final float WORLD_WIDTH = 12.8f;
@@ -32,10 +38,12 @@ public class Dodgeball extends Game {
      * Wall identifier.
      */
 	public static final short OBJECT_WALL = 1;
-    /**
+
+	/**
      * Player identiefier.
      */
     public static final short OBJECT_PLAYER = 2;
+
     /**
      * Ball identifier.
      */
@@ -45,16 +53,25 @@ public class Dodgeball extends Game {
      * Used for sound volume.
      */
     public static float VOLUME = 1.0f;
+
     /**
      * Used for music volume.
      */
     public static float MUSIC_VOLUME = 1.0f;
+
     /**
      * Used for music and sound handling.
      */
     public AssetManager manager;
 
+    /**
+     * Defines language locale.
+     */
     private Locale lang;
+
+    /**
+     * Defines language bundle.
+     */
     private I18NBundle myBundle;
 
     @Override

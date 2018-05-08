@@ -98,11 +98,10 @@ public class CenterOfPlayer extends Sprite {
         }
 
         setColor(1,0,0,1);
-        setPosition(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 4f + calculatedCenter.x / 3f - getWidth() / 4f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
+        setPosition(Dodgeball.WORLD_WIDTH / 25f + background.getWidth() / 200f / 2f + calculatedCenter.x / 3f - getWidth() / 4f, Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y / 3f - getHeight() / 2f);
         batch.begin();
         draw(batch);
         batch.end();
-        //Gdx.app.log(getClass().getSimpleName(), "x: " + (Dodgeball.WORLD_WIDTH / 2f + calculatedCenter.x - getWidth() / 2f) + " y: " + (Dodgeball.WORLD_HEIGHT / 2f + calculatedCenter.y - getHeight() / 2f));
     }
 
     public void dispose() {

@@ -168,17 +168,17 @@ public class SurvivalMode implements Screen {
     /**
      * Defines device's screen column width to help position buttons.
      */
-    final int colWidth = Gdx.graphics.getWidth() / 12;
+    private final int colWidth = Gdx.graphics.getWidth() / 12;
 
     /**
      * Defines device's screen row height to help position buttons.
      */
-    final int rowHeight = Gdx.graphics.getHeight() / 12;
+    private final int rowHeight = Gdx.graphics.getHeight() / 12;
 
     /**
      * Defines device's screen width.
      */
-    final float WIDTH = Gdx.graphics.getWidth();
+    private final float WIDTH = Gdx.graphics.getWidth();
 
     /**
      * Defines music for the game.
@@ -323,8 +323,8 @@ public class SurvivalMode implements Screen {
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
                 centerPoint.x = centerPoint.x / divideAmount;
                 centerPoint.y = centerPoint.y / divideAmount;
-                timer.setX(centerPoint.x);
-                timer.setY(centerPoint.y);
+                //timer.setX(centerPoint.x);
+                //timer.setY(centerPoint.y);
                 Gdx.app.log(getClass().getSimpleName(), "xCenter: " + centerPoint.x);
                 Gdx.app.log(getClass().getSimpleName(), "yCenter: " + centerPoint.y);
                 center.calculatedCenter(centerPoint);

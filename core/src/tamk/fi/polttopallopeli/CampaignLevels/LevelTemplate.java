@@ -403,8 +403,8 @@ public class LevelTemplate implements Screen {
             if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
                 centerPoint.x = centerPoint.x / divideAmount;
                 centerPoint.y = centerPoint.y / divideAmount;
-                timer.setX(centerPoint.x);
-                timer.setY(centerPoint.y);
+                //timer.setX(centerPoint.x);
+                //timer.setY(centerPoint.y);
                 Gdx.app.log(getClass().getSimpleName(), "xCenter: " + centerPoint.x);
                 Gdx.app.log(getClass().getSimpleName(), "yCenter: " + centerPoint.y);
                 center.calculatedCenter(centerPoint);

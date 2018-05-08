@@ -25,26 +25,32 @@ import com.badlogic.gdx.utils.Array;
  * @version 1.0
  */
 public class Balls extends Sprite {
+
     /**
      * Defines world.
      */
     private World world;
+
     /**
      * Defines ball body.
      */
     private Body body;
+
     /**
      * Defines player body.
      */
     private Body playerBody;
+
     /**
      * Defines Spritebatch.
      */
     private Batch batch;
+
     /**
      * Defines ball texture.
      */
     private Texture ball;
+
     /**
      * Defines FixtureDef for a ball.
      */
@@ -54,26 +60,32 @@ public class Balls extends Sprite {
      * Ball spawning location.
      */
     private float xCoordinate;
+
     /**
      * Ball spawning location.
      */
     private float yCoordinate;
+
     /**
      * Current player location.
      */
     private float playerX;
+
     /**
      * Current player location.
      */
     private float playerY;
+
     /**
      * Ball spawning point that can be logged.
      */
     private int ballLocation;
+
     /**
      * Force given to a ball.
      */
     private float xForce;
+
     /**
      * Force given to a ball.
      */
@@ -83,26 +95,32 @@ public class Balls extends Sprite {
      * Defines if they are used.
      */
     private boolean acceleratingBall;
+
     /**
      * Defines if they are used.
      */
     private boolean targetingBall;
+
     /**
      * Defines if they are used.
      */
     private boolean fastball;
+
     /**
      * Defines if they are used.
      */
     boolean healingBall;
+
     /**
      * Defines if the ball is a healingBall. Defined for ContactDetection.
      */
     boolean ballIsHealingBall = false;
+
     /**
      * Defines if the healing is used. Defined for Dispose.
      */
     public boolean healingUsed = false;
+
     /**
      * Defines if accelerating balls functionality is done.
      */
@@ -110,6 +128,7 @@ public class Balls extends Sprite {
 
     /**
      * Overloads constructor.
+     *
      * @param world current world state.
      * @param batch Spritebatch.
      * @param playerBody current player state.
@@ -154,7 +173,6 @@ public class Balls extends Sprite {
                 loop = false;
             }
         }
-        //Gdx.app.log(getClass().getSimpleName(), " " + ballLocation);
 
         bodyDef.position.set(xCoordinate, yCoordinate);
 
@@ -170,7 +188,7 @@ public class Balls extends Sprite {
         fixtureDef.restitution = 0.8f;
 
         ballType();
-        // Ball collides with player and other balls (for testing)
+
         fixtureDef.filter.categoryBits = Dodgeball.OBJECT_BALL;
         fixtureDef.filter.maskBits = Dodgeball.OBJECT_WALL | Dodgeball.OBJECT_PLAYER | Dodgeball.OBJECT_BALL;
 
@@ -242,6 +260,7 @@ public class Balls extends Sprite {
 
     /**
      * Gets ball spawning point.
+     *
      * @return int ballLocation.
      */
     public int getLocationToUpdateBallLocator() {
@@ -376,6 +395,7 @@ public class Balls extends Sprite {
 
     /**
      * Draws ball and checks accelerating ball action.
+     *
      * @param delta is deltaTime
      */
     public void draw(float delta) {
@@ -386,13 +406,7 @@ public class Balls extends Sprite {
         }
 
         batch.begin();
-        /*
-        batch.draw(getTexture(), body.getPosition().x - getWidth() / 275f,
-                body.getPosition().y - getHeight() / 275f, 0.25f, 0.25f,
-                0.5f, 0.5f, 1f,
-                1f, body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                0, 0, getTexture().getWidth(), getTexture().getHeight(), false, false);
-                */
+
         setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         super.draw(batch);
@@ -402,6 +416,5 @@ public class Balls extends Sprite {
     public void dispose() {
         getTexture().dispose();
         world.destroyBody(body);
-        //Gdx.app.log(getClass().getSimpleName(), "disposing");
     }
 }

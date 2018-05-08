@@ -30,24 +30,85 @@ import tamk.fi.polttopallopeli.Screens.Menu;
  * @version 1.0
  */
 public class GameTimer {
+
+    /**
+     * Defines font for the game timer.
+     */
     private BitmapFont font;
+
+    /**
+     * Defines layout for the game timer.
+     */
     private GlyphLayout layout;
+
+    /**
+     * Defines generator for the font.
+     */
     private FreeTypeFontGenerator generator;
+
+    /**
+     * Defines SpriteBatch for the game timer.
+     */
     private SpriteBatch batch;
+
+    /**
+     * Defines stage for the count down timer actors.
+     */
     private Stage stage;
+
+    /**
+     * Defines a camera.
+     */
     private OrthographicCamera camera;
 
+    /**
+     * Defines a countdown actor.
+     */
     private Image countDown1;
+
+    /**
+     * Defines a countdown actor.
+     */
     private Image countDown2;
+
+    /**
+     * Defines a countdown actor.
+     */
     private Image countDown3;
+
+    /**
+     * Defines a countdown actor.
+     */
     private Image go;
 
+    /**
+     * Defines start time in nanoseconds.
+     */
     private long startTime = TimeUtils.nanoTime();
+
+    /**
+     * Defines conversion from nanoseconds to milliseconds.
+     */
     private long nanosPerMilli = 1000000;
+
+    /**
+     * Defines elapsed time.
+     */
     private long elapsed;
+
+    /**
+     * Defines if the game timer is frozen.
+     */
     private boolean freeze;
 
+    /**
+     * Defines device's screen width.
+     */
     private final float WIDTH = Gdx.graphics.getWidth();
+
+    /**
+     * Defines device's screen height.
+     */
     private final float HEIGHT = Gdx.graphics.getHeight();
 
     /**
@@ -119,7 +180,8 @@ public class GameTimer {
 
     /**
      * Gets time result on survival mode.
-     * @return
+     *
+     * @return elapsed time.
      */
     public long getHighScoreTime() {
         if (!freeze) {
@@ -129,10 +191,21 @@ public class GameTimer {
         return elapsed;
     }
 
+    /**
+     * Gets elapsed time and converts it to seconds.
+     *
+     * @return time in seconds.
+     */
     public long getElapsedTime() {
         return (TimeUtils.nanoTime() - startTime) / nanosPerMilli / 1000;
     }
 
+
+    /**
+     * Count down timer for the game start.
+     *
+     * @param pauseDelay time in pause mode.
+     */
     public void countDownTimer(long pauseDelay) {
         freeze = true;
 
@@ -163,6 +236,7 @@ public class GameTimer {
 
     /**
      * Handles timer for survival mode counting up.
+     *
      * @param pauseDelay how long game was paused.
      */
     public void survivalModeTimer(long pauseDelay) {
@@ -191,6 +265,7 @@ public class GameTimer {
 
     /**
      * Handles timer for levels counting down and stopping at 0.
+     *
      * @param timeLimit Sets the timer to this.
      * @param pauseDelay How long game was paused.
      */
